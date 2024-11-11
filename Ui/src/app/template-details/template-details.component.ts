@@ -146,6 +146,7 @@ export class TemplateDetailsComponent implements OnInit {
   editPanelProperty(templatePanel: TemplatePanel) {
     this.selectTemplatePanel = templatePanel;
     this.templatePanelForm.setValue({
+      id: this.selectTemplatePanel.id,
       name: this.selectTemplatePanel.name,
       hintName: this.selectTemplatePanel.hintName,
       templateVersionId: this.selectTemplatePanel.templateVersionId,
@@ -213,6 +214,7 @@ export class TemplateDetailsComponent implements OnInit {
   editSectionProperty(templateSection: TemplateSection) {
     this.selectTemplateSection = templateSection;
     this.templateSectionForm.setValue({
+      id: this.selectTemplateSection.id,
       templatePanelId: this.selectTemplateSection.templatePanelId,
       sectionName: this.selectTemplateSection.sectionName,
       arrayName: this.selectTemplateSection.arrayName,
