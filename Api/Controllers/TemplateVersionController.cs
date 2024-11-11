@@ -19,14 +19,19 @@ namespace Api.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TemplateVersion>>> GetTemplateVersions()
         {
-            return await _context.TemplateVersions.ToListAsync();
+            return await _context.TemplateVersions.Include(a => a.TemplatePanels).Include(a => a.TemplatePanels)
+            .ThenInclude(a => a.TemplateSections)
+                    .ThenInclude(a => a.TemplateFields).ToListAsync();
         }
 
         // GET: api/TemplateVersion/5
         [HttpGet("{id}")]
         public async Task<ActionResult<TemplateVersion>> GetTemplateVersion(int id)
         {
-            var templateVersion = await _context.TemplateVersions.FindAsync(id);
+            var templateVersion = await _context.TemplateVersions
+            .Include(a => a.TemplatePanels)
+                .ThenInclude(a => a.TemplateSections)
+                    .ThenInclude(a => a.TemplateFields).FirstOrDefaultAsync(a => a.Id == id);
 
             if (templateVersion == null)
             {
@@ -34,6 +39,24 @@ namespace Api.Controllers
             }
 
             return templateVersion;
+        }
+
+        // GET: api/TemplateVersion/5
+        [HttpGet("byTemplateId/{id}")]
+        public async Task<ActionResult<IEnumerable<TemplateVersion>>> GetTemplateVersionsByParentId(int id)
+        {
+            var templateVersions = await _context.TemplateVersions
+            .Include(a => a.TemplatePanels)
+                .ThenInclude(a => a.TemplateSections)
+                    .ThenInclude(a => a.TemplateFields)
+            .Include(a => a.Template).Where(e => e.TemplateId == id).ToListAsync();
+
+            if (templateVersions == null)
+            {
+                return NotFound();
+            }
+
+            return templateVersions;
         }
 
         // PUT: api/TemplateVersion/5

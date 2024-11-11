@@ -1,0 +1,392 @@
+<div class="d-flex justify-content-between">
+  <mat-sidenav-container class="example-container">
+    <mat-sidenav #sidenRight mode="side" position="start" opened>
+      <mat-toolbar>
+        <button mat-icon-button class="example-icon" (click)="sidenRight.toggle()"
+          aria-label="Example icon-button with menu icon">
+          <mat-icon>menu</mat-icon>
+        </button>
+        <span>Controls</span>
+      </mat-toolbar>
+      <div>
+        <div class="example-right-container">
+          <button mat-icon-button (click)="addPanelProperty()" matTooltip="Add Panel to the template.">
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+
+        <mat-accordion>
+          @for (templatePanel of templatePanels; track templatePanel) {
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <mat-icon>folder</mat-icon>
+                {{templatePanel.name}}
+              </mat-panel-title>
+              <div class="example-right-container">
+                <button mat-icon-button (click)="editPanelProperty(templatePanel)" matTooltip="Edit Panel.">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button (click)="deletePanelProperty(templatePanel)" matTooltip="Delete Panel.">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </mat-expansion-panel-header>
+
+            <div class="container">
+              <p>
+                Hint Name:
+                {{templatePanel.hintName}}
+              </p>
+
+              <div class="example-right-container">
+                <button mat-icon-button (click)="addSectionProperty(templatePanel)" matTooltip="Add Section to the panel.">
+                  <mat-icon>add</mat-icon>
+                </button>
+              </div>
+
+              @for (templateSection of templatePanel.templateSections; track templateSection) {
+              <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    <mat-icon>folder</mat-icon>
+                    {{templateSection.sectionName}}
+                  </mat-panel-title>
+                  <div class="example-right-container">
+                    <button mat-icon-button (click)="editSectionProperty(templateSection)" matTooltip="Edit Section.">
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-icon-button (click)="deleteSectionProperty(templateSection)" matTooltip="Delete Section.">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </div>
+                </mat-expansion-panel-header>
+
+                <div>
+                  
+                  <p>
+                    Array name:
+                    {{templateSection.arrayName}}
+                  </p>
+
+                  <div class="example-right-container">
+                    <button mat-icon-button (click)="addFieldProperty(templateSection)" matTooltip="Add Field to the section.">
+                      <mat-icon>add</mat-icon>
+                    </button>
+                  </div>
+    
+                  @for (templateField of templateSection.templateFields; track templateField) {
+                  <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                      <mat-panel-title>
+                        <mat-icon>folder</mat-icon>
+                        {{templateField.code}}
+                      </mat-panel-title>
+
+                      <div class="example-right-container">
+                        <button mat-icon-button (click)="editFieldProperty(templateField)" matTooltip="Edit field.">
+                          <mat-icon>edit</mat-icon>
+                        </button>
+                        <button mat-icon-button (click)="deleteFieldProperty(templateField)" matTooltip="Delete field.">
+                          <mat-icon>delete</mat-icon>
+                        </button>
+                      </div>
+                    </mat-expansion-panel-header>
+
+                    <div>
+                      
+                      <p>
+                        <Label></Label>
+                        Label : {{templateField.label}}
+                      </p>
+                    </div>
+                  </mat-expansion-panel>
+                  }
+                </div>
+              </mat-expansion-panel>
+              }
+            </div>
+          </mat-expansion-panel>
+
+          }
+        </mat-accordion>
+      </div>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+      <mat-toolbar>
+        <mat-slide-toggle [checked]="true" (click)="sidenRight.toggle()">Controls</mat-slide-toggle>
+        <span class="example-spacer"></span>
+        <mat-slide-toggle [checked]="true" labelPosition="before"
+          (click)="sideLeft.toggle()">Properties</mat-slide-toggle>
+      </mat-toolbar>
+
+      <div class="example-container">
+        <mat-list #previewPanels>
+          @for (templatePanel of templatePanels; track templatePanel) {
+          <mat-card appearance="outlined">
+            <mat-card-header>
+              <mat-icon matListItemIcon>folder</mat-icon>
+              <mat-card-title>Panel : {{templatePanel.name}}</mat-card-title>
+              <button mat-raised-button (click)="editPanelProperty(templatePanel)">
+                <mat-icon>settings</mat-icon>
+              </button>
+            </mat-card-header>
+
+            <mat-card-content>
+              <p>
+                Hint Name:
+                {{templatePanel.hintName}}
+              </p>
+
+              @for (templateSection of templatePanel.templateSections; track templateSection) {
+              <mat-card appearance="outlined">
+                <mat-card-header>
+                  <mat-icon matListItemIcon>folder</mat-icon>
+                  <mat-card-title>Section: {{templateSection.sectionName}}</mat-card-title>
+                  <button mat-raised-button (click)="editSectionProperty(templateSection)">
+                    <mat-icon>settings</mat-icon>
+                  </button>
+                </mat-card-header>
+
+                <mat-card-content>
+                  <p>
+                    Array name:
+                    {{templateSection.arrayName}}
+                  </p>
+
+                  @for (templateField of templateSection.templateFields; track templateField) {
+                  <mat-card appearance="outlined">
+                    <mat-card-header>
+                      <mat-icon matListItemIcon>folder</mat-icon>
+                      <mat-card-title>Field: {{templateField.code}}</mat-card-title>
+                      <button mat-raised-button (click)="editFieldProperty(templateField)">
+                        <mat-icon>settings</mat-icon>
+                      </button>
+                    </mat-card-header>
+
+                    <mat-card-content>
+                      <p>
+                        Label:
+                        {{templateField.label}}
+                      </p>
+                    </mat-card-content>
+
+
+                  </mat-card>
+                  <br>
+
+                  }
+                </mat-card-content>
+
+
+              </mat-card>
+              <br>
+
+              }
+            </mat-card-content>
+
+            <mat-card-actions>
+            </mat-card-actions>
+          </mat-card>
+          <br>
+          }
+        </mat-list>
+
+
+      </div>
+    </mat-sidenav-content>
+
+    <mat-sidenav #sideLeft mode="side" position="end" opened>
+      <mat-toolbar>
+        <button mat-icon-button class="example-icon" (click)="sideLeft.toggle()"
+          aria-label="Example icon-button with menu icon">
+          <mat-icon>menu</mat-icon>
+        </button>
+        <span>Properties</span>
+      </mat-toolbar>
+
+      <div class="example-container" >
+        <div class="container" *ngIf="isTemplatePanel" id="selectedPanelDiv">
+          <form [formGroup]="templatePanelForm">
+            <h6>Panel Details</h6>
+            <div class="example-right-container">
+              <button mat-icon-button (click)="savePanelProperty()" matTooltip="Save panel.">
+                <mat-icon>save</mat-icon>
+              </button>
+              <button mat-icon-button (click)="cancelProperty()" matTooltip="Cancel edit panel.">
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </div>
+          <mat-form-field appearance="outline" class="example-full-width">
+              <mat-label>Panel Name</mat-label>
+              <input matInput #input placeholder="Enter Panel Name" formControlName="name"/>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="example-full-width">
+              <mat-label>Hint</mat-label>
+              <input matInput #input placeholder="Enter Hint" formControlName="hintName"/>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="example-full-width">
+              <mat-label>Row</mat-label>
+              <input matInput #input placeholder="Enter Row" formControlName="row"/>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="example-full-width">
+              <mat-label>Order</mat-label>
+              <input matInput #input placeholder="Enter Order" formControlName="order"/>
+            </mat-form-field>
+          </form>
+        </div>
+
+        <div *ngIf="isTemplateSection">
+          <form [formGroup]="templateSectionForm">
+            <h6>Section Details</h6>
+            <div class="example-right-container">
+              <button mat-icon-button (click)="saveSectionProperty()" matTooltip="Save section.">
+                <mat-icon>save</mat-icon>
+              </button>
+              <button mat-icon-button  (click)="cancelProperty()" matTooltip="Cancel edit section.">
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </div>
+            <mat-form-field appearance="outline" class="example-full-width">
+              <mat-label>Section Name</mat-label>
+              <input matInput #input maxlength="10" placeholder="Enter Section Name"  formControlName="sectionName"/>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="example-full-width">
+              <mat-label>Array Name</mat-label>
+              <input matInput #input placeholder="Enter Array Name" formControlName="arrayName"/>
+            </mat-form-field>
+
+            <!-- <mat-form-field appearance="outline" class="example-full-width">
+              <mat-label>Row</mat-label>
+              <input matInput #input placeholder="Enter Row" formControlName="row"/>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="example-full-width">
+              <mat-label>Order</mat-label>
+              <input matInput #input placeholder="Enter Order" formControlName="order"/>
+            </mat-form-field> -->
+
+            <mat-form-field appearance="outline" class="example-full-width">
+              <mat-label>Config</mat-label>
+              <input matInput #input formControlName="config"/>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="example-full-width">
+              <mat-label>Show Button</mat-label>
+              <input matInput #input formControlName="showButton"/>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="example-full-width">
+              <mat-label>Show Header</mat-label>
+              <input matInput #input formControlName="showHeader"/>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="example-full-width">
+              <mat-label>Header</mat-label>
+              <input matInput #input placeholder="Enter Header" formControlName="sectionHeader"/>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="example-full-width">
+              <mat-label>Hint Name</mat-label>
+              <input matInput #input placeholder="Enter Hint name" formControlName="hintName"/>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="example-full-width">
+              <mat-label>Hide Hint</mat-label>
+              <input matInput #input formControlName="hideHint" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="example-full-width">
+              <mat-label>Button Label</mat-label>
+              <input matInput #input placeholder="Enter Button label" formControlName="buttonLabel"/>
+            </mat-form-field>
+
+            <!-- <mat-form-field appearance="outline" class="example-full-width">
+              <mat-label>CT Header</mat-label>
+              <input matInput #input placeholder="Enter Ct header" formControlName="ctHeader"/>
+            </mat-form-field> -->
+          </form>
+        </div>
+
+        <div *ngIf="isTemplateField">          
+          <form [formGroup]="templateFieldForm">
+            <h6>Field Details</h6>
+            <div class="example-right-container">
+              <button mat-icon-button (click)="saveFieldProperty()" matTooltip="Save field.">
+                <mat-icon>save</mat-icon>
+              </button>
+              <button mat-icon-button  (click)="cancelProperty()" matTooltip="Cancel edit field.">
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </div>
+            <mat-form-field appearance="outline" class="example-full-width">
+              <mat-label>Caption</mat-label>
+              <input matInput #input maxlength="10" placeholder="Enter Caption" formControlName="caption"/>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="example-full-width">
+              <mat-label>Code</mat-label>
+              <input matInput #input placeholder="Enter Code" formControlName="code"/>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="example-full-width">
+              <mat-label>Row</mat-label>
+              <input matInput #input placeholder="Enter Row" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="example-full-width">
+              <mat-label>Order</mat-label>
+              <input matInput #input placeholder="Enter Order" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="example-full-width">
+              <mat-label>Input Type</mat-label>
+              <input matInput #input placeholder="Enter input type" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="example-full-width">
+              <mat-label>Label</mat-label>
+              <input matInput #input placeholder="Enter label" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="example-full-width">
+              <mat-label>Validators</mat-label>
+              <input matInput #input placeholder="Enter Valiators" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="example-full-width">
+              <mat-label>Options</mat-label>
+              <input matInput #input placeholder="Enter Options" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="example-full-width">
+              <mat-label>Placeholder</mat-label>
+              <input matInput #input placeholder="Enter Placeholder" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="example-full-width">
+              <mat-label>Error Messages</mat-label>
+              <input matInput #input placeholder="Enter Error Message" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="example-full-width">
+              <mat-label>Max Length</mat-label>
+              <input matInput #input placeholder="Enter Max Length" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="example-full-width">
+              <mat-label>Hidden</mat-label>
+              <input matInput #input placeholder="Enter Hidden" />
+            </mat-form-field>
+          </form>
+        </div>
+      </div>
+    </mat-sidenav>
+
+  </mat-sidenav-container>
+</div>

@@ -38,13 +38,13 @@ namespace Api.Controllers
 
         // PUT: api/TemplateField/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutTemplateField(int id, TemplateField templateField)
+        [HttpPut()]
+        public async Task<IActionResult> PutTemplateField([FromBody] TemplateField templateField)
         {
-            if (id != templateField.Id)
-            {
-                return BadRequest();
-            }
+            // if (id != templateField.Id)
+            // {
+            //     return BadRequest();
+            // }
 
             _context.Entry(templateField).State = EntityState.Modified;
 
@@ -54,7 +54,7 @@ namespace Api.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!TemplateFieldExists(id))
+                if (!TemplateFieldExists(templateField.Id))
                 {
                     return NotFound();
                 }

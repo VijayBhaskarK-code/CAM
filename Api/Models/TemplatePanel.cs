@@ -8,7 +8,7 @@ public partial class TemplatePanel
 
     public string? HintName { get; set; }
 
-    public int TemplateVersionId { get; set; }
+    public int? TemplateVersionId { get; set; }
 
     public int? Order { get; set; }
 
@@ -22,7 +22,7 @@ public partial class TemplatePanel
 
     public DateTime? UpdatedUtcDate { get; set; }
 
-    public virtual ICollection<TemplateSection> TemplateSections { get; set; } = new List<TemplateSection>();
+    public virtual ICollection<TemplateSection>? TemplateSections { get; set; } = new List<TemplateSection>();
 
-    public virtual TemplateVersion TemplateVersion { get; set; } = null!;
+    public virtual TemplateVersion? TemplateVersion { get; set; } = null!;
 }

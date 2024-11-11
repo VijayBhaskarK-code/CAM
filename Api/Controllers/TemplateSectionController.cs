@@ -38,13 +38,13 @@ namespace Api.Controllers
 
         // PUT: api/TemplateSection/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutTemplateSection(int id, TemplateSection templateSection)
+        [HttpPut()]
+        public async Task<IActionResult> PutTemplateSection([FromBody] TemplateSection templateSection)
         {
-            if (id != templateSection.Id)
-            {
-                return BadRequest();
-            }
+            // if (id != templateSection.Id)
+            // {
+            //     return BadRequest();
+            // }
 
             _context.Entry(templateSection).State = EntityState.Modified;
 
@@ -54,7 +54,7 @@ namespace Api.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!TemplateSectionExists(id))
+                if (!TemplateSectionExists(templateSection.Id))
                 {
                     return NotFound();
                 }

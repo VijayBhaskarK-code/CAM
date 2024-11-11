@@ -38,13 +38,13 @@ namespace Api.Controllers
 
         // PUT: api/TemplatePanel/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutTemplatePanel(int id, TemplatePanel templatePanel)
+        [HttpPut()]
+        public async Task<IActionResult> PutTemplatePanel([FromBody] TemplatePanel templatePanel)
         {
-            if (id != templatePanel.Id)
-            {
-                return BadRequest();
-            }
+            // if (id != templatePanel.Id)
+            // {
+            //     return BadRequest();
+            // }
 
             _context.Entry(templatePanel).State = EntityState.Modified;
 
@@ -54,7 +54,7 @@ namespace Api.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!TemplatePanelExists(id))
+                if (!TemplatePanelExists(templatePanel.Id))
                 {
                     return NotFound();
                 }

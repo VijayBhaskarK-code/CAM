@@ -36,7 +36,7 @@ public partial class TemplateSection
 
     public DateTime? UpdatedUtcDate { get; set; }
 
-    public virtual ICollection<TemplateField> TemplateFields { get; set; } = new List<TemplateField>();
+    public virtual ICollection<TemplateField>? TemplateFields { get; set; } = new List<TemplateField>();
 
-    public virtual TemplatePanel TemplatePanel { get; set; } = null!;
+    public virtual TemplatePanel? TemplatePanel { get; set; } = null!;
 }

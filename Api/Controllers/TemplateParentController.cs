@@ -19,14 +19,14 @@ namespace Api.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TemplateParent>>> GetTemplateParents()
         {
-            return await _context.TemplateParents.ToListAsync();
+            return await _context.TemplateParents.Include(a => a.TemplateVersions).ToListAsync();
         }
 
         // GET: api/TemplateParent/5
         [HttpGet("{id}")]
         public async Task<ActionResult<TemplateParent>> GetTemplateParent(int id)
         {
-            var templateParent = await _context.TemplateParents.FindAsync(id);
+            var templateParent = await _context.TemplateParents.Include(a => a.TemplateVersions).FirstOrDefaultAsync(a => a.Id == id);
 
             if (templateParent == null)
             {

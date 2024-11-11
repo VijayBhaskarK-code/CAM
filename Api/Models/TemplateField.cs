@@ -66,5 +66,5 @@ public partial class TemplateField
 
     public DateTime? UpdatedUtcDate { get; set; }
 
-    public virtual TemplateSection TemplateSection { get; set; } = null!;
+    public virtual TemplateSection? TemplateSection { get; set; } = null!;
 }
