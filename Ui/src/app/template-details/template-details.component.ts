@@ -91,8 +91,8 @@ export class TemplateDetailsComponent implements OnInit {
       name: [''],
       hintName: [''],
       templateVersionId: [''],
-      order: [''],
-      row: [''],
+      order: [0],
+      row: [0],
     });
 
     this.templateSectionForm = this.fb.group({
@@ -109,8 +109,8 @@ export class TemplateDetailsComponent implements OnInit {
       buttonLabel: [''],
       //ctHeader: [''],
       onCondition: [''],
-      //order: [''],
-      //row: [''],       
+      //sectionOrder: [''],
+      //sectionRow: [0],       
     });
 
     this.templateFieldForm = this.fb.group({
@@ -227,8 +227,8 @@ export class TemplateDetailsComponent implements OnInit {
       buttonLabel: this.selectTemplateSection.buttonLabel,
       //ctHeader: this.selectTemplateSection.ctHeader,
       onCondition: this.selectTemplateSection.onCondition,
-      //order: this.selectTemplateSection.order,
-      //row: this.selectTemplateSection.row,
+      //sectionOrder: this.selectTemplateSection.order,
+      //sectionRow: this.selectTemplateSection.row,
     })
 
     this.isTemplateSection = true;
@@ -247,6 +247,8 @@ export class TemplateDetailsComponent implements OnInit {
     this.selectTemplateSection.buttonLabel = this.templateSectionForm.value.buttonLabel;
     //ctHeader: this.selectTemplateSection.ctHeader,
     this.selectTemplateSection.onCondition = this.templateSectionForm.value.onCondition;
+    //this.selectTemplateSection.order = this.templateSectionForm.value.sectionOrder;
+    //this.selectTemplateSection.row = this.templateSectionForm.value.sectionRow;
 
     this.apiService.updateTemplateSection(this.selectTemplateSection)
       .subscribe(res => {

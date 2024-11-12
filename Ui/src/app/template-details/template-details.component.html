@@ -40,7 +40,8 @@
               </p>
 
               <div class="example-right-container">
-                <button mat-icon-button (click)="addSectionProperty(templatePanel)" matTooltip="Add Section to the panel.">
+                <button mat-icon-button (click)="addSectionProperty(templatePanel)"
+                  matTooltip="Add Section to the panel.">
                   <mat-icon>add</mat-icon>
                 </button>
               </div>
@@ -56,25 +57,27 @@
                     <button mat-icon-button (click)="editSectionProperty(templateSection)" matTooltip="Edit Section.">
                       <mat-icon>edit</mat-icon>
                     </button>
-                    <button mat-icon-button (click)="deleteSectionProperty(templateSection)" matTooltip="Delete Section.">
+                    <button mat-icon-button (click)="deleteSectionProperty(templateSection)"
+                      matTooltip="Delete Section.">
                       <mat-icon>delete</mat-icon>
                     </button>
                   </div>
                 </mat-expansion-panel-header>
 
                 <div>
-                  
+
                   <p>
                     Array name:
                     {{templateSection.arrayName}}
                   </p>
 
                   <div class="example-right-container">
-                    <button mat-icon-button (click)="addFieldProperty(templateSection)" matTooltip="Add Field to the section.">
+                    <button mat-icon-button (click)="addFieldProperty(templateSection)"
+                      matTooltip="Add Field to the section.">
                       <mat-icon>add</mat-icon>
                     </button>
                   </div>
-    
+
                   @for (templateField of templateSection.templateFields; track templateField) {
                   <mat-expansion-panel>
                     <mat-expansion-panel-header>
@@ -94,7 +97,7 @@
                     </mat-expansion-panel-header>
 
                     <div>
-                      
+
                       <p>
                         <Label></Label>
                         Label : {{templateField.label}}
@@ -128,8 +131,8 @@
             <mat-card-header>
               <mat-icon matListItemIcon>folder</mat-icon>
               <mat-card-title>Panel : {{templatePanel.name}}</mat-card-title>
-              <button mat-raised-button (click)="editPanelProperty(templatePanel)">
-                <mat-icon>settings</mat-icon>
+              <button mat-icon-button (click)="editPanelProperty(templatePanel)" matTooltip="Edit Panel.">
+                <mat-icon>edit</mat-icon>
               </button>
             </mat-card-header>
 
@@ -144,8 +147,8 @@
                 <mat-card-header>
                   <mat-icon matListItemIcon>folder</mat-icon>
                   <mat-card-title>Section: {{templateSection.sectionName}}</mat-card-title>
-                  <button mat-raised-button (click)="editSectionProperty(templateSection)">
-                    <mat-icon>settings</mat-icon>
+                  <button mat-icon-button (click)="editSectionProperty(templateSection)" matTooltip="Edit Section.">
+                    <mat-icon>edit</mat-icon>
                   </button>
                 </mat-card-header>
 
@@ -160,8 +163,8 @@
                     <mat-card-header>
                       <mat-icon matListItemIcon>folder</mat-icon>
                       <mat-card-title>Field: {{templateField.code}}</mat-card-title>
-                      <button mat-raised-button (click)="editFieldProperty(templateField)">
-                        <mat-icon>settings</mat-icon>
+                      <button mat-icon-button (click)="editFieldProperty(templateField)" matTooltip="Edit field.">
+                        <mat-icon>edit</mat-icon>
                       </button>
                     </mat-card-header>
 
@@ -206,7 +209,7 @@
         <span>Properties</span>
       </mat-toolbar>
 
-      <div class="example-container" >
+      <div class="example-container">
         <div class="container" *ngIf="isTemplatePanel" id="selectedPanelDiv">
           <form [formGroup]="templatePanelForm">
             <h6>Panel Details</h6>
@@ -218,24 +221,24 @@
                 <mat-icon>cancel</mat-icon>
               </button>
             </div>
-          <mat-form-field appearance="outline" class="example-full-width">
+            <mat-form-field appearance="outline" class="example-full-width">
               <mat-label>Panel Name</mat-label>
-              <input matInput #input placeholder="Enter Panel Name" formControlName="name"/>
+              <input matInput #input placeholder="Enter Panel Name" formControlName="name" />
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="example-full-width">
               <mat-label>Hint</mat-label>
-              <input matInput #input placeholder="Enter Hint" formControlName="hintName"/>
+              <input matInput #input placeholder="Enter Hint" formControlName="hintName" />
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="example-full-width">
               <mat-label>Row</mat-label>
-              <input matInput #input placeholder="Enter Row" formControlName="row"/>
+              <input matInput #input type="number" placeholder="Enter Row" formControlName="row" />
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="example-full-width">
               <mat-label>Order</mat-label>
-              <input matInput #input placeholder="Enter Order" formControlName="order"/>
+              <input matInput #input type="number" placeholder="Enter Order" formControlName="order" />
             </mat-form-field>
           </form>
         </div>
@@ -247,63 +250,69 @@
               <button mat-icon-button (click)="saveSectionProperty()" matTooltip="Save section.">
                 <mat-icon>save</mat-icon>
               </button>
-              <button mat-icon-button  (click)="cancelProperty()" matTooltip="Cancel edit section.">
+              <button mat-icon-button (click)="cancelProperty()" matTooltip="Cancel edit section.">
                 <mat-icon>cancel</mat-icon>
               </button>
             </div>
             <mat-form-field appearance="outline" class="example-full-width">
               <mat-label>Section Name</mat-label>
-              <input matInput #input maxlength="10" placeholder="Enter Section Name"  formControlName="sectionName"/>
+              <input matInput #input maxlength="10" placeholder="Enter Section Name" formControlName="sectionName" />
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="example-full-width">
               <mat-label>Array Name</mat-label>
-              <input matInput #input placeholder="Enter Array Name" formControlName="arrayName"/>
+              <input matInput #input placeholder="Enter Array Name" formControlName="arrayName" />
             </mat-form-field>
 
             <!-- <mat-form-field appearance="outline" class="example-full-width">
               <mat-label>Row</mat-label>
-              <input matInput #input placeholder="Enter Row" formControlName="row"/>
-            </mat-form-field>
+              <input type="number" matInput #input placeholder="Enter Row" formControlName="sectionRow"/>
+            </mat-form-field> -->
 
-            <mat-form-field appearance="outline" class="example-full-width">
+            <!-- <mat-form-field appearance="outline" class="example-full-width">
               <mat-label>Order</mat-label>
-              <input matInput #input placeholder="Enter Order" formControlName="order"/>
+              <input type="number" matInput #input placeholder="Enter Order" formControlName="sectionOrder"/>
+            </mat-form-field> -->
+
+            <mat-checkbox class="example-full-width" formControlName="config">Config</mat-checkbox>
+
+            <!-- <mat-form-field appearance="outline" class="example-full-width">
+              <mat-label>Config</mat-label>
+
+              <input matInput #input formControlName="config" />
+            </mat-form-field> -->
+
+            <mat-checkbox class="example-full-width" formControlName="showButton">Show Button</mat-checkbox>
+            <!-- <mat-form-field appearance="outline" class="example-full-width">
+              <mat-label>Show Button</mat-label>
+              <input matInput #input formControlName="showButton"/>
+            </mat-form-field> -->
+
+            <mat-checkbox class="example-full-width" formControlName="showHeader">Show Header</mat-checkbox>
+            <!-- <mat-form-field appearance="outline" class="example-full-width">
+              <mat-label>Show Header</mat-label>
+              <input matInput #input formControlName="showHeader" />
             </mat-form-field> -->
 
             <mat-form-field appearance="outline" class="example-full-width">
-              <mat-label>Config</mat-label>
-              <input matInput #input formControlName="config"/>
-            </mat-form-field>
-
-            <mat-form-field appearance="outline" class="example-full-width">
-              <mat-label>Show Button</mat-label>
-              <input matInput #input formControlName="showButton"/>
-            </mat-form-field>
-
-            <mat-form-field appearance="outline" class="example-full-width">
-              <mat-label>Show Header</mat-label>
-              <input matInput #input formControlName="showHeader"/>
-            </mat-form-field>
-
-            <mat-form-field appearance="outline" class="example-full-width">
               <mat-label>Header</mat-label>
-              <input matInput #input placeholder="Enter Header" formControlName="sectionHeader"/>
+              <input matInput #input placeholder="Enter Header" formControlName="sectionHeader" />
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="example-full-width">
               <mat-label>Hint Name</mat-label>
-              <input matInput #input placeholder="Enter Hint name" formControlName="hintName"/>
+              <input matInput #input placeholder="Enter Hint name" formControlName="hintName" />
             </mat-form-field>
 
-            <mat-form-field appearance="outline" class="example-full-width">
+            <mat-checkbox class="example-full-width" formControlName="hideHint">Hide Hint</mat-checkbox>
+            <!-- <mat-form-field appearance="outline" class="example-full-width">
               <mat-label>Hide Hint</mat-label>
               <input matInput #input formControlName="hideHint" />
-            </mat-form-field>
+            </mat-form-field> -->
 
             <mat-form-field appearance="outline" class="example-full-width">
               <mat-label>Button Label</mat-label>
-              <input matInput #input placeholder="Enter Button label" formControlName="buttonLabel"/>
+              <input matInput #input placeholder="Enter Button label" formControlName="buttonLabel" />
             </mat-form-field>
 
             <!-- <mat-form-field appearance="outline" class="example-full-width">
@@ -313,25 +322,25 @@
           </form>
         </div>
 
-        <div *ngIf="isTemplateField">          
+        <div *ngIf="isTemplateField">
           <form [formGroup]="templateFieldForm">
             <h6>Field Details</h6>
             <div class="example-right-container">
               <button mat-icon-button (click)="saveFieldProperty()" matTooltip="Save field.">
                 <mat-icon>save</mat-icon>
               </button>
-              <button mat-icon-button  (click)="cancelProperty()" matTooltip="Cancel edit field.">
+              <button mat-icon-button (click)="cancelProperty()" matTooltip="Cancel edit field.">
                 <mat-icon>cancel</mat-icon>
               </button>
             </div>
             <mat-form-field appearance="outline" class="example-full-width">
               <mat-label>Caption</mat-label>
-              <input matInput #input maxlength="10" placeholder="Enter Caption" formControlName="caption"/>
+              <input matInput #input maxlength="10" placeholder="Enter Caption" formControlName="caption" />
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="example-full-width">
               <mat-label>Code</mat-label>
-              <input matInput #input placeholder="Enter Code" formControlName="code"/>
+              <input matInput #input placeholder="Enter Code" formControlName="code" />
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="example-full-width">
