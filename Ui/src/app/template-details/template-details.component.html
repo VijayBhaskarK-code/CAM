@@ -1,6 +1,6 @@
 <div class="d-flex justify-content-between">
   <mat-sidenav-container class="example-container">
-    <mat-sidenav #sidenRight mode="side" position="start" opened>
+    <mat-sidenav class="mat-sidenav" #sidenRight mode="side" position="start" opened>
       <mat-toolbar>
         <button mat-icon-button class="example-icon" (click)="sidenRight.toggle()"
           aria-label="Example icon-button with menu icon">
@@ -8,7 +8,7 @@
         </button>
         <span>Controls</span>
       </mat-toolbar>
-      <div>
+      <div class="example-container">
         <div class="example-right-container">
           <button mat-icon-button (click)="addPanelProperty()" matTooltip="Add Panel to the template.">
             <mat-icon>add</mat-icon>
@@ -17,11 +17,11 @@
 
         <mat-accordion>
           @for (templatePanel of templatePanels; track templatePanel) {
-          <mat-expansion-panel>
-            <mat-expansion-panel-header>
+          <mat-expansion-panel class="mat-expansion-indicator">
+            <mat-expansion-panel-header >
               <mat-panel-title>
-                <mat-icon>folder</mat-icon>
-                {{templatePanel.name}}
+                <mat-icon>article</mat-icon>
+                Panel: {{templatePanel.name}}
               </mat-panel-title>
               <div class="example-right-container">
                 <button mat-icon-button (click)="editPanelProperty(templatePanel)" matTooltip="Edit Panel.">
@@ -47,11 +47,11 @@
               </div>
 
               @for (templateSection of templatePanel.templateSections; track templateSection) {
-              <mat-expansion-panel>
+              <mat-expansion-panel class="mat-expansion-indicator">
                 <mat-expansion-panel-header>
                   <mat-panel-title>
-                    <mat-icon>folder</mat-icon>
-                    {{templateSection.sectionName}}
+                    <mat-icon>backup_table</mat-icon>
+                    Section: {{templateSection.sectionName}}
                   </mat-panel-title>
                   <div class="example-right-container">
                     <button mat-icon-button (click)="editSectionProperty(templateSection)" matTooltip="Edit Section.">
@@ -79,11 +79,11 @@
                   </div>
 
                   @for (templateField of templateSection.templateFields; track templateField) {
-                  <mat-expansion-panel>
+                  <mat-expansion-panel class="mat-expansion-indicator">
                     <mat-expansion-panel-header>
                       <mat-panel-title>
-                        <mat-icon>folder</mat-icon>
-                        {{templateField.code}}
+                        <mat-icon>rtt</mat-icon>
+                        Field: {{templateField.code}}
                       </mat-panel-title>
 
                       <div class="example-right-container">
@@ -95,14 +95,14 @@
                         </button>
                       </div>
                     </mat-expansion-panel-header>
-
+<!-- 
                     <div>
 
                       <p>
                         <Label></Label>
                         Label : {{templateField.label}}
                       </p>
-                    </div>
+                    </div> -->
                   </mat-expansion-panel>
                   }
                 </div>
@@ -120,93 +120,8 @@
       <mat-toolbar>
         <mat-slide-toggle [checked]="true" (click)="sidenRight.toggle()">Controls</mat-slide-toggle>
         <span class="example-spacer"></span>
-        <mat-slide-toggle [checked]="true" labelPosition="before"
-          (click)="sideLeft.toggle()">Properties</mat-slide-toggle>
-      </mat-toolbar>
-
-      <div class="example-container">
-        <mat-list #previewPanels>
-          @for (templatePanel of templatePanels; track templatePanel) {
-          <mat-card appearance="outlined">
-            <mat-card-header>
-              <mat-icon matListItemIcon>folder</mat-icon>
-              <mat-card-title>Panel : {{templatePanel.name}}</mat-card-title>
-              <button mat-icon-button (click)="editPanelProperty(templatePanel)" matTooltip="Edit Panel.">
-                <mat-icon>edit</mat-icon>
-              </button>
-            </mat-card-header>
-
-            <mat-card-content>
-              <p>
-                Hint Name:
-                {{templatePanel.hintName}}
-              </p>
-
-              @for (templateSection of templatePanel.templateSections; track templateSection) {
-              <mat-card appearance="outlined">
-                <mat-card-header>
-                  <mat-icon matListItemIcon>folder</mat-icon>
-                  <mat-card-title>Section: {{templateSection.sectionName}}</mat-card-title>
-                  <button mat-icon-button (click)="editSectionProperty(templateSection)" matTooltip="Edit Section.">
-                    <mat-icon>edit</mat-icon>
-                  </button>
-                </mat-card-header>
-
-                <mat-card-content>
-                  <p>
-                    Array name:
-                    {{templateSection.arrayName}}
-                  </p>
-
-                  @for (templateField of templateSection.templateFields; track templateField) {
-                  <mat-card appearance="outlined">
-                    <mat-card-header>
-                      <mat-icon matListItemIcon>folder</mat-icon>
-                      <mat-card-title>Field: {{templateField.code}}</mat-card-title>
-                      <button mat-icon-button (click)="editFieldProperty(templateField)" matTooltip="Edit field.">
-                        <mat-icon>edit</mat-icon>
-                      </button>
-                    </mat-card-header>
-
-                    <mat-card-content>
-                      <p>
-                        Label:
-                        {{templateField.label}}
-                      </p>
-                    </mat-card-content>
-
-
-                  </mat-card>
-                  <br>
-
-                  }
-                </mat-card-content>
-
-
-              </mat-card>
-              <br>
-
-              }
-            </mat-card-content>
-
-            <mat-card-actions>
-            </mat-card-actions>
-          </mat-card>
-          <br>
-          }
-        </mat-list>
-
-
-      </div>
-    </mat-sidenav-content>
-
-    <mat-sidenav #sideLeft mode="side" position="end" opened>
-      <mat-toolbar>
-        <button mat-icon-button class="example-icon" (click)="sideLeft.toggle()"
-          aria-label="Example icon-button with menu icon">
-          <mat-icon>menu</mat-icon>
-        </button>
-        <span>Properties</span>
+        <mat-slide-toggle [checked]="false" labelPosition="before"
+          (click)="sideLeft.toggle()">Preview</mat-slide-toggle>
       </mat-toolbar>
 
       <div class="example-container">
@@ -223,12 +138,12 @@
             </div>
             <mat-form-field appearance="outline" class="example-full-width">
               <mat-label>Panel Name</mat-label>
-              <input matInput #input placeholder="Enter Panel Name" formControlName="name" required pattern="/\s/"/>
+              <input matInput #input placeholder="Enter Panel Name" formControlName="name" required/>
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="example-full-width">
               <mat-label>Hint</mat-label>
-              <input matInput #input placeholder="Enter Hint" formControlName="hintName" />
+              <textarea matInput placeholder="Enter Hint" formControlName="hintName"></textarea>
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="example-full-width">
@@ -256,7 +171,7 @@
             </div>
             <mat-form-field appearance="outline" class="example-full-width">
               <mat-label>Section Name</mat-label>
-              <input matInput #input maxlength="10" placeholder="Enter Section Name" formControlName="sectionName" required pattern="/\s/"/>
+              <input matInput #input maxlength="10" placeholder="Enter Section Name" formControlName="sectionName" required/>
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="example-full-width">
@@ -300,8 +215,8 @@
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="example-full-width">
-              <mat-label>Hint Name</mat-label>
-              <input matInput #input placeholder="Enter Hint name" formControlName="hintName" />
+              <mat-label>Hint</mat-label>
+              <textarea matInput placeholder="Enter Hint" formControlName="hintName"></textarea>
             </mat-form-field>
 
             <mat-checkbox class="example-full-width" formControlName="hideHint">Hide Hint</mat-checkbox>
@@ -394,6 +309,93 @@
             </mat-form-field>
           </form>
         </div>
+      </div>
+
+      
+    </mat-sidenav-content>
+
+    <mat-sidenav class="mat-right-sidenav" #sideLeft mode="side" position="end">
+      <mat-toolbar>
+        <button mat-icon-button class="example-icon" (click)="sideLeft.toggle()"
+          aria-label="Example icon-button with menu icon">
+          <mat-icon>menu</mat-icon>
+        </button>
+        <span>Preview</span>
+      </mat-toolbar>
+
+      <div class="example-container">
+        <mat-list #previewPanels>
+          @for (templatePanel of templatePanels; track templatePanel) {
+          <mat-card appearance="outlined">
+            <mat-card-header>
+              <mat-icon matListItemIcon>folder</mat-icon>
+              <mat-card-title>Panel : {{templatePanel.name}}</mat-card-title>
+              <button mat-icon-button (click)="editPanelProperty(templatePanel)" matTooltip="Edit Panel.">
+                <mat-icon>edit</mat-icon>
+              </button>
+            </mat-card-header>
+
+            <mat-card-content>
+              <p>
+                Hint Name:
+                {{templatePanel.hintName}}
+              </p>
+
+              @for (templateSection of templatePanel.templateSections; track templateSection) {
+              <mat-card appearance="outlined">
+                <mat-card-header>
+                  <mat-icon matListItemIcon>folder</mat-icon>
+                  <mat-card-title>Section: {{templateSection.sectionName}}</mat-card-title>
+                  <button mat-icon-button (click)="editSectionProperty(templateSection)" matTooltip="Edit Section.">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                </mat-card-header>
+
+                <mat-card-content>
+                  <p>
+                    Array name:
+                    {{templateSection.arrayName}}
+                  </p>
+
+                  @for (templateField of templateSection.templateFields; track templateField) {
+                  <mat-card appearance="outlined">
+                    <mat-card-header>
+                      <mat-icon matListItemIcon>folder</mat-icon>
+                      <mat-card-title>Field: {{templateField.code}}</mat-card-title>
+                      <button mat-icon-button (click)="editFieldProperty(templateField)" matTooltip="Edit field.">
+                        <mat-icon>edit</mat-icon>
+                      </button>
+                    </mat-card-header>
+
+                    <mat-card-content>
+                      <p>
+                        Label:
+                        {{templateField.label}}
+                      </p>
+                    </mat-card-content>
+
+
+                  </mat-card>
+                  <br>
+
+                  }
+                </mat-card-content>
+
+
+              </mat-card>
+              <br>
+
+              }
+            </mat-card-content>
+
+            <mat-card-actions>
+            </mat-card-actions>
+          </mat-card>
+          <br>
+          }
+        </mat-list>
+
+
       </div>
     </mat-sidenav>
 

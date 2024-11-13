@@ -43,9 +43,18 @@ import {MatTooltipModule} from '@angular/material/tooltip';
   right: 5px;
 }
 
+.mat-expansion-indicator {
+    left: 0px;
+  }
+
 .mat-sidenav {
-  width: 500px;
+  width: 600px;
 }
+
+.mat-right-sidenav {
+  width: 800px;
+}
+
 .example-right-container {
   display: flex;
             justify-content: flex-end;
