@@ -52,7 +52,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 }
 
 .mat-right-sidenav {
-  width: 800px;
+  width: 100%;
 }
 
 .example-right-container {
