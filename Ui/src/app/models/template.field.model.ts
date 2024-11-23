@@ -10,6 +10,7 @@ export interface TemplateField {
     label: string | null;
     validators: string | null;
     options: string | null;
+    optionItems: TemplateFieldOption[] | null;
     errorMessages: string | null;
     asyncValidators: string | null;
     required: boolean | null;
@@ -34,4 +35,10 @@ export interface TemplateField {
     createdUtcDate: string | null;
     updatedUtcDate: string | null;
     parentTemplateSection: TemplateSection;
+    childTemplateFields: TemplateField[] | null;
+}
+
+export interface TemplateFieldOption {
+    label: string | null;
+    value: string | null;
 }

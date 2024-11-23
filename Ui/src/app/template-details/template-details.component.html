@@ -18,7 +18,7 @@
         <mat-accordion>
           @for (templatePanel of templatePanels; track templatePanel) {
           <mat-expansion-panel class="mat-expansion-indicator">
-            <mat-expansion-panel-header >
+            <mat-expansion-panel-header>
               <mat-panel-title>
                 <mat-icon>article</mat-icon>
                 Panel: {{templatePanel.name}}
@@ -95,7 +95,7 @@
                         </button>
                       </div>
                     </mat-expansion-panel-header>
-<!-- 
+                    <!-- 
                     <div>
 
                       <p>
@@ -123,8 +123,8 @@
           <mat-icon>menu</mat-icon>
         </button>
         <span *ngIf="!sidenRight.opened">Controls</span>
-        
-        <button mat-icon-button class="example-icon" (click)="sideLeft.toggle()"
+
+        <button mat-icon-button class="example-icon" (click)="togglePreviewSidenav()"
           aria-label="Example icon-button with menu icon">
           <mat-icon>preview</mat-icon>
           Preview
@@ -145,7 +145,7 @@
             </div>
             <mat-form-field appearance="outline" class="example-full-width">
               <mat-label>Panel Name</mat-label>
-              <input matInput #input placeholder="Enter Panel Name" formControlName="name" required/>
+              <input matInput #input placeholder="Enter Panel Name" formControlName="name" required />
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="example-full-width">
@@ -155,12 +155,12 @@
 
             <mat-form-field appearance="outline" class="example-full-width">
               <mat-label>Row</mat-label>
-              <input matInput #input type="number" placeholder="Enter Row" formControlName="row" required/>
+              <input matInput #input type="number" placeholder="Enter Row" formControlName="row" required />
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="example-full-width">
               <mat-label>Order</mat-label>
-              <input matInput #input type="number" placeholder="Enter Order" formControlName="order" required/>
+              <input matInput #input type="number" placeholder="Enter Order" formControlName="order" required />
             </mat-form-field>
           </form>
         </div>
@@ -178,7 +178,8 @@
             </div>
             <mat-form-field appearance="outline" class="example-full-width">
               <mat-label>Section Name</mat-label>
-              <input matInput #input maxlength="10" placeholder="Enter Section Name" formControlName="sectionName" required/>
+              <input matInput #input maxlength="10" placeholder="Enter Section Name" formControlName="sectionName"
+                required />
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="example-full-width">
@@ -262,22 +263,22 @@
 
             <mat-form-field appearance="outline" class="example-full-width">
               <mat-label>Code</mat-label>
-              <input matInput #input placeholder="Enter Code" formControlName="code" required pattern="/\s/"/>
+              <input matInput #input placeholder="Enter Code" formControlName="code" required pattern="/\s/" />
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="example-full-width">
               <mat-label>Row</mat-label>
-              <input matInput #input placeholder="Enter Row" required/>
+              <input matInput #input placeholder="Enter Row" required />
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="example-full-width">
               <mat-label>Order</mat-label>
-              <input matInput #input placeholder="Enter Order" required/>
+              <input matInput #input placeholder="Enter Order" required />
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="example-full-width">
               <mat-label>Input Type</mat-label>
-              <input matInput #input placeholder="Enter input type" required/>
+              <input matInput #input placeholder="Enter input type" required />
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="example-full-width">
@@ -318,85 +319,130 @@
         </div>
       </div>
 
-      
+
     </mat-sidenav-content>
 
-    <mat-sidenav class="mat-right-sidenav" #sideLeft mode="over" position="end">
-      <mat-toolbar>
-        <button mat-icon-button class="example-icon" (click)="sideLeft.toggle()"
+    <mat-sidenav class="mat-right-sidenav" #sideLeft mode="over" position="end" [opened]="isPreviewing">
+      <mat-toolbar >
+        <button mat-icon-button class="example-icon" (click)="togglePreviewSidenav()"
           aria-label="Example icon-button with menu icon">
           <mat-icon>close</mat-icon>
         </button>
         <span>Preview</span>
       </mat-toolbar>
 
+
       <div class="example-container">
+        <!-- <app-create-template-panel [templatePanels]="templatePanels" *ngIf="templatePanels"/> -->
+
         <mat-list #previewPanels>
           @for (templatePanel of templatePanels; track templatePanel) {
-          <mat-card >
+          <mat-card>
             <mat-card-header>
-              <mat-icon matListItemIcon>folder</mat-icon>
-              <mat-card-title>Panel : {{templatePanel.name}}</mat-card-title>
+              <mat-card-title>{{templatePanel.name}}</mat-card-title>
               <button mat-icon-button (click)="editPanelProperty(templatePanel)" matTooltip="Edit Panel.">
                 <mat-icon>edit</mat-icon>
               </button>
             </mat-card-header>
 
             <mat-card-content>
-              <p>
-                Hint Name:
-                {{templatePanel.hintName}}
-              </p>
+              <mat-divider></mat-divider>
+              <p>{{templatePanel.hintName}}</p>
+              <br />
 
               @for (templateSection of templatePanel.templateSections; track templateSection) {
-              <mat-card >
-                <mat-card-header>
-                  <mat-icon matListItemIcon>folder</mat-icon>
-                  <mat-card-title>Section: {{templateSection.sectionName}}</mat-card-title>
-                  <button mat-icon-button (click)="editSectionProperty(templateSection)" matTooltip="Edit Section.">
-                    <mat-icon>edit</mat-icon>
-                  </button>
-                </mat-card-header>
+              <div id={{templateSection.sectionName}}>
+                <button mat-icon-button (click)="editSectionProperty(templateSection)" matTooltip="Edit Section.">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <div *ngIf="templateSection.showHeader">
+                  <h6>{{templateSection.sectionHeader}}</h6>
+                  <mat-divider></mat-divider>
+                  <p>{{templateSection.hintName}}</p>
+                  <br />
+                </div>
 
-                <mat-card-content>
-                  <p>
-                    Array name:
-                    {{templateSection.arrayName}}
-                  </p>
-
-                  @for (templateField of templateSection.templateFields; track templateField) {
-                  <mat-card >
-                    <mat-card-header>
-                      <mat-icon matListItemIcon>folder</mat-icon>
-                      <mat-card-title>Field: {{templateField.code}}</mat-card-title>
-                      <button mat-icon-button (click)="editFieldProperty(templateField)" matTooltip="Edit field.">
-                        <mat-icon>edit</mat-icon>
-                      </button>
-                    </mat-card-header>
-
-                    <mat-card-content>
-                      <p>
-                        Label:
-                        {{templateField.label}}
-                      </p>
-                    </mat-card-content>
+                @for (templateField of templateSection.templateFields; track templateField) {
+                <div [ngSwitch]="templateField.inputType">
+                  <div *ngSwitchCase="'RADIO_GROUP'">
+                    <button mat-icon-button (click)="editFieldProperty(templateField)" matTooltip="Edit Field.">
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                    <mat-label>{{templateField.label}}</mat-label>
+                    <br />
+                    <mat-radio-group id={{templateField.id}}>
+                      @for (templateOption of templateField.optionItems; track templateOption) {
+                      <mat-radio-button [value]="templateOption.value">{{templateOption.label}}</mat-radio-button>
+                      }
+                    </mat-radio-group>
+                  </div>
 
 
-                  </mat-card>
-                  <br>
+                  <div *ngSwitchCase="'INPUT'">
+                    <button mat-icon-button (click)="editFieldProperty(templateField)" matTooltip="Edit Field.">
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                    <mat-label>{{templateField.label}}</mat-label>
+                    <br />
+                    <input matInput id={{templateField.id}} placeholder={{templateField.placeholder}} />
+                    <br />
+                  </div>
 
-                  }
-                </mat-card-content>
+
+                  <div *ngSwitchCase="'APPAUTOCOMPLETE'">
+                    <button mat-icon-button (click)="editFieldProperty(templateField)" matTooltip="Edit Field.">
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                    <mat-label>{{templateField.label}}</mat-label>
+                    <br />
+                    <mat-select matInput id={{templateField.id}} placeholder={{templateField.placeholder}} />
+                    <br />
+                  </div>
 
 
-              </mat-card>
-              <br>
+                  <div *ngSwitchCase="'APPCALENDAR'">
+                    <button mat-icon-button (click)="editFieldProperty(templateField)" matTooltip="Edit Field.">
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                    <mat-label>{{templateField.label}}</mat-label>
+                    <br />
+                    <!-- <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle> -->
+                    <mat-datepicker-toggle matIconSuffix></mat-datepicker-toggle>
+                    <mat-datepicker matInput id={{templateField.id}} #templateField.id></mat-datepicker>
+                    <br />
+                  </div>
 
+
+                  
+
+
+                  <div *ngSwitchCase="'CHECKBOX_GROUP'">
+                    <button mat-icon-button (click)="editFieldProperty(templateField)" matTooltip="Edit Field.">
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                    <mat-label>{{templateField.label}}</mat-label>
+                    <br />
+                    <!-- <mat-select matInput id={{templateField.id}} placeholder={{templateField.placeholder}}/> -->
+                    @for (cField of templateField.childTemplateFields; track cField) {
+                    <mat-checkbox>{{cField.label}}</mat-checkbox>
+                    <br />
+                    }
+                    <br />
+                  </div>
+
+                  <!-- <textbox *ngSwitchCase="'text'" [field]="field" [form]="form"></textbox>
+                  <dropdown *ngSwitchCase="'dropdown'" [field]="field" [form]="form"></dropdown>
+                  <checkbox *ngSwitchCase="'checkbox'" [field]="field" [form]="form"></checkbox>
+                  <radio *ngSwitchCase="'radio'" [field]="field" [form]="form"></radio>
+                  <file *ngSwitchCase="'file'" [field]="field" [form]="form"></file>
+                  <div class="alert alert-danger my-1 p-2 fadeInDown animated" *ngIf="!isValid && isDirty">{{field.label}} is required</div> -->
+                </div>
+                }
+                <br />
+              </div>
               }
             </mat-card-content>
 
-            <mat-card-actions>
-            </mat-card-actions>
           </mat-card>
           <br>
           }

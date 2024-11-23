@@ -31,7 +31,8 @@ namespace Api.Controllers
             var templateVersion = await _context.TemplateVersions
             .Include(a => a.TemplatePanels)
                 .ThenInclude(a => a.TemplateSections)
-                    .ThenInclude(a => a.TemplateFields).FirstOrDefaultAsync(a => a.Id == id);
+                    .ThenInclude(a => a.TemplateFields)
+                    .FirstOrDefaultAsync(a => a.Id == id);
 
             if (templateVersion == null)
             {

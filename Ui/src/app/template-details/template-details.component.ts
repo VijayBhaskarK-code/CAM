@@ -1,5 +1,6 @@
 import { Router, ActivatedRoute } from '@angular/router';
-import { Component, OnInit, ViewChild, ChangeDetectionStrategy, OnDestroy, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, OnInit, ViewChild, ChangeDetectionStrategy, OnDestroy, inject, NgModule } from '@angular/core';
 import { NgIf } from '@angular/common';
 import { TemplatePanel } from '../models/template.panel.model';
 import { TemplateSection } from '../models/template.section.model';
@@ -23,14 +24,25 @@ import { MatCardModule } from '@angular/material/card';
 import { FormBuilder, FormGroup, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import { CreateTemplatePanelComponent } from '../create-template-panel/create-template-panel.component';
+import {MatRadioModule} from '@angular/material/radio';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {provideNativeDateAdapter} from '@angular/material/core';
 
 @Component({
   selector: 'app-template-details',
   standalone: true,
   imports: [
+    CommonModule, 
+    CreateTemplatePanelComponent, MatRadioModule,
     FormsModule, ReactiveFormsModule, MatCheckboxModule, NgIf, MatTooltipModule,
-    MatFormFieldModule, MatCardModule, MatExpansionModule, MatSlideToggleModule, MatPaginator, MatTableModule, MatInputModule, MatButtonModule, MatTreeModule, MatSidenavModule, MatSelectModule, MatListModule, MatIconModule, MatToolbarModule
+    MatFormFieldModule, MatCardModule, MatExpansionModule, MatSlideToggleModule, 
+    MatPaginator, MatTableModule, MatInputModule, MatButtonModule, MatTreeModule, 
+    MatSidenavModule, MatSelectModule, MatListModule, MatIconModule, MatToolbarModule,
+    MatFormFieldModule, MatSelectModule, MatInputModule, FormsModule,
+    MatDatepickerModule
   ],
+  providers: [provideNativeDateAdapter()],
   templateUrl: './template-details.component.html',
   styles: `
 .example-container {
@@ -90,6 +102,7 @@ export class TemplateDetailsComponent implements OnInit {
   selectTemplateField!: TemplateField;
   templateFieldForm!: FormGroup;
 
+  isPreviewing: boolean = false;
   constructor(private fb: FormBuilder, private apiService: ApiService, private router: Router, private activatedRoute: ActivatedRoute) {
     this.isTemplatePanel = this.isTemplateSection = this.isTemplateField = false;
   }
@@ -144,7 +157,27 @@ export class TemplateDetailsComponent implements OnInit {
             return;
 
           this.templateVersion = res[0];
-          this.templatePanels = this.templateVersion.templatePanels;
+          this.templateVersion.templatePanels.forEach(tPanel => {
+            tPanel.templateSections.forEach(tSection => {
+              tSection.templateFields.forEach(tField => {
+                if(tField.options != undefined){
+                  tField.optionItems = JSON.parse(tField.options);
+                }
+
+                if (tField.parentFieldId != undefined) {
+                  var parentField = tSection.templateFields.find(dd => dd.id == tField.parentFieldId);
+                  if (parentField != null)
+                  {
+                    if(parentField.childTemplateFields == undefined)
+                      parentField.childTemplateFields = [];
+
+                    parentField.childTemplateFields.push(tField);
+                  }
+                }
+              })
+            })
+          });
+          this.templatePanels = this.templateVersion.templatePanels;          
         },
         error: (err) => {
           console.log(err);
@@ -153,6 +186,7 @@ export class TemplateDetailsComponent implements OnInit {
   }
 
   editPanelProperty(templatePanel: TemplatePanel) {
+    if (this.isPreviewing) this.togglePreviewSidenav();
     this.selectTemplatePanel = templatePanel;
     this.templatePanelForm.setValue({
       id: this.selectTemplatePanel.id,
@@ -221,6 +255,7 @@ export class TemplateDetailsComponent implements OnInit {
   }
 
   editSectionProperty(templateSection: TemplateSection) {
+    if (this.isPreviewing) this.togglePreviewSidenav();
     this.selectTemplateSection = templateSection;
     this.templateSectionForm.setValue({
       id: this.selectTemplateSection.id,
@@ -293,7 +328,8 @@ export class TemplateDetailsComponent implements OnInit {
   }
 
   editFieldProperty(templateField: TemplateField) {
-
+    if (this.isPreviewing) this.togglePreviewSidenav();
+    
     this.selectTemplateField = templateField;
     this.templateFieldForm.setValue({
       id: this.selectTemplateField.id,
@@ -340,4 +376,8 @@ export class TemplateDetailsComponent implements OnInit {
     this.isTemplateField = true;
     this.isTemplateSection = this.isTemplatePanel = false;
   }
+
+  togglePreviewSidenav() {
+    this.isPreviewing = !this.isPreviewing;
+ }
 }
