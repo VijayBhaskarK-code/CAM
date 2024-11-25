@@ -187,36 +187,22 @@
               <input matInput #input placeholder="Enter Array Name" formControlName="arrayName" />
             </mat-form-field>
 
-            <!-- <mat-form-field appearance="outline" class="example-full-width">
+            <mat-form-field appearance="outline" class="example-full-width">
               <mat-label>Row</mat-label>
-              <input type="number" matInput #input placeholder="Enter Row" formControlName="sectionRow"/>
-            </mat-form-field> -->
+              <input matInput #input placeholder="Enter Row" formControlName="row" />
+            </mat-form-field>
 
-            <!-- <mat-form-field appearance="outline" class="example-full-width">
+            <mat-form-field appearance="outline" class="example-full-width">
               <mat-label>Order</mat-label>
-              <input type="number" matInput #input placeholder="Enter Order" formControlName="sectionOrder"/>
-            </mat-form-field> -->
+              <input matInput #input placeholder="Enter Order" formControlName="order" />
+            </mat-form-field>
 
             <mat-checkbox class="example-full-width" formControlName="config">Config</mat-checkbox>
 
-            <!-- <mat-form-field appearance="outline" class="example-full-width">
-              <mat-label>Config</mat-label>
-
-              <input matInput #input formControlName="config" />
-            </mat-form-field> -->
-
             <mat-checkbox class="example-full-width" formControlName="showButton">Show Button</mat-checkbox>
-            <!-- <mat-form-field appearance="outline" class="example-full-width">
-              <mat-label>Show Button</mat-label>
-              <input matInput #input formControlName="showButton"/>
-            </mat-form-field> -->
-
+            
             <mat-checkbox class="example-full-width" formControlName="showHeader">Show Header</mat-checkbox>
-            <!-- <mat-form-field appearance="outline" class="example-full-width">
-              <mat-label>Show Header</mat-label>
-              <input matInput #input formControlName="showHeader" />
-            </mat-form-field> -->
-
+            
             <mat-form-field appearance="outline" class="example-full-width">
               <mat-label>Header</mat-label>
               <input matInput #input placeholder="Enter Header" formControlName="sectionHeader" />
@@ -228,20 +214,16 @@
             </mat-form-field>
 
             <mat-checkbox class="example-full-width" formControlName="hideHint">Hide Hint</mat-checkbox>
-            <!-- <mat-form-field appearance="outline" class="example-full-width">
-              <mat-label>Hide Hint</mat-label>
-              <input matInput #input formControlName="hideHint" />
-            </mat-form-field> -->
-
+            
             <mat-form-field appearance="outline" class="example-full-width">
               <mat-label>Button Label</mat-label>
               <input matInput #input placeholder="Enter Button label" formControlName="buttonLabel" />
             </mat-form-field>
 
-            <!-- <mat-form-field appearance="outline" class="example-full-width">
+            <mat-form-field appearance="outline" class="example-full-width">
               <mat-label>CT Header</mat-label>
               <input matInput #input placeholder="Enter Ct header" formControlName="ctHeader"/>
-            </mat-form-field> -->
+            </mat-form-field>
           </form>
         </div>
 
@@ -268,17 +250,26 @@
 
             <mat-form-field appearance="outline" class="example-full-width">
               <mat-label>Row</mat-label>
-              <input matInput #input placeholder="Enter Row" required />
+              <input matInput #input placeholder="Enter Row" formControlName="row" />
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="example-full-width">
               <mat-label>Order</mat-label>
-              <input matInput #input placeholder="Enter Order" required />
+              <input matInput #input placeholder="Enter Order" formControlName="order" />
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="example-full-width">
               <mat-label>Input Type</mat-label>
-              <input matInput #input placeholder="Enter input type" required />
+              <mat-select matInput #input formControlName="inputType" placeholder="Enter input type" required>
+                <mat-option value="INPUT">INPUT</mat-option>
+                <mat-option value="APPCALENDAR">CALENDAR</mat-option>
+                <mat-option value="ARRAY">ARRAY</mat-option>
+                <mat-option value="CHECKBOX_GROUP">CHECKBOX GROUP</mat-option>
+                <mat-option value="HINTPANEL">HINT PANEL</mat-option>
+                <mat-option value="RADIO_GROUP">RADIO GROUP</mat-option>
+                <mat-option value="CHECKBOX">CHECKBOX</mat-option>
+                <mat-option value="APPAUTOCOMPLETE">AUTO COMPLETE</mat-option>
+              </mat-select>
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="example-full-width">

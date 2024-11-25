@@ -121,7 +121,9 @@ export class TemplateDetailsComponent implements OnInit {
       id: [''],
       templatePanelId: [''],
       sectionName: [''],
-      arrayName: [''],
+      arrayName: [''],      
+      order: [0],
+      row: [0],
       config: [''],
       showButton: [''],
       sectionHeader: [''],
@@ -129,16 +131,17 @@ export class TemplateDetailsComponent implements OnInit {
       showHeader: [''],
       hideHint: [''],
       buttonLabel: [''],
-      //ctHeader: [''],
+      ctHeader: [''],
       onCondition: [''],
-      //sectionOrder: [''],
-      //sectionRow: [0],       
     });
 
     this.templateFieldForm = this.fb.group({
       id: [''],
       caption: [''],
       code: [''],
+      inputType: [''],
+      order: [0],
+      row: [0],
     });
 
     this.activatedRoute.params.subscribe(val => {
@@ -193,8 +196,8 @@ export class TemplateDetailsComponent implements OnInit {
       name: this.selectTemplatePanel.name,
       hintName: this.selectTemplatePanel.hintName,
       templateVersionId: this.selectTemplatePanel.templateVersionId,
-      order: this.selectTemplatePanel.order,
-      row: this.selectTemplatePanel.row,
+      order: this.selectTemplatePanel.order ?? 0,
+      row: this.selectTemplatePanel.row ?? 0,
     })
 
     this.isTemplatePanel = true;
@@ -269,10 +272,10 @@ export class TemplateDetailsComponent implements OnInit {
       showHeader: this.selectTemplateSection.showHeader,
       hideHint: this.selectTemplateSection.hideHint,
       buttonLabel: this.selectTemplateSection.buttonLabel,
-      //ctHeader: this.selectTemplateSection.ctHeader,
       onCondition: this.selectTemplateSection.onCondition,
-      //sectionOrder: this.selectTemplateSection.order,
-      //sectionRow: this.selectTemplateSection.row,
+      order: this.selectTemplateSection.order ?? 0,
+      row: this.selectTemplateSection.row ?? 0,
+      ctHeader: this.selectTemplateSection.ctHeader ?? '',
     })
 
     this.isTemplateSection = true;
@@ -289,10 +292,10 @@ export class TemplateDetailsComponent implements OnInit {
     this.selectTemplateSection.showHeader = this.templateSectionForm.value.showHeader;
     this.selectTemplateSection.hideHint = this.templateSectionForm.value.hideHint;
     this.selectTemplateSection.buttonLabel = this.templateSectionForm.value.buttonLabel;
-    //ctHeader: this.selectTemplateSection.ctHeader,
+    this.selectTemplateSection.ctHeader= this.templateSectionForm.value.ctHeader,
     this.selectTemplateSection.onCondition = this.templateSectionForm.value.onCondition;
-    //this.selectTemplateSection.order = this.templateSectionForm.value.sectionOrder;
-    //this.selectTemplateSection.row = this.templateSectionForm.value.sectionRow;
+    this.selectTemplateSection.order = this.templateSectionForm.value.order;
+    this.selectTemplateSection.row = this.templateSectionForm.value.row;
 
     this.apiService.updateTemplateSection(this.selectTemplateSection)
       .subscribe(res => {
@@ -335,6 +338,9 @@ export class TemplateDetailsComponent implements OnInit {
       id: this.selectTemplateField.id,
       caption: this.selectTemplateField.caption,
       code: this.selectTemplateField.code,
+      inputType: this.selectTemplateField.inputType,
+      order: this.selectTemplateField.order ?? 0,
+      row: this.selectTemplateField.rowNumber ?? 0
     })
 
     this.isTemplateField = true;
@@ -344,6 +350,8 @@ export class TemplateDetailsComponent implements OnInit {
   saveFieldProperty() {
     this.selectTemplateField.code = this.templateFieldForm.value.code;
     this.selectTemplateField.caption = this.templateFieldForm.value.caption;
+    this.selectTemplateField.order = this.templateFieldForm.value.order;
+    this.selectTemplateField.rowNumber = this.templateFieldForm.value.row;
 
     this.apiService.updateTemplateField(this.selectTemplateField)
       .subscribe(res => {
