@@ -23,21 +23,21 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatCardModule } from '@angular/material/card';
 import { FormBuilder, FormGroup, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import {MatTooltipModule} from '@angular/material/tooltip';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { CreateTemplatePanelComponent } from '../create-template-panel/create-template-panel.component';
-import {MatRadioModule} from '@angular/material/radio';
-import {MatDatepickerModule} from '@angular/material/datepicker';
-import {provideNativeDateAdapter} from '@angular/material/core';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { provideNativeDateAdapter } from '@angular/material/core';
 
 @Component({
   selector: 'app-template-details',
   standalone: true,
   imports: [
-    CommonModule, 
+    CommonModule,
     CreateTemplatePanelComponent, MatRadioModule,
     FormsModule, ReactiveFormsModule, MatCheckboxModule, NgIf, MatTooltipModule,
-    MatFormFieldModule, MatCardModule, MatExpansionModule, MatSlideToggleModule, 
-    MatPaginator, MatTableModule, MatInputModule, MatButtonModule, MatTreeModule, 
+    MatFormFieldModule, MatCardModule, MatExpansionModule, MatSlideToggleModule,
+    MatPaginator, MatTableModule, MatInputModule, MatButtonModule, MatTreeModule,
     MatSidenavModule, MatSelectModule, MatListModule, MatIconModule, MatToolbarModule,
     MatFormFieldModule, MatSelectModule, MatInputModule, FormsModule,
     MatDatepickerModule
@@ -121,7 +121,7 @@ export class TemplateDetailsComponent implements OnInit {
       id: [''],
       templatePanelId: [''],
       sectionName: [''],
-      arrayName: [''],      
+      arrayName: [''],
       order: [0],
       row: [0],
       config: [''],
@@ -142,6 +142,12 @@ export class TemplateDetailsComponent implements OnInit {
       inputType: [''],
       order: [0],
       row: [0],
+      label: [''],
+      validators: [''],
+      options: [''],
+      placeholder: [''],
+      errorMessages: [''],
+      maxLength: [0],
     });
 
     this.activatedRoute.params.subscribe(val => {
@@ -163,15 +169,14 @@ export class TemplateDetailsComponent implements OnInit {
           this.templateVersion.templatePanels.forEach(tPanel => {
             tPanel.templateSections.forEach(tSection => {
               tSection.templateFields.forEach(tField => {
-                if(tField.options != undefined){
+                if (tField.options != undefined) {
                   tField.optionItems = JSON.parse(tField.options);
                 }
 
                 if (tField.parentFieldId != undefined) {
                   var parentField = tSection.templateFields.find(dd => dd.id == tField.parentFieldId);
-                  if (parentField != null)
-                  {
-                    if(parentField.childTemplateFields == undefined)
+                  if (parentField != null) {
+                    if (parentField.childTemplateFields == undefined)
                       parentField.childTemplateFields = [];
 
                     parentField.childTemplateFields.push(tField);
@@ -180,7 +185,7 @@ export class TemplateDetailsComponent implements OnInit {
               })
             })
           });
-          this.templatePanels = this.templateVersion.templatePanels;          
+          this.templatePanels = this.templateVersion.templatePanels;
         },
         error: (err) => {
           console.log(err);
@@ -292,8 +297,8 @@ export class TemplateDetailsComponent implements OnInit {
     this.selectTemplateSection.showHeader = this.templateSectionForm.value.showHeader;
     this.selectTemplateSection.hideHint = this.templateSectionForm.value.hideHint;
     this.selectTemplateSection.buttonLabel = this.templateSectionForm.value.buttonLabel;
-    this.selectTemplateSection.ctHeader= this.templateSectionForm.value.ctHeader,
-    this.selectTemplateSection.onCondition = this.templateSectionForm.value.onCondition;
+    this.selectTemplateSection.ctHeader = this.templateSectionForm.value.ctHeader,
+      this.selectTemplateSection.onCondition = this.templateSectionForm.value.onCondition;
     this.selectTemplateSection.order = this.templateSectionForm.value.order;
     this.selectTemplateSection.row = this.templateSectionForm.value.row;
 
@@ -319,7 +324,7 @@ export class TemplateDetailsComponent implements OnInit {
         this.isTemplatePanel = this.isTemplateSection = this.isTemplateField = false;
         this.getTemplateVersion(this.templateVersionId);
       });
-  }  
+  }
 
   addSectionProperty(templatePanel: TemplatePanel) {
     this.selectTemplateSection = {} as TemplateSection;
@@ -332,7 +337,7 @@ export class TemplateDetailsComponent implements OnInit {
 
   editFieldProperty(templateField: TemplateField) {
     if (this.isPreviewing) this.togglePreviewSidenav();
-    
+
     this.selectTemplateField = templateField;
     this.templateFieldForm.setValue({
       id: this.selectTemplateField.id,
@@ -340,7 +345,13 @@ export class TemplateDetailsComponent implements OnInit {
       code: this.selectTemplateField.code,
       inputType: this.selectTemplateField.inputType,
       order: this.selectTemplateField.order ?? 0,
-      row: this.selectTemplateField.rowNumber ?? 0
+      row: this.selectTemplateField.rowNumber ?? 0,
+      label: this.selectTemplateField.label,
+      validators: this.selectTemplateField.validators,
+      options: this.selectTemplateField.options,
+      placeholder: this.selectTemplateField.placeholder,
+      errorMessages: this.selectTemplateField.errorMessages,
+      maxLength: this.selectTemplateField.maxLength ?? 0,
     })
 
     this.isTemplateField = true;
@@ -352,6 +363,12 @@ export class TemplateDetailsComponent implements OnInit {
     this.selectTemplateField.caption = this.templateFieldForm.value.caption;
     this.selectTemplateField.order = this.templateFieldForm.value.order;
     this.selectTemplateField.rowNumber = this.templateFieldForm.value.row;
+    this.selectTemplateField.label = this.templateFieldForm.value.label;
+    this.selectTemplateField.validators = this.templateFieldForm.value.validators;
+    this.selectTemplateField.options = this.templateFieldForm.value.options;
+    this.selectTemplateField.placeholder = this.templateFieldForm.value.placeholder;
+    this.selectTemplateField.errorMessages = this.templateFieldForm.value.errorMessages;
+    this.selectTemplateField.maxLength = this.templateFieldForm.value.ma;
 
     this.apiService.updateTemplateField(this.selectTemplateField)
       .subscribe(res => {
@@ -387,5 +404,5 @@ export class TemplateDetailsComponent implements OnInit {
 
   togglePreviewSidenav() {
     this.isPreviewing = !this.isPreviewing;
- }
+  }
 }
