@@ -30,7 +30,7 @@ public partial class TemplateField
 
     public int? Order { get; set; }
 
-    public int? RowNumber { get; set; }
+    public int? Row { get; set; }
 
     public string? PanelType { get; set; }
 
@@ -60,11 +60,11 @@ public partial class TemplateField
 
     public string? CreatedBy { get; set; }
 
-    public string? UpdatedBy { get; set; }
+    public string? ModifiedBy { get; set; }
 
-    public DateTime? CreatedUtcDate { get; set; }
+    public DateTime? CreatedUTCDate { get; set; }
 
-    public DateTime? UpdatedUtcDate { get; set; }
+    public DateTime? ModifiedUTCDate { get; set; }
 
     public virtual TemplateSection? TemplateSection { get; set; } = null!;
  

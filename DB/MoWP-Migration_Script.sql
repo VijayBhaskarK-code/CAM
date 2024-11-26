@@ -1,9 +1,35 @@
---CREATE TABLE MOWPTemplateVersions
+--DROP Table [dbo].[MOWPTemplateVersions];
+--DROP Table [dbo].[MemorandumOfWorkPerformed];
+
+--CREATE TABLE MemorandumOfWorkPerformed
 --(
 --Id INT IDENTITY PRIMARY KEY,
 --Title nvarchar(max),
---FormTemplate nvarchar(max)
+--CreatedUTCDate datetime null,
+--CreatedBy nvarchar(255) null,
+--ModifiedUTCDate datetime null,
+--ModifiedBy nvarchar(255) null
 --)
+
+
+--CREATE TABLE MOWPTemplateVersions
+--(
+--Id INT IDENTITY PRIMARY KEY,
+--[MowpTempId] int,
+--[Version] int,
+--FormTemplate nvarchar(max),
+--CreatedUTCDate datetime null,
+--CreatedBy nvarchar(255) null,
+--ModifiedUTCDate datetime null,
+--ModifiedBy nvarchar(255) null
+--)
+
+
+--INSERT INTO [dbo].[MemorandumOfWorkPerformed] ([Title], [CreatedUTCDate], [CreatedBy], [ModifiedUTCDate], [ModifiedBy]) VALUES('Year-End-US PCAOB-MoWP - US(PCAOB)', GETDATE(), 'test', GETDATE(), 'test');
+--INSERT INTO [dbo].[MemorandumOfWorkPerformed] ([Title], [CreatedUTCDate], [CreatedBy], [ModifiedUTCDate], [ModifiedBy]) VALUES('Interim-US PCAOB-MoWP - US(PCAOB)', GETDATE(), 'test', GETDATE(), 'test');
+
+
+
 
 
 
@@ -22,9 +48,9 @@ CREATE TABLE [dbo].[TemplateType] (
 	[Code] nvarchar(max) NOT NULL,
 	[Description] nvarchar(max) NOT NULL,
 	[CreatedBy] nvarchar(max) NULL,
-	[UpdatedBy] nvarchar(max) NULL,
-	[CreatedUtcDate] datetime NULL,
-	[UpdatedUtcDate] datetime NULL,
+	[ModifiedBy] nvarchar(max) NULL,
+	[CreatedUTCDate] datetime NULL,
+	[ModifiedUTCDate] datetime NULL,
 	PRIMARY KEY ([Id])
 );
 
@@ -38,9 +64,9 @@ CREATE TABLE [dbo].[TemplateParent] (
 	[AliasName] nvarchar(max) NULL,
 	[TemplateTypeId] int NOT NULL,
 	[CreatedBy] nvarchar(max) NULL,
-	[UpdatedBy] nvarchar(max) NULL,
-	[CreatedUtcDate] datetime NULL,
-	[UpdatedUtcDate] datetime NULL,
+	[ModifiedBy] nvarchar(max) NULL,
+	[CreatedUTCDate] datetime NULL,
+	[ModifiedUTCDate] datetime NULL,
 	PRIMARY KEY ([Id])
 );
 
@@ -56,9 +82,9 @@ CREATE TABLE [dbo].[TemplateVersion] (
 	[Description] nvarchar(max) NULL,
 	[PublishedUtcDate] datetime NULL,
 	[CreatedBy] nvarchar(max) NULL,
-	[UpdatedBy] nvarchar(max) NULL,
-	[CreatedUtcDate] datetime NULL,
-	[UpdatedUtcDate] datetime NULL,
+	[ModifiedBy] nvarchar(max) NULL,
+	[CreatedUTCDate] datetime NULL,
+	[ModifiedUTCDate] datetime NULL,
 	PRIMARY KEY ([Id])
 );
 
@@ -73,9 +99,9 @@ CREATE TABLE [dbo].[TemplatePanel] (
 	[Order] int NULL,
 	[Row] int NULL,
 	[CreatedBy] nvarchar(max) NULL,
-	[UpdatedBy] nvarchar(max) NULL,
-	[CreatedUtcDate] datetime NULL,
-	[UpdatedUtcDate] datetime NULL,
+	[ModifiedBy] nvarchar(max) NULL,
+	[CreatedUTCDate] datetime NULL,
+	[ModifiedUTCDate] datetime NULL,
 	PRIMARY KEY ([Id])
 );
 
@@ -93,13 +119,15 @@ CREATE TABLE [dbo].[TemplateSection] (
 	[HintName] nvarchar(max) NULL,
 	[ShowHeader] bit NULL,
 	[HideHint] bit NULL,
+	[Order] int NULL,
+	[Row] int NULL,
 	[ButtonLabel] nvarchar(max) NULL,
 	[CTHeader] nvarchar(max) NULL,
 	[OnCondition] nvarchar(max) NULL,
 	[CreatedBy] nvarchar(max) NULL,
-	[UpdatedBy] nvarchar(max) NULL,
-	[CreatedUtcDate] datetime NULL,
-	[UpdatedUtcDate] datetime NULL,
+	[ModifiedBy] nvarchar(max) NULL,
+	[CreatedUTCDate] datetime NULL,
+	[ModifiedUTCDate] datetime NULL,
 	PRIMARY KEY ([Id])
 );
 
@@ -121,7 +149,7 @@ CREATE TABLE [dbo].[TemplateField] (
 	[Required] bit NULL,
 	[RequiredOnSave] bit NULL,
 	[Order] int NULL,
-	[RowNumber] int NULL,
+	[Row] int NULL,
 	[PanelType] nvarchar(max) NULL,
 	[Placeholder] nvarchar(max) NULL,
 	[OutputType] nvarchar(max) NULL,
@@ -136,9 +164,9 @@ CREATE TABLE [dbo].[TemplateField] (
 	[Hidden] bit NULL,
 	[GroupPrototype] nvarchar(max) NULL,
 	[CreatedBy] nvarchar(max) NULL,
-	[UpdatedBy] nvarchar(max) NULL,
-	[CreatedUtcDate] datetime NULL,
-	[UpdatedUtcDate] datetime NULL,
+	[ModifiedBy] nvarchar(max) NULL,
+	[CreatedUTCDate] datetime NULL,
+	[ModifiedUTCDate] datetime NULL,
 	PRIMARY KEY ([Id])
 );
 
@@ -158,23 +186,32 @@ INSERT INTO [dbo].[TemplateType] ([Code], [Description]) VALUES('Confirmation', 
 
 
 --Insert TempalteParent table
-INSERT INTO [dbo].[TemplateParent] ([Title], [TemplateTypeId]) SELECT TOP 1 [Title], 1 FROM [dbo].[MOWPTemplateVersions];
+INSERT INTO [dbo].[TemplateParent] ([Title], [TemplateTypeId], [CreatedUTCDate], [CreatedBy], [ModifiedUTCDate], [ModifiedBy]) SELECT [Title], 1, [CreatedUTCDate], [CreatedBy], [ModifiedUTCDate], [ModifiedBy] FROM [dbo].[MemorandumOfWorkPerformed];
 
 
+DECLARE @Counter INT , @MaxId INT
+SELECT @Counter = min(Id) , @MaxId = max(Id) FROM MOWPTemplateVersions;
+
+WHILE(@Counter IS NOT NULL AND @Counter <= @MaxId)
+BEGIN
+
+DECLARE @templateVersionId int;
 
 --Insert TemplateVersion table
-INSERT INTO [dbo].[TemplateVersion] ([TemplateId], [Version], [Status]) VALUES(1, 1, '');
+INSERT INTO [dbo].[TemplateVersion] ([TemplateId], [Version], [Status], [Description],  CreatedUTCDate, CreatedBy, ModifiedUTCDate, ModifiedBy)
+SELECT [MowpTempId], [Version], 1, '', CreatedUTCDate, CreatedBy, ModifiedUTCDate, ModifiedBy from MOWPTemplateVersions WHERE Id = @Counter;
 
+SET @templateVersionId = SCOPE_IDENTITY()
 
 
 DECLARE @json NVARCHAR(MAX);
-set @json = (select top 1 FormTemplate from [dbo].[MOWPTemplateVersions]);
+(select @json = FormTemplate from [dbo].[MOWPTemplateVersions]  WHERE Id = @Counter);
 
 
 
 -- Insert TemplatePanel Records
 INSERT INTO [dbo].[TemplatePanel] ([TemplateVersionId], [Name], [HintName])
-select 1, Panels.PanelName, Panels.HintName from OPENJSON( @json,'$')
+select @templateVersionId, Panels.PanelName, Panels.HintName from OPENJSON( @json,'$')
 with (
 PanelName nvarchar(max) N'$.name',
 HintName nvarchar(max) N'$.HintName',
@@ -205,7 +242,8 @@ hideHint nvarchar(max) N'$.hideHint',
 showFormArraysOnCondition nvarchar(max) N'$.showFormArraysOnCondition' as json,
 formFields nvarchar(max) N'$.formFields' as json
 ) as Sections
-INNER JOIN [dbo].[TemplatePanel] TPanel ON TPanel.[Name] = Panels.PanelName;
+INNER JOIN [dbo].[TemplatePanel] TPanel ON TPanel.[Name] = Panels.PanelName
+WHERE TPanel.TemplateVersionId = @templateVersionId;
 
 
 
@@ -249,7 +287,9 @@ validators nvarchar(max) N'$.validators' as json,
 asyncValidators nvarchar(max) N'$.asyncValidators' as json,
 errorMessages nvarchar(max) N'$.errorMessages' as json
 ) as FormFields
-INNER JOIN [dbo].[TemplateSection] TSection ON TSection.[SectionName] = Sections.SectionName;
+INNER JOIN [dbo].[TemplatePanel] TPanel ON TPanel.[Name] = Panels.PanelName
+INNER JOIN [dbo].[TemplateSection] TSection ON TSection.[SectionName] = Sections.SectionName
+WHERE TPanel.TemplateVersionId = @templateVersionId AND TSection.TemplatePanelId = TPanel.Id;
 
 
 
@@ -298,9 +338,11 @@ validators nvarchar(max) N'$.validators' as json,
 asyncValidators nvarchar(max) N'$.asyncValidators' as json,
 errorMessages nvarchar(max) N'$.errorMessages' as json
 ) as GroupFormFields
+INNER JOIN [dbo].[TemplatePanel] TPanel ON TPanel.[Name] = Panels.PanelName
 INNER JOIN [dbo].[TemplateSection] TSection ON TSection.[SectionName] = Sections.[SectionName]
 INNER JOIN [dbo].[TemplateField] TField ON TField.[Code] = FormFields.[Code]
 WHERE FormFields.groupPrototype is not null
+AND TPanel.TemplateVersionId = @templateVersionId AND TSection.TemplatePanelId = TPanel.Id;
 
 
 
@@ -354,9 +396,11 @@ validators nvarchar(max) N'$.validators' as json,
 asyncValidators nvarchar(max) N'$.asyncValidators' as json,
 errorMessages nvarchar(max) N'$.errorMessages' as json
 ) as GroupArrayFormFields
+INNER JOIN [dbo].[TemplatePanel] TPanel ON TPanel.[Name] = Panels.PanelName
 INNER JOIN [dbo].[TemplateSection] TSection ON TSection.[SectionName] = Sections.[SectionName]
 INNER JOIN [dbo].[TemplateField] TField ON TField.[Code] = GroupFormFields.[Code]
 WHERE FormFields.groupPrototype is not null
+AND TPanel.TemplateVersionId = @templateVersionId AND TSection.TemplatePanelId = TPanel.Id;
 
 
 
@@ -405,10 +449,14 @@ validators nvarchar(max) N'$.validators' as json,
 asyncValidators nvarchar(max) N'$.asyncValidators' as json,
 errorMessages nvarchar(max) N'$.errorMessages' as json
 ) as GroupFormFields
+INNER JOIN [dbo].[TemplatePanel] TPanel ON TPanel.[Name] = Panels.PanelName
 INNER JOIN [dbo].[TemplateSection] TSection ON TSection.[SectionName] = Sections.[SectionName]
 INNER JOIN [dbo].[TemplateField] TField ON TField.[Code] = FormFields.[Code]
 WHERE FormFields.[group] is not null
+AND TPanel.TemplateVersionId = @templateVersionId AND TSection.TemplatePanelId = TPanel.Id;
 
+SET @Counter  = @Counter  + 1        
+END
 
 
 SELECT * FROM [dbo].[TemplateParent];

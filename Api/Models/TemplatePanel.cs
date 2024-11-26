@@ -16,11 +16,11 @@ public partial class TemplatePanel
 
     public string? CreatedBy { get; set; }
 
-    public string? UpdatedBy { get; set; }
+    public string? ModifiedBy { get; set; }
 
-    public DateTime? CreatedUtcDate { get; set; }
+    public DateTime? CreatedUTCDate { get; set; }
 
-    public DateTime? UpdatedUtcDate { get; set; }
+    public DateTime? ModifiedUTCDate { get; set; }
 
     public virtual ICollection<TemplateSection>? TemplateSections { get; set; } = new List<TemplateSection>();
 

@@ -200,9 +200,9 @@
             <mat-checkbox class="example-full-width" formControlName="config">Config</mat-checkbox>
 
             <mat-checkbox class="example-full-width" formControlName="showButton">Show Button</mat-checkbox>
-            
+
             <mat-checkbox class="example-full-width" formControlName="showHeader">Show Header</mat-checkbox>
-            
+
             <mat-form-field appearance="outline" class="example-full-width">
               <mat-label>Header</mat-label>
               <input matInput #input placeholder="Enter Header" formControlName="sectionHeader" />
@@ -214,7 +214,7 @@
             </mat-form-field>
 
             <mat-checkbox class="example-full-width" formControlName="hideHint">Hide Hint</mat-checkbox>
-            
+
             <mat-form-field appearance="outline" class="example-full-width">
               <mat-label>Button Label</mat-label>
               <input matInput #input placeholder="Enter Button label" formControlName="buttonLabel" />
@@ -222,7 +222,7 @@
 
             <mat-form-field appearance="outline" class="example-full-width">
               <mat-label>CT Header</mat-label>
-              <input matInput #input placeholder="Enter Ct header" formControlName="ctHeader"/>
+              <input matInput #input placeholder="Enter Ct header" formControlName="ctHeader" />
             </mat-form-field>
           </form>
         </div>
@@ -274,32 +274,32 @@
 
             <mat-form-field appearance="outline" class="example-full-width">
               <mat-label>Label</mat-label>
-              <input matInput #input placeholder="Enter label" formControlName="label"/>
+              <input matInput #input placeholder="Enter label" formControlName="label" />
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="example-full-width">
               <mat-label>Validators</mat-label>
-              <input matInput #input placeholder="Enter Valiators" formControlName="validators"/>
+              <input matInput #input placeholder="Enter Valiators" formControlName="validators" />
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="example-full-width">
               <mat-label>Options</mat-label>
-              <input matInput #input placeholder="Enter Options" formControlName="options"/>
+              <input matInput #input placeholder="Enter Options" formControlName="options" />
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="example-full-width">
               <mat-label>Placeholder</mat-label>
-              <input matInput #input placeholder="Enter Placeholder" formControlName="placeholder"/>
+              <input matInput #input placeholder="Enter Placeholder" formControlName="placeholder" />
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="example-full-width">
               <mat-label>Error Messages</mat-label>
-              <input matInput #input placeholder="Enter Error Message" formControlName="errorMessages"/>
+              <input matInput #input placeholder="Enter Error Message" formControlName="errorMessages" />
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="example-full-width">
               <mat-label>Max Length</mat-label>
-              <input matInput #input placeholder="Enter Max Length" formControlName="maxLength"/>
+              <input matInput #input placeholder="Enter Max Length" formControlName="maxLength" />
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="example-full-width">
@@ -314,7 +314,7 @@
     </mat-sidenav-content>
 
     <mat-sidenav class="mat-right-sidenav" #sideLeft mode="over" position="end" [opened]="isPreviewing">
-      <mat-toolbar >
+      <mat-toolbar>
         <button mat-icon-button class="example-icon" (click)="togglePreviewSidenav()"
           aria-label="Example icon-button with menu icon">
           <mat-icon>close</mat-icon>
@@ -328,12 +328,12 @@
 
         <mat-list #previewPanels>
           @for (templatePanel of templatePanels; track templatePanel) {
-          <mat-card>
+          <mat-card appearance="outlined">
             <mat-card-header>
               <mat-card-title>{{templatePanel.name}}</mat-card-title>
-              <button mat-icon-button (click)="editPanelProperty(templatePanel)" matTooltip="Edit Panel.">
+              <!-- <button mat-icon-button (click)="editPanelProperty(templatePanel)" matTooltip="Edit Panel.">
                 <mat-icon>edit</mat-icon>
-              </button>
+              </button> -->
             </mat-card-header>
 
             <mat-card-content>
@@ -343,9 +343,9 @@
 
               @for (templateSection of templatePanel.templateSections; track templateSection) {
               <div id={{templateSection.sectionName}}>
-                <button mat-icon-button (click)="editSectionProperty(templateSection)" matTooltip="Edit Section.">
+                <!-- <button mat-icon-button (click)="editSectionProperty(templateSection)" matTooltip="Edit Section.">
                   <mat-icon>edit</mat-icon>
-                </button>
+                </button> -->
                 <div *ngIf="templateSection.showHeader">
                   <h6>{{templateSection.sectionHeader}}</h6>
                   <mat-divider></mat-divider>
@@ -356,9 +356,9 @@
                 @for (templateField of templateSection.templateFields; track templateField) {
                 <div [ngSwitch]="templateField.inputType">
                   <div *ngSwitchCase="'RADIO_GROUP'">
-                    <button mat-icon-button (click)="editFieldProperty(templateField)" matTooltip="Edit Field.">
+                    <!-- <button mat-icon-button (click)="editFieldProperty(templateField)" matTooltip="Edit Field.">
                       <mat-icon>edit</mat-icon>
-                    </button>
+                    </button> -->
                     <mat-label>{{templateField.label}}</mat-label>
                     <br />
                     <mat-radio-group id={{templateField.id}}>
@@ -366,13 +366,14 @@
                       <mat-radio-button [value]="templateOption.value">{{templateOption.label}}</mat-radio-button>
                       }
                     </mat-radio-group>
+                    <br />
                   </div>
 
 
                   <div *ngSwitchCase="'INPUT'">
-                    <button mat-icon-button (click)="editFieldProperty(templateField)" matTooltip="Edit Field.">
+                    <!-- <button mat-icon-button (click)="editFieldProperty(templateField)" matTooltip="Edit Field.">
                       <mat-icon>edit</mat-icon>
-                    </button>
+                    </button> -->
                     <mat-label>{{templateField.label}}</mat-label>
                     <br />
                     <input matInput id={{templateField.id}} placeholder={{templateField.placeholder}} />
@@ -381,9 +382,9 @@
 
 
                   <div *ngSwitchCase="'APPAUTOCOMPLETE'">
-                    <button mat-icon-button (click)="editFieldProperty(templateField)" matTooltip="Edit Field.">
+                    <!-- <button mat-icon-button (click)="editFieldProperty(templateField)" matTooltip="Edit Field.">
                       <mat-icon>edit</mat-icon>
-                    </button>
+                    </button> -->
                     <mat-label>{{templateField.label}}</mat-label>
                     <br />
                     <mat-select matInput id={{templateField.id}} placeholder={{templateField.placeholder}} />
@@ -392,9 +393,9 @@
 
 
                   <div *ngSwitchCase="'APPCALENDAR'">
-                    <button mat-icon-button (click)="editFieldProperty(templateField)" matTooltip="Edit Field.">
+                    <!-- <button mat-icon-button (click)="editFieldProperty(templateField)" matTooltip="Edit Field.">
                       <mat-icon>edit</mat-icon>
-                    </button>
+                    </button> -->
                     <mat-label>{{templateField.label}}</mat-label>
                     <br />
                     <!-- <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle> -->
@@ -404,13 +405,10 @@
                   </div>
 
 
-                  
-
-
                   <div *ngSwitchCase="'CHECKBOX_GROUP'">
-                    <button mat-icon-button (click)="editFieldProperty(templateField)" matTooltip="Edit Field.">
+                    <!-- <button mat-icon-button (click)="editFieldProperty(templateField)" matTooltip="Edit Field.">
                       <mat-icon>edit</mat-icon>
-                    </button>
+                    </button> -->
                     <mat-label>{{templateField.label}}</mat-label>
                     <br />
                     <!-- <mat-select matInput id={{templateField.id}} placeholder={{templateField.placeholder}}/> -->
@@ -418,7 +416,6 @@
                     <mat-checkbox>{{cField.label}}</mat-checkbox>
                     <br />
                     }
-                    <br />
                   </div>
 
                   <!-- <textbox *ngSwitchCase="'text'" [field]="field" [form]="form"></textbox>
@@ -427,13 +424,12 @@
                   <radio *ngSwitchCase="'radio'" [field]="field" [form]="form"></radio>
                   <file *ngSwitchCase="'file'" [field]="field" [form]="form"></file>
                   <div class="alert alert-danger my-1 p-2 fadeInDown animated" *ngIf="!isValid && isDirty">{{field.label}} is required</div> -->
+                  <br />
                 </div>
                 }
-                <br />
               </div>
               }
             </mat-card-content>
-
           </mat-card>
           <br>
           }

@@ -49,7 +49,6 @@ export class TemplateVersionListComponent implements OnInit {
       .subscribe({
         next: (res) => {
           this.templateParent = res;
-          
           this.getTemplateVersions(this.templateParentId);
         },
         error: (err) => {
@@ -59,7 +58,7 @@ export class TemplateVersionListComponent implements OnInit {
   }
 
   getTemplateVersions(id: number) {
-    this.apiService.getTemplateVersions()
+    this.apiService.getTemplateVersionsByParent(id)
       .subscribe({
         next: (res) => {
           this.templateVersions = res;

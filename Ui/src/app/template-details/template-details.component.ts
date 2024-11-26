@@ -75,8 +75,13 @@ import { provideNativeDateAdapter } from '@angular/material/core';
 .example-full-width {
   width: 100%;
 }
+
 .mat-mdc-list-item-icon {
   color: rgba(0, 0, 0, 0.54);
+}
+
+.divider {
+  color: red;
 }
 
 `,
@@ -162,10 +167,8 @@ export class TemplateDetailsComponent implements OnInit {
     this.apiService.getTemplateVersionById(id)
       .subscribe({
         next: (res) => {
-          if (res.length == 0)
-            return;
 
-          this.templateVersion = res[0];
+          this.templateVersion = res;
           this.templateVersion.templatePanels.forEach(tPanel => {
             tPanel.templateSections.forEach(tSection => {
               tSection.templateFields.forEach(tField => {

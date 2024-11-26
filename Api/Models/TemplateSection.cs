@@ -18,6 +18,10 @@ public partial class TemplateSection
 
     public string? HintName { get; set; }
 
+    public int? Order { get; set; }
+
+    public int? Row { get; set; }
+
     public bool? ShowHeader { get; set; }
 
     public bool? HideHint { get; set; }
@@ -30,11 +34,11 @@ public partial class TemplateSection
 
     public string? CreatedBy { get; set; }
 
-    public string? UpdatedBy { get; set; }
+    public string? ModifiedBy { get; set; }
 
-    public DateTime? CreatedUtcDate { get; set; }
+    public DateTime? CreatedUTCDate { get; set; }
 
-    public DateTime? UpdatedUtcDate { get; set; }
+    public DateTime? ModifiedUTCDate { get; set; }
 
     public virtual ICollection<TemplateField>? TemplateFields { get; set; } = new List<TemplateField>();
 

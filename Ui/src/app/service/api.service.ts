@@ -27,15 +27,11 @@ export class ApiService {
   }
 
   getTemplateVersionsByParent(id: number) {
-    return this.http.get<TemplateVersion[]>(`${this.baseUrl}/templateversion/byTemplateId/?${id}`)
+    return this.http.get<TemplateVersion[]>(`${this.baseUrl}/templateversion/byTemplateId/${id}`)
   }
 
   getTemplateVersionById(id: number) {
-    return this.http.get<TemplateVersion[]>(`${this.baseUrl}/templateversion/?${id}`)
-  }
-
-  getPanelsByVersionId(id: number) {
-    return this.http.get<TemplatePanel[]>(`${this.baseUrl}/templateversion/?${id}`)
+    return this.http.get<TemplateVersion>(`${this.baseUrl}/templateversion/${id}`)
   }
 
   updateTemplatePanel(templatePanel: TemplatePanel) {

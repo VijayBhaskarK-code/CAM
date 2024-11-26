@@ -39,30 +39,13 @@ public partial class CamDbContext : DbContext
 
             entity.HasIndex(e => e.Id, "UQ__Template__3214EC0681E4AF4A").IsUnique();
 
-            entity.Property(e => e.CreatedUtcDate).HasColumnType("datetime");
-            entity.Property(e => e.UpdatedUtcDate).HasColumnType("datetime");
+            entity.Property(e => e.CreatedUTCDate).HasColumnType("datetime");
+            entity.Property(e => e.ModifiedUTCDate).HasColumnType("datetime");
 
             entity.HasOne(d => d.TemplateSection).WithMany(p => p.TemplateFields)
                 .HasForeignKey(d => d.TemplateSectionId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_TemplateField_TemplateSection_Id");
-        });
-
-        modelBuilder.Entity<TemplatePanel>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK__Template__3214EC0722A272C8");
-
-            entity.ToTable("TemplatePanel");
-
-            entity.HasIndex(e => e.Id, "UQ__Template__3214EC06AE77ED7F").IsUnique();
-
-            entity.Property(e => e.CreatedUtcDate).HasColumnType("datetime");
-            entity.Property(e => e.UpdatedUtcDate).HasColumnType("datetime");
-
-            entity.HasOne(d => d.TemplateVersion).WithMany(p => p.TemplatePanels)
-                .HasForeignKey(d => d.TemplateVersionId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_TemplatePanel_TemplateVersion_Id");
         });
 
         modelBuilder.Entity<TemplateParent>(entity =>
@@ -73,13 +56,48 @@ public partial class CamDbContext : DbContext
 
             entity.HasIndex(e => e.Id, "UQ__Template__3214EC063F92DBA2").IsUnique();
 
-            entity.Property(e => e.CreatedUtcDate).HasColumnType("datetime");
-            entity.Property(e => e.UpdatedUtcDate).HasColumnType("datetime");
+            entity.Property(e => e.CreatedUTCDate).HasColumnType("datetime");
+            entity.Property(e => e.ModifiedUTCDate).HasColumnType("datetime");
 
             entity.HasOne(d => d.TemplateType).WithMany(p => p.TemplateParents)
                 .HasForeignKey(d => d.TemplateTypeId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_TemplateParent_TemplateType_Id");
+        });
+
+        modelBuilder.Entity<TemplateVersion>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Template__3214EC07EEF363F8");
+
+            entity.ToTable("TemplateVersion");
+
+            entity.HasIndex(e => e.Id, "UQ__Template__3214EC0657B443E4").IsUnique();
+
+            entity.Property(e => e.CreatedUTCDate).HasColumnType("datetime");
+            entity.Property(e => e.PublishedUtcDate).HasColumnType("datetime");
+            entity.Property(e => e.ModifiedUTCDate).HasColumnType("datetime");
+
+            entity.HasOne(d => d.Template).WithMany(p => p.TemplateVersions)
+                .HasForeignKey(d => d.TemplateId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_TemplateVersion_TemplateParent_Id");
+        });
+
+        modelBuilder.Entity<TemplatePanel>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Template__3214EC0722A272C8");
+
+            entity.ToTable("TemplatePanel");
+
+            entity.HasIndex(e => e.Id, "UQ__Template__3214EC06AE77ED7F").IsUnique();
+
+            entity.Property(e => e.CreatedUTCDate).HasColumnType("datetime");
+            entity.Property(e => e.ModifiedUTCDate).HasColumnType("datetime");
+
+            entity.HasOne(d => d.TemplateVersion).WithMany(p => p.TemplatePanels)
+                .HasForeignKey(d => d.TemplateVersionId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_TemplatePanel_TemplateVersion_Id");
         });
 
         modelBuilder.Entity<TemplateSection>(entity =>
@@ -90,9 +108,9 @@ public partial class CamDbContext : DbContext
 
             entity.HasIndex(e => e.Id, "UQ__Template__3214EC06EC42579C").IsUnique();
 
-            entity.Property(e => e.CreatedUtcDate).HasColumnType("datetime");
+            entity.Property(e => e.CreatedUTCDate).HasColumnType("datetime");
             entity.Property(e => e.Ctheader).HasColumnName("CTHeader");
-            entity.Property(e => e.UpdatedUtcDate).HasColumnType("datetime");
+            entity.Property(e => e.ModifiedUTCDate).HasColumnType("datetime");
 
             entity.HasOne(d => d.TemplatePanel).WithMany(p => p.TemplateSections)
                 .HasForeignKey(d => d.TemplatePanelId)
@@ -108,26 +126,8 @@ public partial class CamDbContext : DbContext
 
             entity.HasIndex(e => e.Id, "UQ__Template__3214EC06E726953F").IsUnique();
 
-            entity.Property(e => e.CreatedUtcDate).HasColumnType("datetime");
-            entity.Property(e => e.UpdatedUtcDate).HasColumnType("datetime");
-        });
-
-        modelBuilder.Entity<TemplateVersion>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK__Template__3214EC07EEF363F8");
-
-            entity.ToTable("TemplateVersion");
-
-            entity.HasIndex(e => e.Id, "UQ__Template__3214EC0657B443E4").IsUnique();
-
-            entity.Property(e => e.CreatedUtcDate).HasColumnType("datetime");
-            entity.Property(e => e.PublishedUtcDate).HasColumnType("datetime");
-            entity.Property(e => e.UpdatedUtcDate).HasColumnType("datetime");
-
-            entity.HasOne(d => d.Template).WithMany(p => p.TemplateVersions)
-                .HasForeignKey(d => d.TemplateId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_TemplateVersion_TemplateParent_Id");
+            entity.Property(e => e.CreatedUTCDate).HasColumnType("datetime");
+            entity.Property(e => e.ModifiedUTCDate).HasColumnType("datetime");
         });
 
         OnModelCreatingPartial(modelBuilder);
