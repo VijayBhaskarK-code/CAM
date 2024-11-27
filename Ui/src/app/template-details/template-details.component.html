@@ -330,7 +330,9 @@
           @for (templatePanel of templatePanels; track templatePanel) {
           <mat-card appearance="outlined">
             <mat-card-header>
-              <mat-card-title>{{templatePanel.name}}</mat-card-title>
+              <mat-card-title>
+                <h6>{{templatePanel.name}}</h6>
+              </mat-card-title>
               <!-- <button mat-icon-button (click)="editPanelProperty(templatePanel)" matTooltip="Edit Panel.">
                 <mat-icon>edit</mat-icon>
               </button> -->
@@ -339,7 +341,6 @@
             <mat-card-content>
               <mat-divider></mat-divider>
               <p>{{templatePanel.hintName}}</p>
-              <br />
 
               @for (templateSection of templatePanel.templateSections; track templateSection) {
               <div id={{templateSection.sectionName}}>
@@ -414,8 +415,8 @@
                     <!-- <mat-select matInput id={{templateField.id}} placeholder={{templateField.placeholder}}/> -->
                     @for (cField of templateField.childTemplateFields; track cField) {
                     <mat-checkbox>{{cField.label}}</mat-checkbox>
-                    <br />
                     }
+                    <br />
                   </div>
 
                   <!-- <textbox *ngSwitchCase="'text'" [field]="field" [form]="form"></textbox>
@@ -424,7 +425,6 @@
                   <radio *ngSwitchCase="'radio'" [field]="field" [form]="form"></radio>
                   <file *ngSwitchCase="'file'" [field]="field" [form]="form"></file>
                   <div class="alert alert-danger my-1 p-2 fadeInDown animated" *ngIf="!isValid && isDirty">{{field.label}} is required</div> -->
-                  <br />
                 </div>
                 }
               </div>
