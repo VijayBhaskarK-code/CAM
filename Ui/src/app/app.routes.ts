@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { TemplateParentListComponent } from './template-parent-list/template-parent-list.component';
+import { TemplatePreviewComponent } from './template-preview/template-preview.component';
 import { CreateTemplatePanelComponent } from './create-template-panel/create-template-panel.component';
 import { CreateTemplateVersionComponent } from './create-template-version/create-template-version.component';
 import { TemplateListComponent } from './template-list/template-list.component';
@@ -11,6 +11,7 @@ export const routes: Routes = [
     {path:'templates', component: TemplateListComponent },
     {path:'versions/:parentTemplateId', component: TemplateVersionListComponent },
     {path:'controls/:versionId', component: TemplateDetailsComponent },
-    {path:'controls/:versionId/preview', component: CreateTemplatePanelComponent },
+    {path:'controls/:versionId/preview', component: TemplatePreviewComponent },
+    {path:'controls/:versionId/previews', component: CreateTemplatePanelComponent },
     {path:'controls/preview/:versionId', component: CreateTemplateVersionComponent },
 ];

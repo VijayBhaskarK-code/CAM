@@ -21,7 +21,7 @@ export interface TemplateField {
     placeholder: string | null;
     outputType: string | null;
     maxLength: number | null;
-    inline: string | null;
+    inline: string | null;    
     list: string | null;
     suggestions: string | null;
     additional: string | null;
@@ -36,9 +36,15 @@ export interface TemplateField {
     updatedUtcDate: string | null;
     parentTemplateSection: TemplateSection;
     childTemplateFields: TemplateField[] | null;
+    groupTemplateFields: GroupTemplateField[] | null;
 }
 
 export interface TemplateFieldOption {
     label: string | null;
     value: string | null;
+}
+
+export interface GroupTemplateField {
+    id: string | null;
+    fields: TemplateField[] | null;
 }

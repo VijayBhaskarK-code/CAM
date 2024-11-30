@@ -171,7 +171,8 @@ export class TemplateDetailsComponent implements OnInit {
           this.templateVersion = res;
           this.templateVersion.templatePanels.forEach(tPanel => {
             tPanel.templateSections.forEach(tSection => {
-              tSection.templateFields.forEach(tField => {
+              var removeItems: number[] = [];
+              tSection.templateFields.forEach((tField) => {
                 if (tField.options != undefined) {
                   tField.optionItems = JSON.parse(tField.options);
                 }
@@ -183,9 +184,14 @@ export class TemplateDetailsComponent implements OnInit {
                       parentField.childTemplateFields = [];
 
                     parentField.childTemplateFields.push(tField);
+                    removeItems.push(tField.id);
                   }
                 }
               })
+
+              removeItems.forEach((id) => {
+                tSection.templateFields = tSection.templateFields.filter(item => item.id != id);
+              });
             })
           });
           this.templatePanels = this.templateVersion.templatePanels;
