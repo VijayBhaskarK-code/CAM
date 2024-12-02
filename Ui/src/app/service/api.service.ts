@@ -34,6 +34,10 @@ export class ApiService {
     return this.http.get<TemplateVersion>(`${this.baseUrl}/templateversion/${id}`)
   }
 
+  GetInputTypes() {
+    return this.http.get<string[]>(`${this.baseUrl}/templatefield/inputTypes`)
+  }
+
   updateTemplatePanel(templatePanel: TemplatePanel) {
     if (templatePanel.id == undefined)
       return this.http.post<TemplatePanel>(`${this.baseUrl}/templatepanel`, templatePanel)

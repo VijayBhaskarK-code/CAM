@@ -36,6 +36,14 @@ namespace Api.Controllers
             return templateField;
         }
 
+        // GET: api/TemplateField/inputTypes
+        [HttpGet("inputTypes")]
+        public async Task<ActionResult<IEnumerable<string>>> GetInputTypes()
+        {
+            var types = new List<string>(){"RADIO_GROUP", "CHECKBOX_GROUP", "INPUT", "APPAUTOCOMPLETE", "APPCALENDAR", "ARRAY"};
+            return types;
+        }
+
         // PUT: api/TemplateField/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut()]

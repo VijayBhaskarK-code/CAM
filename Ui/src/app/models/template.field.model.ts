@@ -24,6 +24,7 @@ export interface TemplateField {
     inline: string | null;    
     list: string | null;
     suggestions: string | null;
+    suggestionOptions: SuggestionOptions | null;
     additional: string | null;
     multiple: boolean | null;
     initialCount: number | null;
@@ -47,4 +48,9 @@ export interface TemplateFieldOption {
 export interface GroupTemplateField {
     id: string | null;
     fields: TemplateField[] | null;
+}
+
+export interface SuggestionOptions {
+    source: string | null;
+    items: any[]| null;
 }

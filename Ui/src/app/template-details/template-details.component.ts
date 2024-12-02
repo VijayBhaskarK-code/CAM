@@ -128,6 +128,7 @@ import { provideNativeDateAdapter } from '@angular/material/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TemplateDetailsComponent implements OnInit {
+  suggestions: Dictionary = {};
   showFiller = false;
   templateVersionId!: number;
   templateVersion!: TemplateVersion;
@@ -199,7 +200,22 @@ export class TemplateDetailsComponent implements OnInit {
     this.activatedRoute.params.subscribe(val => {
       this.templateVersionId = val['versionId'];
       if (this.templateVersionId) {
+        this.getSuggestions();
         this.getTemplateVersion(this.templateVersionId);
+      }
+    })
+  }
+
+  getSuggestions() {
+    this.apiService.GetInputTypes()
+    .subscribe({
+      next: (res) => {
+        this.suggestions["InputTypes"] = res;
+       
+        this.changeRef.detectChanges();
+      },
+      error: (err) => {
+        console.log(err);
       }
     })
   }
@@ -215,6 +231,13 @@ export class TemplateDetailsComponent implements OnInit {
               var removeItems: number[] = [];
               tSection.templateFields.forEach((tField) => {
 
+                if (tField.suggestions != undefined) {
+                  tField.suggestionOptions = JSON.parse(tField.suggestions);
+                  
+                  if (tField.suggestionOptions != null && tField.suggestionOptions.source != null) {
+                    tField.suggestionOptions.items = this.suggestions[tField.suggestionOptions.source];
+                  }                  
+                }
 
                 if (tField.options != undefined) {
                   tField.optionItems = JSON.parse(tField.options);
@@ -240,7 +263,6 @@ export class TemplateDetailsComponent implements OnInit {
           });
 
           this.templatePanels = this.templateVersion.templatePanels;
-          console.log(this.templatePanels);
           this.changeRef.detectChanges();
         },
         error: (err) => {
@@ -486,4 +508,9 @@ export class TemplateDetailsComponent implements OnInit {
 
     this.isPreviewing = !this.isPreviewing;
   }
+}
+
+
+interface Dictionary {
+  [key: string]: any[];
 }
