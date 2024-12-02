@@ -95,14 +95,51 @@
                         </button>
                       </div>
                     </mat-expansion-panel-header>
-                    <!-- 
+                    
                     <div>
 
                       <p>
                         <Label></Label>
                         Label : {{templateField.label}}
                       </p>
-                    </div> -->
+
+                      <div>
+                        <div class="example-right-container">
+                          <button mat-icon-button (click)="addChildFieldProperty(templateField)"
+                            matTooltip="Add Field to the Parent Field.">
+                            <mat-icon>add</mat-icon>
+                          </button>
+                        </div>
+      
+                        @for (ctemplateField of templateField.childTemplateFields; track ctemplateField) {
+                        <mat-expansion-panel class="mat-expansion-indicator">
+                          <mat-expansion-panel-header>
+                            <mat-panel-title>
+                              <mat-icon>rtt</mat-icon>
+                              Field: {{ctemplateField.code}}
+                            </mat-panel-title>
+      
+                            <div class="example-right-container">
+                              <button mat-icon-button (click)="editFieldProperty(ctemplateField)" matTooltip="Edit field.">
+                                <mat-icon>edit</mat-icon>
+                              </button>
+                              <button mat-icon-button (click)="deleteFieldProperty(ctemplateField)" matTooltip="Delete field.">
+                                <mat-icon>delete</mat-icon>
+                              </button>
+                            </div>
+                          </mat-expansion-panel-header>
+                          
+                          <div>
+      
+                            <p>
+                              <Label></Label>
+                              Label : {{ctemplateField.label}}
+                            </p>
+                          </div>
+                        </mat-expansion-panel>
+                        }
+                      </div>
+                    </div>
                   </mat-expansion-panel>
                   }
                 </div>
@@ -298,6 +335,11 @@
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="example-full-width">
+              <mat-label>Suggestions</mat-label>
+              <input matInput #input placeholder="Enter suggestions" formControlName="suggestions" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="example-full-width">
               <mat-label>Max Length</mat-label>
               <input matInput #input placeholder="Enter Max Length" formControlName="maxLength" />
             </mat-form-field>
@@ -419,7 +461,7 @@
                               <mat-label>{{gField.label}}</mat-label>
                               <br />
                               <mat-select matInput id={{gField.code}} placeholder={{gField.placeholder}}>
-                                <mat-option *ngFor="let inputTypeOption of templateField.suggestionOptions?.items">
+                                <mat-option *ngFor="let inputTypeOption of gField.suggestionOptions?.items">
                                   {{ inputTypeOption }}
                                 </mat-option>
                               </mat-select>

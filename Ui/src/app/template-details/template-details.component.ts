@@ -60,7 +60,7 @@ import { provideNativeDateAdapter } from '@angular/material/core';
   }
 
 .mat-sidenav {
-  width: 600px;
+  width: 700px;
 }
 
 .mat-right-sidenav {
@@ -194,6 +194,7 @@ export class TemplateDetailsComponent implements OnInit {
       options: [''],
       placeholder: [''],
       errorMessages: [''],
+      suggestions: [''],
       maxLength: [0],
     });
 
@@ -229,6 +230,7 @@ export class TemplateDetailsComponent implements OnInit {
           this.templateVersion.templatePanels.forEach(tPanel => {
             tPanel.templateSections.forEach(tSection => {
               var removeItems: number[] = [];
+
               tSection.templateFields.forEach((tField) => {
 
                 if (tField.suggestions != undefined) {
@@ -242,6 +244,9 @@ export class TemplateDetailsComponent implements OnInit {
                 if (tField.options != undefined) {
                   tField.optionItems = JSON.parse(tField.options);
                 }
+              });
+
+              tSection.templateFields.forEach((tField) => {
 
                 if (tField.parentFieldId != undefined) {
                   var parentField = tSection.templateFields.find(dd => dd.id == tField.parentFieldId);
@@ -429,6 +434,7 @@ export class TemplateDetailsComponent implements OnInit {
       options: this.selectTemplateField.options,
       placeholder: this.selectTemplateField.placeholder,
       errorMessages: this.selectTemplateField.errorMessages,
+      suggestions: this.selectTemplateField.suggestions,
       maxLength: this.selectTemplateField.maxLength ?? 0,
     })
 
@@ -441,11 +447,13 @@ export class TemplateDetailsComponent implements OnInit {
     this.selectTemplateField.caption = this.templateFieldForm.value.caption;
     this.selectTemplateField.order = this.templateFieldForm.value.order;
     this.selectTemplateField.rowNumber = this.templateFieldForm.value.row;
+    this.selectTemplateField.inputType = this.templateFieldForm.value.inputType;
     this.selectTemplateField.label = this.templateFieldForm.value.label;
     this.selectTemplateField.validators = this.templateFieldForm.value.validators;
     this.selectTemplateField.options = this.templateFieldForm.value.options;
     this.selectTemplateField.placeholder = this.templateFieldForm.value.placeholder;
     this.selectTemplateField.errorMessages = this.templateFieldForm.value.errorMessages;
+    this.selectTemplateField.suggestions = this.templateFieldForm.value.suggestions;
     this.selectTemplateField.maxLength = this.templateFieldForm.value.ma;
 
     this.apiService.updateTemplateField(this.selectTemplateField)
@@ -498,6 +506,16 @@ export class TemplateDetailsComponent implements OnInit {
     this.selectTemplateField = {} as TemplateField;
     this.templateFieldForm.reset();
     this.selectTemplateField.templateSectionId = templateSection.id;
+
+    this.isTemplateField = true;
+    this.isTemplateSection = this.isTemplatePanel = false;
+  }
+
+  addChildFieldProperty(templateField: TemplateField) {
+    this.selectTemplateField = {} as TemplateField;
+    this.templateFieldForm.reset();
+    this.selectTemplateField.templateSectionId = templateField.templateSectionId;
+    this.selectTemplateField.parentFieldId = templateField.id;
 
     this.isTemplateField = true;
     this.isTemplateSection = this.isTemplatePanel = false;
