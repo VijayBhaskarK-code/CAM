@@ -93,7 +93,7 @@ CREATE TABLE [dbo].[TemplateVersion] (
 --Create TempaltePanel table
 CREATE TABLE [dbo].[TemplatePanel] (
 	[Id] int IDENTITY(1,1) NOT NULL UNIQUE,
-	[Name] nvarchar(max) NOT NULL,
+	[Name] nvarchar(max) NULL,
 	[HintName] nvarchar(max) NULL,
 	[TemplateVersionId] int NOT NULL,
 	[Order] int NULL,
@@ -293,14 +293,14 @@ WHERE TPanel.TemplateVersionId = @templateVersionId AND TSection.TemplatePanelId
 
 
 
--- Insert GroupPrototype Field Records
+------ Insert GroupPrototype Field Records
 INSERT INTO [dbo].[TemplateField]
            ([TemplateSectionId], [ParentFieldId], [inputtype], [code], [label], [required], [requiredOnSave], [panelType], [maxLength], [placeholder], [list], [suggestions], [multiple], [inline], [initialcount], 
-[groupPrototype], [group], [additional], [options], [validators], [asyncValidators], [errorMessages])
+[groupPrototype], [group], [additional], [options], [validators], [asyncValidators], [errorMessages], [Hidden])
 select TSection.[Id], TField.[Id], GroupFormFields.[type], GroupFormFields.[code], GroupFormFields.[label], GroupFormFields.[required], GroupFormFields.[requiredOnSave], GroupFormFields.[panelType], 
 GroupFormFields.[maxLength], GroupFormFields.[placeholder], GroupFormFields.[list], GroupFormFields.[suggestions], GroupFormFields.[multiple], GroupFormFields.[inline], GroupFormFields.[initialcount], 
 GroupFormFields.[groupPrototype], GroupFormFields.[group], GroupFormFields.[additional], GroupFormFields.[options], GroupFormFields.[validators], GroupFormFields.[asyncValidators], 
-GroupFormFields.[errorMessages] from OPENJSON( @json,'$')
+GroupFormFields.[errorMessages], GroupFormFields.[hidden] from OPENJSON( @json,'$')
 with (
 PanelName nvarchar(max) N'$.name',
 sections nvarchar(max) N'$.sections' as json
@@ -333,6 +333,7 @@ initialcount nvarchar(max) N'$.initialcount',
 groupPrototype nvarchar(max) N'$.groupPrototype' as json,
 [group] nvarchar(max) N'$.group' as json,
 additional nvarchar(max) N'$.additional' as json,
+[hidden] nvarchar(max) N'$.hidden',
 options nvarchar(max) N'$.options' as json,
 validators nvarchar(max) N'$.validators' as json,
 asyncValidators nvarchar(max) N'$.asyncValidators' as json,
@@ -342,11 +343,12 @@ INNER JOIN [dbo].[TemplatePanel] TPanel ON TPanel.[Name] = Panels.PanelName
 INNER JOIN [dbo].[TemplateSection] TSection ON TSection.[SectionName] = Sections.[SectionName]
 INNER JOIN [dbo].[TemplateField] TField ON TField.[Code] = FormFields.[Code]
 WHERE FormFields.groupPrototype is not null
-AND TPanel.TemplateVersionId = @templateVersionId AND TSection.TemplatePanelId = TPanel.Id;
+AND TPanel.TemplateVersionId = @templateVersionId AND TSection.TemplatePanelId = TPanel.Id
+AND TField.TemplateSectionId = TSection.Id AND TSection.TemplatePanelId = TPanel.Id;
 
 
 
--- Insert GroupPrototype's Group Field Records
+---- Insert GroupPrototype's Group Field Records
 INSERT INTO [dbo].[TemplateField]
            ([TemplateSectionId], [ParentFieldId], [inputtype], [code], [label], [required], [requiredOnSave], [panelType], [maxLength], [placeholder], [list], [suggestions], [multiple], [inline], [initialcount], 
 [groupPrototype], [group], [additional], [options], [validators], [asyncValidators], [errorMessages])
@@ -400,11 +402,13 @@ INNER JOIN [dbo].[TemplatePanel] TPanel ON TPanel.[Name] = Panels.PanelName
 INNER JOIN [dbo].[TemplateSection] TSection ON TSection.[SectionName] = Sections.[SectionName]
 INNER JOIN [dbo].[TemplateField] TField ON TField.[Code] = GroupFormFields.[Code]
 WHERE FormFields.groupPrototype is not null
-AND TPanel.TemplateVersionId = @templateVersionId AND TSection.TemplatePanelId = TPanel.Id;
+AND TPanel.TemplateVersionId = @templateVersionId AND TSection.TemplatePanelId = TPanel.Id
+AND TField.TemplateSectionId = TSection.Id AND TSection.TemplatePanelId = TPanel.Id;
 
 
 
---Insert Group Field Records
+
+----Insert Group Field Records
 INSERT INTO [dbo].[TemplateField]
            ([TemplateSectionId], [ParentFieldId], [inputtype], [code], [label], [required], [requiredOnSave], [panelType], [maxLength], [placeholder], [list], [suggestions], [multiple], [inline], [initialcount], 
 [groupPrototype], [group], [additional], [options], [validators], [asyncValidators], [errorMessages])
@@ -453,7 +457,9 @@ INNER JOIN [dbo].[TemplatePanel] TPanel ON TPanel.[Name] = Panels.PanelName
 INNER JOIN [dbo].[TemplateSection] TSection ON TSection.[SectionName] = Sections.[SectionName]
 INNER JOIN [dbo].[TemplateField] TField ON TField.[Code] = FormFields.[Code]
 WHERE FormFields.[group] is not null
-AND TPanel.TemplateVersionId = @templateVersionId AND TSection.TemplatePanelId = TPanel.Id;
+AND TPanel.TemplateVersionId = @templateVersionId AND TSection.TemplatePanelId = TPanel.Id
+AND TField.TemplateSectionId = TSection.Id AND TSection.TemplatePanelId = TPanel.Id;
+
 
 SET @Counter  = @Counter  + 1        
 END

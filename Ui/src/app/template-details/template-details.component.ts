@@ -1,6 +1,6 @@
 import { Router, ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, ViewChild, ChangeDetectionStrategy, OnDestroy, inject, NgModule } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy, inject, NgModule } from '@angular/core';
 import { NgIf } from '@angular/common';
 import { TemplatePanel } from '../models/template.panel.model';
 import { TemplateSection } from '../models/template.section.model';
@@ -18,7 +18,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { TemplateField } from '../models/template.field.model';
+import { TemplateField, GroupTemplateField } from '../models/template.field.model';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatCardModule } from '@angular/material/card';
 import { FormBuilder, FormGroup, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -84,6 +84,46 @@ import { provideNativeDateAdapter } from '@angular/material/core';
   color: red;
 }
 
+
+.example-container {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 60px;
+  bottom: 5px;
+  left: 5px;
+  right: 5px;
+}
+
+.horizontal-container {
+  display: flex;
+   flex-direction: row;
+   flex-wrap: wrap;
+  top: 60px;
+  bottom: 5px;
+  left: 50px;
+  right: 50px;
+}
+
+.horizontal-control-container {
+  display: block;
+  top: 60px;
+  bottom: 50px;
+  left: 50px;
+  right: 50px;
+  
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.vertical-container {
+  display: flex;
+  top: 60px;
+  bottom: 5px;
+  left: 5px;
+  right: 5px;
+}
+
 `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -108,7 +148,8 @@ export class TemplateDetailsComponent implements OnInit {
   templateFieldForm!: FormGroup;
 
   isPreviewing: boolean = false;
-  constructor(private fb: FormBuilder, private apiService: ApiService, private router: Router, private activatedRoute: ActivatedRoute) {
+  constructor(private fb: FormBuilder, private apiService: ApiService, private router: Router, private activatedRoute: ActivatedRoute,
+    private changeRef: ChangeDetectorRef) {
     this.isTemplatePanel = this.isTemplateSection = this.isTemplateField = false;
   }
 
@@ -167,12 +208,14 @@ export class TemplateDetailsComponent implements OnInit {
     this.apiService.getTemplateVersionById(id)
       .subscribe({
         next: (res) => {
-
           this.templateVersion = res;
+
           this.templateVersion.templatePanels.forEach(tPanel => {
             tPanel.templateSections.forEach(tSection => {
               var removeItems: number[] = [];
               tSection.templateFields.forEach((tField) => {
+
+
                 if (tField.options != undefined) {
                   tField.optionItems = JSON.parse(tField.options);
                 }
@@ -182,6 +225,7 @@ export class TemplateDetailsComponent implements OnInit {
                   if (parentField != null) {
                     if (parentField.childTemplateFields == undefined)
                       parentField.childTemplateFields = [];
+                    parentField.groupTemplateFields = [];
 
                     parentField.childTemplateFields.push(tField);
                     removeItems.push(tField.id);
@@ -194,7 +238,10 @@ export class TemplateDetailsComponent implements OnInit {
               });
             })
           });
+
           this.templatePanels = this.templateVersion.templatePanels;
+          console.log(this.templatePanels);
+          this.changeRef.detectChanges();
         },
         error: (err) => {
           console.log(err);
@@ -402,6 +449,29 @@ export class TemplateDetailsComponent implements OnInit {
       });
   }
 
+  deleteCustomFieldProperty(templateField: TemplateField, gFields: GroupTemplateField) {
+    if (templateField.groupTemplateFields == null)
+      templateField.groupTemplateFields = [];
+
+    templateField.groupTemplateFields = templateField.groupTemplateFields.filter(item => item.id != gFields.id);
+
+    this.changeRef.detectChanges();
+  }
+
+  addCustomFieldProperty(templateField: TemplateField) {
+    if (templateField.childTemplateFields == null)
+      templateField.childTemplateFields = [];
+
+    if (templateField.groupTemplateFields == null)
+      templateField.groupTemplateFields = [];
+
+    var gg: GroupTemplateField = { id: templateField.groupTemplateFields.length.toString(), fields: templateField.childTemplateFields };
+
+    templateField.groupTemplateFields.push(gg);
+
+    this.changeRef.detectChanges();
+  }
+
   addFieldProperty(templateSection: TemplateSection) {
     this.selectTemplateField = {} as TemplateField;
     this.templateFieldForm.reset();
@@ -412,6 +482,8 @@ export class TemplateDetailsComponent implements OnInit {
   }
 
   togglePreviewSidenav() {
+    //this.router.navigate(['controls/'+ this.templateVersionId +'/preview'])
+
     this.isPreviewing = !this.isPreviewing;
   }
 }

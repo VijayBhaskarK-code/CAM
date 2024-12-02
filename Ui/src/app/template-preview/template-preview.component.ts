@@ -95,8 +95,7 @@ export class TemplatePreviewComponent implements OnInit {
 
   ngOnInit() {
     this.activatedRoute.params.subscribe(val => {
-      //this.templateVersionId = val['versionId'];
-      this.templateVersionId = 1;
+      this.templateVersionId = val['versionId'];
       if (this.templateVersionId) {
         this.getTemplateVersion(this.templateVersionId);
       }
