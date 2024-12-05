@@ -33,17 +33,17 @@
 
 
 
-DROP Table [dbo].[TemplateField];
-DROP Table [dbo].[TemplateSection];
-DROP Table [dbo].[TemplatePanel];
-DROP Table [dbo].[TemplateVersion];
-DROP Table [dbo].[TemplateParent];
-DROP Table [dbo].[TemplateType];
+DROP Table [dbo].[S_TemplateField];
+DROP Table [dbo].[S_TemplateSection];
+DROP Table [dbo].[S_TemplatePanel];
+DROP Table [dbo].[S_TemplateVersion];
+DROP Table [dbo].[S_TemplateParent];
+DROP Table [dbo].[S_TemplateType];
 
 
 
 --Create TempalteType table
-CREATE TABLE [dbo].[TemplateType] (
+CREATE TABLE [dbo].[S_TemplateType] (
 	[Id] int IDENTITY(1,1) NOT NULL UNIQUE,
 	[Code] nvarchar(max) NOT NULL,
 	[Description] nvarchar(max) NOT NULL,
@@ -57,7 +57,7 @@ CREATE TABLE [dbo].[TemplateType] (
 
 
 --Create TempalteParent table
-CREATE TABLE [dbo].[TemplateParent] (
+CREATE TABLE [dbo].[S_TemplateParent] (
 	[Id] int IDENTITY(1,1) NOT NULL UNIQUE,
 	[Title] nvarchar(max) NOT NULL,
 	[Code] nvarchar(max) NULL,
@@ -73,7 +73,7 @@ CREATE TABLE [dbo].[TemplateParent] (
 
 
 --Create TempalteVersion table
-CREATE TABLE [dbo].[TemplateVersion] (
+CREATE TABLE [dbo].[S_TemplateVersion] (
 	[Id] int IDENTITY(1,1) NOT NULL UNIQUE,
 	[TemplateId] int NOT NULL,
 	[Version] nvarchar(max) NOT NULL,
@@ -91,7 +91,7 @@ CREATE TABLE [dbo].[TemplateVersion] (
 
 
 --Create TempaltePanel table
-CREATE TABLE [dbo].[TemplatePanel] (
+CREATE TABLE [dbo].[S_TemplatePanel] (
 	[Id] int IDENTITY(1,1) NOT NULL UNIQUE,
 	[Name] nvarchar(max) NULL,
 	[HintName] nvarchar(max) NULL,
@@ -108,7 +108,7 @@ CREATE TABLE [dbo].[TemplatePanel] (
 
 
 --Create TempalteSection table
-CREATE TABLE [dbo].[TemplateSection] (
+CREATE TABLE [dbo].[S_TemplateSection] (
 	[Id] int IDENTITY(1,1) NOT NULL UNIQUE,
 	[TemplatePanelId] int NOT NULL,
 	[SectionName] nvarchar(max) NOT NULL,
@@ -134,7 +134,7 @@ CREATE TABLE [dbo].[TemplateSection] (
 
 
 --Create TempalteField table
-CREATE TABLE [dbo].[TemplateField] (
+CREATE TABLE [dbo].[S_TemplateField] (
 	[Id] int IDENTITY(1,1) NOT NULL UNIQUE,
 	[TemplateSectionId] int NOT NULL,
 	[ParentFieldId] int NULL,
@@ -171,22 +171,22 @@ CREATE TABLE [dbo].[TemplateField] (
 );
 
 
-ALTER TABLE [dbo].[TemplateParent] ADD CONSTRAINT [FK_TemplateParent_TemplateType_Id] FOREIGN KEY ([TemplateTypeId]) REFERENCES [dbo].[TemplateType]([Id]);
-ALTER TABLE [dbo].[TemplateVersion] ADD CONSTRAINT [FK_TemplateVersion_TemplateParent_Id] FOREIGN KEY ([TemplateId]) REFERENCES [dbo].[TemplateParent]([Id]);
-ALTER TABLE [dbo].[TemplateField] ADD CONSTRAINT [FK_TemplateField_TemplateSection_Id] FOREIGN KEY ([TemplateSectionId]) REFERENCES [dbo].[TemplateSection]([Id]);
-ALTER TABLE [dbo].[TemplateSection] ADD CONSTRAINT [FK_TemplateSection_TemplatePanel_Id] FOREIGN KEY ([TemplatePanelId]) REFERENCES [dbo].[TemplatePanel]([Id]);
-ALTER TABLE [dbo].[TemplatePanel] ADD CONSTRAINT [FK_TemplatePanel_TemplateVersion_Id] FOREIGN KEY ([TemplateVersionId]) REFERENCES [dbo].[TemplateVersion]([Id]);
+ALTER TABLE [dbo].[S_TemplateParent] ADD CONSTRAINT [FK_S_TemplateParent_TemplateType_Id] FOREIGN KEY ([TemplateTypeId]) REFERENCES [dbo].[S_TemplateType]([Id]);
+ALTER TABLE [dbo].[S_TemplateVersion] ADD CONSTRAINT [FK_S_TemplateVersion_TemplateParent_Id] FOREIGN KEY ([TemplateId]) REFERENCES [dbo].[S_TemplateParent]([Id]);
+ALTER TABLE [dbo].[S_TemplateField] ADD CONSTRAINT [FK_S_TemplateField_TemplateSection_Id] FOREIGN KEY ([TemplateSectionId]) REFERENCES [dbo].[S_TemplateSection]([Id]);
+ALTER TABLE [dbo].[S_TemplateSection] ADD CONSTRAINT [FK_S_TemplateSection_TemplatePanel_Id] FOREIGN KEY ([TemplatePanelId]) REFERENCES [dbo].[S_TemplatePanel]([Id]);
+ALTER TABLE [dbo].[S_TemplatePanel] ADD CONSTRAINT [FK_S_TemplatePanel_TemplateVersion_Id] FOREIGN KEY ([TemplateVersionId]) REFERENCES [dbo].[S_TemplateVersion]([Id]);
 
 
 --Insert TemplateType table
-INSERT INTO [dbo].[TemplateType] ([Code], [Description]) VALUES('MoWP', 'Memorandum Of Work Performed.');
-INSERT INTO [dbo].[TemplateType] ([Code], [Description]) VALUES('AoR', 'Acknowledgement Of Receipt.');
-INSERT INTO [dbo].[TemplateType] ([Code], [Description]) VALUES('Confirmation', 'Confirmation.');
+INSERT INTO [dbo].[S_TemplateType] ([Code], [Description]) VALUES('MoWP', 'Memorandum Of Work Performed.');
+INSERT INTO [dbo].[S_TemplateType] ([Code], [Description]) VALUES('AoR', 'Acknowledgement Of Receipt.');
+INSERT INTO [dbo].[S_TemplateType] ([Code], [Description]) VALUES('Confirmation', 'Confirmation.');
 
 
 
 --Insert TempalteParent table
-INSERT INTO [dbo].[TemplateParent] ([Title], [TemplateTypeId], [CreatedUTCDate], [CreatedBy], [ModifiedUTCDate], [ModifiedBy]) SELECT [Title], 1, [CreatedUTCDate], [CreatedBy], [ModifiedUTCDate], [ModifiedBy] FROM [dbo].[MemorandumOfWorkPerformed];
+INSERT INTO [dbo].[S_TemplateParent] ([Title], [TemplateTypeId], [CreatedUTCDate], [CreatedBy], [ModifiedUTCDate], [ModifiedBy]) SELECT [Title], 1, [CreatedUTCDate], [CreatedBy], [ModifiedUTCDate], [ModifiedBy] FROM [dbo].[MemorandumOfWorkPerformed];
 
 
 DECLARE @Counter INT , @MaxId INT
@@ -198,7 +198,7 @@ BEGIN
 DECLARE @templateVersionId int;
 
 --Insert TemplateVersion table
-INSERT INTO [dbo].[TemplateVersion] ([TemplateId], [Version], [Status], [Description],  CreatedUTCDate, CreatedBy, ModifiedUTCDate, ModifiedBy)
+INSERT INTO [dbo].[S_TemplateVersion] ([TemplateId], [Version], [Status], [Description],  CreatedUTCDate, CreatedBy, ModifiedUTCDate, ModifiedBy)
 SELECT [MowpTempId], [Version], 1, '', CreatedUTCDate, CreatedBy, ModifiedUTCDate, ModifiedBy from MOWPTemplateVersions WHERE Id = @Counter;
 
 SET @templateVersionId = SCOPE_IDENTITY()
@@ -210,7 +210,7 @@ DECLARE @json NVARCHAR(MAX);
 
 
 -- Insert TemplatePanel Records
-INSERT INTO [dbo].[TemplatePanel] ([TemplateVersionId], [Name], [HintName])
+INSERT INTO [dbo].[S_TemplatePanel] ([TemplateVersionId], [Name], [HintName])
 select @templateVersionId, Panels.PanelName, Panels.HintName from OPENJSON( @json,'$')
 with (
 PanelName nvarchar(max) N'$.name',
@@ -221,7 +221,7 @@ sections nvarchar(max) N'$.sections' as json
 
 
 -- Insert TempalteSection Records
-INSERT INTO [dbo].[TemplateSection] ([TemplatePanelId], [SectionName], [SectionHeader], [HintName], [ArrayName], [ShowHeader], [Config], [ShowButton], [ButtonLabel], [CTHeader], [HideHint], [OnCondition])
+INSERT INTO [dbo].[S_TemplateSection] ([TemplatePanelId], [SectionName], [SectionHeader], [HintName], [ArrayName], [ShowHeader], [Config], [ShowButton], [ButtonLabel], [CTHeader], [HideHint], [OnCondition])
 select TPanel.[Id], Sections.[SectionName], Sections.[SectionHeader], Sections.[HintName], Sections.[ArrayName], Sections.[ShowHeader], Sections.[Config], Sections.[ShowButton], Sections.[ButtonLabel], Sections.[CTHeader], Sections.[hideHint], Sections.[showFormArraysOnCondition] from OPENJSON( @json,'$')
 with (
 PanelName nvarchar(max) N'$.name',
@@ -242,13 +242,13 @@ hideHint nvarchar(max) N'$.hideHint',
 showFormArraysOnCondition nvarchar(max) N'$.showFormArraysOnCondition' as json,
 formFields nvarchar(max) N'$.formFields' as json
 ) as Sections
-INNER JOIN [dbo].[TemplatePanel] TPanel ON TPanel.[Name] = Panels.PanelName
+INNER JOIN [dbo].[S_TemplatePanel] TPanel ON TPanel.[Name] = Panels.PanelName
 WHERE TPanel.TemplateVersionId = @templateVersionId;
 
 
 
 -- Insert TemplateField Records
-INSERT INTO [dbo].[TemplateField]
+INSERT INTO [dbo].[S_TemplateField]
            ([TemplateSectionId], [inputtype], [code], [label], [required], [requiredOnSave], [panelType], [maxLength], [placeholder], [list], [suggestions], [multiple], [inline], [initialcount], 
 [groupPrototype], [group], [additional], [options], [validators], [asyncValidators], [errorMessages])
 select TSection.[Id], FormFields.[type], FormFields.[code], FormFields.[label], FormFields.[required], FormFields.[requiredOnSave], FormFields.[panelType], 
@@ -287,14 +287,14 @@ validators nvarchar(max) N'$.validators' as json,
 asyncValidators nvarchar(max) N'$.asyncValidators' as json,
 errorMessages nvarchar(max) N'$.errorMessages' as json
 ) as FormFields
-INNER JOIN [dbo].[TemplatePanel] TPanel ON TPanel.[Name] = Panels.PanelName
-INNER JOIN [dbo].[TemplateSection] TSection ON TSection.[SectionName] = Sections.SectionName
+INNER JOIN [dbo].[S_TemplatePanel] TPanel ON TPanel.[Name] = Panels.PanelName
+INNER JOIN [dbo].[S_TemplateSection] TSection ON TSection.[SectionName] = Sections.SectionName
 WHERE TPanel.TemplateVersionId = @templateVersionId AND TSection.TemplatePanelId = TPanel.Id;
 
 
 
 ------ Insert GroupPrototype Field Records
-INSERT INTO [dbo].[TemplateField]
+INSERT INTO [dbo].[S_TemplateField]
            ([TemplateSectionId], [ParentFieldId], [inputtype], [code], [label], [required], [requiredOnSave], [panelType], [maxLength], [placeholder], [list], [suggestions], [multiple], [inline], [initialcount], 
 [groupPrototype], [group], [additional], [options], [validators], [asyncValidators], [errorMessages], [Hidden])
 select TSection.[Id], TField.[Id], GroupFormFields.[type], GroupFormFields.[code], GroupFormFields.[label], GroupFormFields.[required], GroupFormFields.[requiredOnSave], GroupFormFields.[panelType], 
@@ -339,9 +339,9 @@ validators nvarchar(max) N'$.validators' as json,
 asyncValidators nvarchar(max) N'$.asyncValidators' as json,
 errorMessages nvarchar(max) N'$.errorMessages' as json
 ) as GroupFormFields
-INNER JOIN [dbo].[TemplatePanel] TPanel ON TPanel.[Name] = Panels.PanelName
-INNER JOIN [dbo].[TemplateSection] TSection ON TSection.[SectionName] = Sections.[SectionName]
-INNER JOIN [dbo].[TemplateField] TField ON TField.[Code] = FormFields.[Code]
+INNER JOIN [dbo].[S_TemplatePanel] TPanel ON TPanel.[Name] = Panels.PanelName
+INNER JOIN [dbo].[S_TemplateSection] TSection ON TSection.[SectionName] = Sections.[SectionName]
+INNER JOIN [dbo].[S_TemplateField] TField ON TField.[Code] = FormFields.[Code]
 WHERE FormFields.groupPrototype is not null
 AND TPanel.TemplateVersionId = @templateVersionId AND TSection.TemplatePanelId = TPanel.Id
 AND TField.TemplateSectionId = TSection.Id AND TSection.TemplatePanelId = TPanel.Id;
@@ -349,7 +349,7 @@ AND TField.TemplateSectionId = TSection.Id AND TSection.TemplatePanelId = TPanel
 
 
 ---- Insert GroupPrototype's Group Field Records
-INSERT INTO [dbo].[TemplateField]
+INSERT INTO [dbo].[S_TemplateField]
            ([TemplateSectionId], [ParentFieldId], [inputtype], [code], [label], [required], [requiredOnSave], [panelType], [maxLength], [placeholder], [list], [suggestions], [multiple], [inline], [initialcount], 
 [groupPrototype], [group], [additional], [options], [validators], [asyncValidators], [errorMessages])
 select TSection.[Id], TField.[Id], GroupArrayFormFields.[type], GroupArrayFormFields.[code], GroupArrayFormFields.[label], GroupArrayFormFields.[required], GroupArrayFormFields.[requiredOnSave], GroupArrayFormFields.[panelType], 
@@ -398,9 +398,9 @@ validators nvarchar(max) N'$.validators' as json,
 asyncValidators nvarchar(max) N'$.asyncValidators' as json,
 errorMessages nvarchar(max) N'$.errorMessages' as json
 ) as GroupArrayFormFields
-INNER JOIN [dbo].[TemplatePanel] TPanel ON TPanel.[Name] = Panels.PanelName
-INNER JOIN [dbo].[TemplateSection] TSection ON TSection.[SectionName] = Sections.[SectionName]
-INNER JOIN [dbo].[TemplateField] TField ON TField.[Code] = GroupFormFields.[Code]
+INNER JOIN [dbo].[S_TemplatePanel] TPanel ON TPanel.[Name] = Panels.PanelName
+INNER JOIN [dbo].[S_TemplateSection] TSection ON TSection.[SectionName] = Sections.[SectionName]
+INNER JOIN [dbo].[S_TemplateField] TField ON TField.[Code] = GroupFormFields.[Code]
 WHERE FormFields.groupPrototype is not null
 AND TPanel.TemplateVersionId = @templateVersionId AND TSection.TemplatePanelId = TPanel.Id
 AND TField.TemplateSectionId = TSection.Id AND TSection.TemplatePanelId = TPanel.Id;
@@ -409,7 +409,7 @@ AND TField.TemplateSectionId = TSection.Id AND TSection.TemplatePanelId = TPanel
 
 
 ----Insert Group Field Records
-INSERT INTO [dbo].[TemplateField]
+INSERT INTO [dbo].[S_TemplateField]
            ([TemplateSectionId], [ParentFieldId], [inputtype], [code], [label], [required], [requiredOnSave], [panelType], [maxLength], [placeholder], [list], [suggestions], [multiple], [inline], [initialcount], 
 [groupPrototype], [group], [additional], [options], [validators], [asyncValidators], [errorMessages])
 select TSection.[Id], TField.[Id], GroupFormFields.[type], GroupFormFields.[code], GroupFormFields.[label], GroupFormFields.[required], GroupFormFields.[requiredOnSave], GroupFormFields.[panelType], 
@@ -453,9 +453,9 @@ validators nvarchar(max) N'$.validators' as json,
 asyncValidators nvarchar(max) N'$.asyncValidators' as json,
 errorMessages nvarchar(max) N'$.errorMessages' as json
 ) as GroupFormFields
-INNER JOIN [dbo].[TemplatePanel] TPanel ON TPanel.[Name] = Panels.PanelName
-INNER JOIN [dbo].[TemplateSection] TSection ON TSection.[SectionName] = Sections.[SectionName]
-INNER JOIN [dbo].[TemplateField] TField ON TField.[Code] = FormFields.[Code]
+INNER JOIN [dbo].[S_TemplatePanel] TPanel ON TPanel.[Name] = Panels.PanelName
+INNER JOIN [dbo].[S_TemplateSection] TSection ON TSection.[SectionName] = Sections.[SectionName]
+INNER JOIN [dbo].[S_TemplateField] TField ON TField.[Code] = FormFields.[Code]
 WHERE FormFields.[group] is not null
 AND TPanel.TemplateVersionId = @templateVersionId AND TSection.TemplatePanelId = TPanel.Id
 AND TField.TemplateSectionId = TSection.Id AND TSection.TemplatePanelId = TPanel.Id;
@@ -465,8 +465,8 @@ SET @Counter  = @Counter  + 1
 END
 
 
-SELECT * FROM [dbo].[TemplateParent];
-SELECT * FROM [dbo].[TemplateVersion];
-SELECT * FROM [dbo].[TemplatePanel];
-SELECT * FROM [dbo].[TemplateSection];
-SELECT * FROM [dbo].[TemplateField];
+SELECT * FROM [dbo].[S_TemplateParent];
+SELECT * FROM [dbo].[S_TemplateVersion];
+SELECT * FROM [dbo].[S_TemplatePanel];
+SELECT * FROM [dbo].[S_TemplateSection];
+SELECT * FROM [dbo].[S_TemplateField];

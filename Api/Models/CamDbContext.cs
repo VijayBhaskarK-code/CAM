@@ -35,7 +35,7 @@ public partial class CamDbContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PK__Template__3214EC071D8C0814");
 
-            entity.ToTable("TemplateField");
+            entity.ToTable("S_TemplateField");
 
             entity.HasIndex(e => e.Id, "UQ__Template__3214EC0681E4AF4A").IsUnique();
 
@@ -45,14 +45,14 @@ public partial class CamDbContext : DbContext
             entity.HasOne(d => d.TemplateSection).WithMany(p => p.TemplateFields)
                 .HasForeignKey(d => d.TemplateSectionId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_TemplateField_TemplateSection_Id");
+                .HasConstraintName("FK_S_TemplateField_TemplateSection_Id");
         });
 
         modelBuilder.Entity<TemplateParent>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__Template__3214EC0704E517DF");
 
-            entity.ToTable("TemplateParent");
+            entity.ToTable("S_TemplateParent");
 
             entity.HasIndex(e => e.Id, "UQ__Template__3214EC063F92DBA2").IsUnique();
 
@@ -62,14 +62,14 @@ public partial class CamDbContext : DbContext
             entity.HasOne(d => d.TemplateType).WithMany(p => p.TemplateParents)
                 .HasForeignKey(d => d.TemplateTypeId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_TemplateParent_TemplateType_Id");
+                .HasConstraintName("FK_S_TemplateParent_TemplateType_Id");
         });
 
         modelBuilder.Entity<TemplateVersion>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__Template__3214EC07EEF363F8");
 
-            entity.ToTable("TemplateVersion");
+            entity.ToTable("S_TemplateVersion");
 
             entity.HasIndex(e => e.Id, "UQ__Template__3214EC0657B443E4").IsUnique();
 
@@ -80,14 +80,14 @@ public partial class CamDbContext : DbContext
             entity.HasOne(d => d.Template).WithMany(p => p.TemplateVersions)
                 .HasForeignKey(d => d.TemplateId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_TemplateVersion_TemplateParent_Id");
+                .HasConstraintName("FK_S_TemplateVersion_TemplateParent_Id");
         });
 
         modelBuilder.Entity<TemplatePanel>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__Template__3214EC0722A272C8");
 
-            entity.ToTable("TemplatePanel");
+            entity.ToTable("S_TemplatePanel");
 
             entity.HasIndex(e => e.Id, "UQ__Template__3214EC06AE77ED7F").IsUnique();
 
@@ -97,14 +97,14 @@ public partial class CamDbContext : DbContext
             entity.HasOne(d => d.TemplateVersion).WithMany(p => p.TemplatePanels)
                 .HasForeignKey(d => d.TemplateVersionId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_TemplatePanel_TemplateVersion_Id");
+                .HasConstraintName("FK_S_TemplatePanel_TemplateVersion_Id");
         });
 
         modelBuilder.Entity<TemplateSection>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__Template__3214EC076B7CFECD");
 
-            entity.ToTable("TemplateSection");
+            entity.ToTable("S_TemplateSection");
 
             entity.HasIndex(e => e.Id, "UQ__Template__3214EC06EC42579C").IsUnique();
 
@@ -115,14 +115,14 @@ public partial class CamDbContext : DbContext
             entity.HasOne(d => d.TemplatePanel).WithMany(p => p.TemplateSections)
                 .HasForeignKey(d => d.TemplatePanelId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_TemplateSection_TemplatePanel_Id");
+                .HasConstraintName("FK_S_TemplateSection_TemplatePanel_Id");
         });
 
         modelBuilder.Entity<TemplateType>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__Template__3214EC07D0EF520E");
 
-            entity.ToTable("TemplateType");
+            entity.ToTable("S_TemplateType");
 
             entity.HasIndex(e => e.Id, "UQ__Template__3214EC06E726953F").IsUnique();
 
