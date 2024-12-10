@@ -31,14 +31,14 @@
     <ng-template pTemplate>
       <div class="flex items-center justify-center h-full">
         <div class="flex flex-wrap gap-2 mb-6">
-          <p-button (click)="togglePreviewSidenav()">Preview
-          </p-button>
+          <!-- <p-button (click)="togglePreviewSidenav()">Preview
+          </p-button> -->
         </div>
 
-        <div class="example-container" *ngIf="isTemplatePanel" id="selectedPanelDiv">
+        <div *ngIf="isTemplatePanel" id="selectedPanelDiv">
           <form [formGroup]="templatePanelForm">
             <h3>Panel Details</h3>
-            <div class="example-right-container">
+            <div >
               <p-button (click)="savePanelProperty()">
                 Save
               </p-button>
@@ -233,6 +233,7 @@
 
     <ng-template pTemplate>
       <div class="flex items-center justify-center h-full">
+        <h2>Template Preview </h2>
         <div class="example-container">
           <ng-container>
             <div class="col-xs-12 mowp-form-panel mbx20" *ngFor="let panel of templatePanels; let i = index">

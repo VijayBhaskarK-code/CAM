@@ -3,6 +3,21 @@ This project provide user to create screens, which users can use them to data en
 
 It has three Dot not core project, Angular with PrimeNG Ui project.
 
+Templates Dashboard.
+![image info](Images/Templates-Dashboard.jpeg)
+
+Add/Update Panel details with Preview
+![image info](Images/AoR-Panel-Preview.jpeg)
+
+Add/Update Section details with Preview
+![image info](Images/AoR-Section-Preview.jpeg)
+
+Add/Update Field details with Preview
+![image info](Images/AoR-Field-Preview.jpeg)
+
+Preview screen custom controls
+![image info](Images/MoWP-Preview.jpeg)
+
 # Ui
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.15.
