@@ -1,3 +1,8 @@
+# Introduction
+This project provide user to create screens, which users can use them to data entry screens.
+
+It has three Dot not core project, Angular with PrimeNG Ui project.
+
 # Ui
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.15.

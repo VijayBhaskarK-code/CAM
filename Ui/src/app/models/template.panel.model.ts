@@ -14,4 +14,5 @@ export interface TemplatePanel {
     updatedUtcDate: string | null;
     templateSections: TemplateSection[];
     parentTemplateVersion: TemplateVersion;
+    type: string | 'Panel';
 }

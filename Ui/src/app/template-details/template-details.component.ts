@@ -2,129 +2,59 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef, OnDestroy, inject, NgModule } from '@angular/core';
 import { NgIf } from '@angular/common';
+
 import { TemplatePanel } from '../models/template.panel.model';
 import { TemplateSection } from '../models/template.section.model';
 import { TemplateVersion } from '../models/template.version.model';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { MatTableModule } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
-import { ApiService } from '../service/api.service';
-import { MatTreeFlatDataSource, MatTreeFlattener, MatTreeModule } from '@angular/material/tree';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatSelectModule } from '@angular/material/select';
-import { MatListModule } from '@angular/material/list';
-import { MatIconModule } from '@angular/material/icon';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { TemplateField, GroupTemplateField } from '../models/template.field.model';
-import { MatExpansionModule } from '@angular/material/expansion';
-import { MatCardModule } from '@angular/material/card';
+import { TemplateField, GroupTemplateField, SuggestionOptions } from '../models/template.field.model';
+
 import { FormBuilder, FormGroup, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { CreateTemplatePanelComponent } from '../create-template-panel/create-template-panel.component';
-import { MatRadioModule } from '@angular/material/radio';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { provideNativeDateAdapter } from '@angular/material/core';
+
+import { ApiService } from '../service/api.service';
+
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
+import { RadioButtonModule } from "primeng/radiobutton";
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { SplitterModule } from 'primeng/splitter';
+import { AccordionModule } from 'primeng/accordion';
+import { TreeModule } from 'primeng/tree';
+import { TreeNode } from 'primeng/api';
+import { PanelModule } from 'primeng/panel';
+import { OverlayModule } from 'primeng/overlay';
+
+interface AutoCompleteCompleteEvent {
+  originalEvent: Event;
+  query: string;
+}
 
 @Component({
   selector: 'app-template-details',
   standalone: true,
   imports: [
     CommonModule,
-    CreateTemplatePanelComponent, MatRadioModule,
-    FormsModule, ReactiveFormsModule, MatCheckboxModule, NgIf, MatTooltipModule,
-    MatFormFieldModule, MatCardModule, MatExpansionModule, MatSlideToggleModule,
-    MatPaginator, MatTableModule, MatInputModule, MatButtonModule, MatTreeModule,
-    MatSidenavModule, MatSelectModule, MatListModule, MatIconModule, MatToolbarModule,
-    MatFormFieldModule, MatSelectModule, MatInputModule, FormsModule,
-    MatDatepickerModule
+    NgIf,
+    FormsModule,
+    FormsModule,
+    ReactiveFormsModule,
+
+    ButtonModule,
+    InputTextModule,
+    RadioButtonModule,
+    AutoCompleteModule,
+    SplitterModule,
+    AccordionModule,
+    TreeModule,
+    PanelModule,
+    OverlayModule
   ],
-  providers: [provideNativeDateAdapter()],
+  // providers: [provideNativeDateAdapter()],
+  providers: [],
   templateUrl: './template-details.component.html',
-  styles: `
-.example-container {
-  display: flex;
-  flex-direction: column;
-  position: absolute;
-  top: 60px;
-  bottom: 5px;
-  left: 5px;
-  right: 5px;
-}
-
-.mat-expansion-indicator {
-    left: 0px;
-  }
-
-.mat-sidenav {
-  width: 700px;
-}
-
-.mat-right-sidenav {
-  width: 100%;
-}
-
-.example-right-container {
-  display: flex;
-            justify-content: flex-end;
-          }
-
-.example-full-width {
-  width: 100%;
-}
-
-.mat-mdc-list-item-icon {
-  color: rgba(0, 0, 0, 0.54);
-}
-
-.divider {
-  color: red;
-}
+  styles: [`
 
 
-.example-container {
-  display: flex;
-  flex-direction: column;
-  position: absolute;
-  top: 60px;
-  bottom: 5px;
-  left: 5px;
-  right: 5px;
-}
-
-.horizontal-container {
-  display: flex;
-   flex-direction: row;
-   flex-wrap: wrap;
-  top: 60px;
-  bottom: 5px;
-  left: 50px;
-  right: 50px;
-}
-
-.horizontal-control-container {
-  display: block;
-  top: 60px;
-  bottom: 50px;
-  left: 50px;
-  right: 50px;
-  
-  margin-left: 10px;
-  margin-right: 10px;
-}
-
-.vertical-container {
-  display: flex;
-  top: 60px;
-  bottom: 5px;
-  left: 5px;
-  right: 5px;
-}
-
-`,
+`],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TemplateDetailsComponent implements OnInit {
@@ -134,6 +64,7 @@ export class TemplateDetailsComponent implements OnInit {
   templateVersion!: TemplateVersion;
   templatePanels!: TemplatePanel[];
   dataSource!: TemplatePanel[];
+  files!: TreeNode[];
 
   isTemplatePanel!: boolean;
   isTemplateSection!: boolean;
@@ -199,7 +130,8 @@ export class TemplateDetailsComponent implements OnInit {
     });
 
     this.activatedRoute.params.subscribe(val => {
-      this.templateVersionId = val['versionId'];
+      //this.templateVersionId = val['versionId'];
+      this.templateVersionId = 1;
       if (this.templateVersionId) {
         this.getSuggestions();
         this.getTemplateVersion(this.templateVersionId);
@@ -209,16 +141,67 @@ export class TemplateDetailsComponent implements OnInit {
 
   getSuggestions() {
     this.apiService.GetInputTypes()
-    .subscribe({
-      next: (res) => {
-        this.suggestions["InputTypes"] = res;
-       
-        this.changeRef.detectChanges();
-      },
-      error: (err) => {
-        console.log(err);
-      }
-    })
+      .subscribe({
+        next: (res) => {
+          this.suggestions["InputTypes"] = res;
+          this.changeRef.detectChanges();
+        },
+        error: (err) => {
+          console.log(err);
+        }
+      })
+  }
+
+  private PanelsToTreeNodes(panels: TemplatePanel[]) {
+    for (let panel of panels) {
+      this.files.push(this.PanelToTreeNode(panel));
+    }
+  }
+
+  private PanelToTreeNode(panel: TemplatePanel): TreeNode {
+    let panelsTreeNodes: TreeNode[] = [];
+
+    panel.templateSections?.forEach(section => {
+      panelsTreeNodes?.push(this.SectionToTreeNode(section));
+    });
+
+    return {
+      label: panel.name,
+      data: panel,
+      children: panelsTreeNodes
+    };
+  }
+
+  private SectionToTreeNode(section: TemplateSection): TreeNode {
+    let sectionTreeNodes: TreeNode[] = [];
+
+    section.templateFields?.forEach(field => {
+      sectionTreeNodes?.push(this.FieldToTreeNode(field));
+    });
+
+    return {
+      label: section.sectionName,
+      data: section,
+      children: sectionTreeNodes
+    };
+  }
+
+  private FieldToTreeNode(field: TemplateField): TreeNode {
+    let fieldTreeNodes: TreeNode[] = [];
+
+    field.childTemplateFields?.forEach(cfield => {
+      fieldTreeNodes?.push(this.FieldToTreeNode(cfield));
+    });
+
+    return {
+      label: field.code,
+      data: field,
+      children: fieldTreeNodes
+    };
+  }
+
+  search(event: AutoCompleteCompleteEvent, suggestions: SuggestionOptions) {
+    suggestions.items = [...suggestions.items];
   }
 
   getTemplateVersion(id: number) {
@@ -228,17 +211,20 @@ export class TemplateDetailsComponent implements OnInit {
           this.templateVersion = res;
 
           this.templateVersion.templatePanels.forEach(tPanel => {
+            tPanel.type = 'Panel';
             tPanel.templateSections.forEach(tSection => {
               var removeItems: number[] = [];
+              tSection.type = 'Section';
 
               tSection.templateFields.forEach((tField) => {
+                tField.type = 'Field';
 
                 if (tField.suggestions != undefined) {
                   tField.suggestionOptions = JSON.parse(tField.suggestions);
-                  
+
                   if (tField.suggestionOptions != null && tField.suggestionOptions.source != null) {
                     tField.suggestionOptions.items = this.suggestions[tField.suggestionOptions.source];
-                  }                  
+                  }
                 }
 
                 if (tField.options != undefined) {
@@ -267,6 +253,8 @@ export class TemplateDetailsComponent implements OnInit {
             })
           });
 
+          this.files=[];
+          this.PanelsToTreeNodes(this.templateVersion.templatePanels);
           this.templatePanels = this.templateVersion.templatePanels;
           this.changeRef.detectChanges();
         },
@@ -276,7 +264,26 @@ export class TemplateDetailsComponent implements OnInit {
       })
   }
 
+  editProperty(templatePanel: any) {
+    
+    switch(templatePanel.type) {
+      case  'Panel':{
+        this.editPanelProperty(templatePanel as TemplatePanel);
+        break;
+      }
+      case  'Section':{
+        this.editSectionProperty(templatePanel as TemplateSection);
+        break;
+      }
+      case  'Field':{
+        this.editFieldProperty(templatePanel as TemplateField);
+        break;
+      }
+    }
+  }
+
   editPanelProperty(templatePanel: TemplatePanel) {
+    
     if (this.isPreviewing) this.togglePreviewSidenav();
     this.selectTemplatePanel = templatePanel;
     this.templatePanelForm.setValue({

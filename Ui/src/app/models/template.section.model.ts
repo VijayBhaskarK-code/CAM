@@ -23,4 +23,5 @@ export interface TemplateSection {
     updatedUtcDate: string | null;
     templateFields: TemplateField[];
     parentTemplatePanel: TemplatePanel;
+    type: string | 'Section';
 }
