@@ -16,7 +16,7 @@
                         }}</label>
                     <label *ngIf="rowData.version !== undefined" [style]="{ 'text-align': 'left' }">Version : {{
                         rowData.version }}</label>
-                    <ng-container>
+                    <ng-container *ngIf="rowData.version !== undefined">
                         <p-button icon="pi pi-pencil" [style]="{ 'margin-left': '.35em' }"
                             (click)="viewTemplateVersions(rowData)" />
                     </ng-container>
