@@ -2,26 +2,20 @@
   <p-splitter styleClass="mb-8">
     <ng-template pTemplate>
       <div class="flex items-center justify-center h-full">
-
         <div class="flex flex-wrap gap-2 mb-6">
-          <p-button (click)="addPanelProperty()">Add
-          </p-button>
-          <p-button icon="pi pi-plus" label="Expand all" />
-          <p-button icon="pi pi-minus" label="Collapse all" />
+          <p-button icon="pi pi-plus" (click)="addPanelProperty()" label="Add"/>
+          <!-- <p-button icon="pi pi-plus" [style]="{ 'margin-left': '.15em' }"  label="Expand all" />
+          <p-button icon="pi pi-minus" [style]="{ 'margin-left': '.15em' }"  label="Collapse all" /> -->
         </div>
 
-        <p-tree [value]="files">
+        <p-tree [value]="files" >
           <ng-template let-node pTemplate="default">
-            <div class="example-right-container">
-
-              {{ node.label }}
-              <p-button mat-icon-button (click)="editProperty(node.data)" matTooltip="Edit Panel.">
-                Edit
-              </p-button>
-              <p-button mat-icon-button (click)="deletePanelProperty(node)" matTooltip="Delete Panel.">
-                Delete
-              </p-button>
-            </div>
+            <div >
+              <label [style]="{ 'text-align': 'center' }">{{ node.label }}</label> 
+              <p-button icon="pi pi-pencil" [style]="{ 'margin-left': '.15em' }"  (click)="editProperty(node.data)" />
+              <p-button icon="pi pi-trash" [style]="{ 'margin-left': '.15em' }"  (click)="deletePanelProperty(node)" />
+              <p-button icon="pi pi-plus" [style]="{ 'margin-left': '.15em' }" (click)="addChild(node.data)" />
+        </div>
 
           </ng-template>
         </p-tree>
@@ -39,12 +33,8 @@
           <form [formGroup]="templatePanelForm">
             <h3>Panel Details</h3>
             <div >
-              <p-button (click)="savePanelProperty()">
-                Save
-              </p-button>
-              <p-button (click)="cancelProperty()" matTooltip="Cancel edit panel.">
-                Cancel
-              </p-button>
+              <p-button icon="pi pi-save" [style]="{ 'margin-left': '.15em' }"  (click)="savePanelProperty()" label="Save"/>
+              <p-button icon="pi pi-undo" [style]="{ 'margin-left': '.15em' }"  (click)="cancelProperty()" label="Cancel"/>
             </div>
             <p-panel>
               <label>Panel Name</label>
@@ -58,12 +48,12 @@
 
             <p-panel>
               <label>Row</label>
-              <input matInput #input type="number" placeholder="Enter Row" formControlName="row" required />
+              <input #input type="number" placeholder="Enter Row" formControlName="row" required />
             </p-panel>
 
             <p-panel>
               <label>Order</label>
-              <input matInput #input type="number" placeholder="Enter Order" formControlName="order" required />
+              <input #input type="number" placeholder="Enter Order" formControlName="order" required />
             </p-panel>
           </form>
         </div>
@@ -72,32 +62,28 @@
           <form [formGroup]="templateSectionForm">
             <h3>Section Details</h3>
             <div class="example-right-container">
-              <p-button (click)="saveSectionProperty()" matTooltip="Save section.">
-                Save
-              </p-button>
-              <p-button (click)="cancelProperty()" matTooltip="Cancel edit section.">
-                Cancel
-              </p-button>
+              <p-button icon="pi pi-save" [style]="{ 'margin-left': '.15em' }"  (click)="savePanelProperty()" label="Save"/>
+              <p-button icon="pi pi-undo" [style]="{ 'margin-left': '.15em' }"  (click)="cancelProperty()" label="Cancel"/>
             </div>
             <p-panel>
               <label>Section Name</label>
-              <input matInput #input maxlength="10" placeholder="Enter Section Name" formControlName="sectionName"
+              <input #input maxlength="10" placeholder="Enter Section Name" formControlName="sectionName"
                 required />
             </p-panel>
 
             <p-panel>
               <label>Array Name</label>
-              <input matInput #input placeholder="Enter Array Name" formControlName="arrayName" />
+              <input #input placeholder="Enter Array Name" formControlName="arrayName" />
             </p-panel>
 
             <p-panel>
               <label>Row</label>
-              <input matInput #input placeholder="Enter Row" formControlName="row" />
+              <input #input placeholder="Enter Row" formControlName="row" />
             </p-panel>
 
             <p-panel>
               <label>Order</label>
-              <input matInput #input placeholder="Enter Order" formControlName="order" />
+              <input #input placeholder="Enter Order" formControlName="order" />
             </p-panel>
 
             <p-panel>
@@ -117,12 +103,12 @@
 
             <p-panel>
               <label>Header</label>
-              <input matInput #input placeholder="Enter Header" formControlName="sectionHeader" />
+              <input #input placeholder="Enter Header" formControlName="sectionHeader" />
             </p-panel>
 
             <p-panel>
               <label>Hint</label>
-              <textarea matInput placeholder="Enter Hint" formControlName="hintName"></textarea>
+              <textarea placeholder="Enter Hint" formControlName="hintName"></textarea>
             </p-panel>
 
             <p-panel>
@@ -132,7 +118,7 @@
 
             <p-panel>
               <label>Button Label</label>
-              <input matInput #input placeholder="Enter Button label" formControlName="buttonLabel" />
+              <input #input placeholder="Enter Button label" formControlName="buttonLabel" />
             </p-panel>
 
             <p-panel>
@@ -146,36 +132,32 @@
           <form [formGroup]="templateFieldForm">
             <h3>Field Details</h3>
             <div class="example-right-container">
-              <p-button mat-icon-button (click)="saveFieldProperty()" matTooltip="Save field.">
-                Save
-              </p-button>
-              <p-button mat-icon-button (click)="cancelProperty()" matTooltip="Cancel edit field.">
-                Cancel
-              </p-button>
+              <p-button icon="pi pi-save" [style]="{ 'margin-left': '.15em' }"  (click)="savePanelProperty()" label="Save"/>
+              <p-button icon="pi pi-undo" [style]="{ 'margin-left': '.15em' }"  (click)="cancelProperty()" label="Cancel"/>
             </div>
             <p-panel>
               <label>Caption</label>
-              <input matInput #input maxlength="10" placeholder="Enter Caption" formControlName="caption" />
+              <input #input maxlength="10" placeholder="Enter Caption" formControlName="caption" />
             </p-panel>
 
             <p-panel>
               <label>Code</label>
-              <input matInput #input placeholder="Enter Code" formControlName="code" required pattern="/\s/" />
+              <input #input placeholder="Enter Code" formControlName="code" required pattern="/\s/" />
             </p-panel>
 
             <p-panel>
               <label>Row</label>
-              <input matInput #input placeholder="Enter Row" formControlName="row" />
+              <input #input placeholder="Enter Row" formControlName="row" />
             </p-panel>
 
             <p-panel>
               <label>Order</label>
-              <input matInput #input placeholder="Enter Order" formControlName="order" />
+              <input #input placeholder="Enter Order" formControlName="order" />
             </p-panel>
 
             <p-panel>
               <label>Input Type</label>
-              <select matInput #input formControlName="inputType" placeholder="Enter input type" required>
+              <select #input formControlName="inputType" placeholder="Enter input type" required>
                 <option value="INPUT">INPUT</option>
                 <option value="APPCALENDAR">CALENDAR</option>
                 <option value="ARRAY">ARRAY</option>
@@ -189,42 +171,42 @@
 
             <p-panel>
               <label>Label</label>
-              <input matInput #input placeholder="Enter label" formControlName="label" />
+              <input #input placeholder="Enter label" formControlName="label" />
             </p-panel>
 
             <p-panel>
               <label>Validators</label>
-              <input matInput #input placeholder="Enter Valiators" formControlName="validators" />
+              <input #input placeholder="Enter Valiators" formControlName="validators" />
             </p-panel>
 
             <p-panel>
               <label>Options</label>
-              <input matInput #input placeholder="Enter Options" formControlName="options" />
+              <input #input placeholder="Enter Options" formControlName="options" />
             </p-panel>
 
             <p-panel>
               <label>Placeholder</label>
-              <input matInput #input placeholder="Enter Placeholder" formControlName="placeholder" />
+              <input #input placeholder="Enter Placeholder" formControlName="placeholder" />
             </p-panel>
 
             <p-panel>
               <label>Error Messages</label>
-              <input matInput #input placeholder="Enter Error Message" formControlName="errorMessages" />
+              <input #input placeholder="Enter Error Message" formControlName="errorMessages" />
             </p-panel>
 
             <p-panel>
               <label>Suggestions</label>
-              <input matInput #input placeholder="Enter suggestions" formControlName="suggestions" />
+              <input #input placeholder="Enter suggestions" formControlName="suggestions" />
             </p-panel>
 
             <p-panel>
               <label>Max Length</label>
-              <input matInput #input placeholder="Enter Max Length" formControlName="maxLength" />
+              <input #input placeholder="Enter Max Length" formControlName="maxLength" />
             </p-panel>
 
             <p-panel>
               <label>Hidden</label>
-              <input matInput #input placeholder="Enter Hidden" />
+              <input #input placeholder="Enter Hidden" />
             </p-panel>
           </form>
         </div>
@@ -347,12 +329,12 @@
                               </div>
                             </div>
 
-                            <p-button icon="delete" (click)="deleteCustomFieldProperty(templateField, gFields)">
+                            <p-button icon="pi pi-trash" (click)="deleteCustomFieldProperty(templateField, gFields)">
                             </p-button>
                           </div>
                         </div>
 
-                        <p-button icon="add" (click)="addCustomFieldProperty(templateField)">
+                        <p-button icon="pi pi-plus" (click)="addCustomFieldProperty(templateField)">
                         </p-button>
                         {{section.buttonLabel}}
 

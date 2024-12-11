@@ -331,6 +331,24 @@ export class TemplateDetailsComponent implements OnInit {
     this.getTemplateVersion(this.templateVersionId);
   }
 
+  addChild(parent: any){
+    console.log(parent);
+    switch(parent.type) {
+      case  'Panel':{
+        this.addPanelProperty();
+        break;
+      }
+      case  'Section':{
+        this.addSectionProperty(parent as TemplatePanel);
+        break;
+      }
+      case  'Field':{
+        this.addFieldProperty(parent as TemplateSection);
+        break;
+      }
+    }
+  }
+
   addPanelProperty() {
     this.selectTemplatePanel = {} as TemplatePanel;
     this.selectTemplatePanel.templateVersionId = this.templateVersionId;
