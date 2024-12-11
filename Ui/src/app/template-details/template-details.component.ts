@@ -130,8 +130,7 @@ export class TemplateDetailsComponent implements OnInit {
     });
 
     this.activatedRoute.params.subscribe(val => {
-      //this.templateVersionId = val['versionId'];
-      this.templateVersionId = 1;
+      this.templateVersionId = val['versionId'];
       if (this.templateVersionId) {
         this.getSuggestions();
         this.getTemplateVersion(this.templateVersionId);

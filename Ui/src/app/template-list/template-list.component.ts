@@ -11,10 +11,6 @@ import { ButtonModule } from 'primeng/button';
 import { ApiService } from '../service/api.service';
 import { TemplateVersion } from '../models/template.version.model';
 
-interface Column {
-  field: string;
-  header: string;
-}
 
 @Component({
   selector: 'app-template-list',
@@ -28,16 +24,12 @@ interface Column {
 export class TemplateListComponent implements OnInit {
 
   public templateParents!: TemplateParent[];
-  cols!: Column[];
   files!: TreeNode[];
 
   constructor(private apiService: ApiService, private router: Router) { }
 
   ngOnInit() {
-    this.cols = [
-      { field: 'label', header: 'Title' },
-    ];
-
+    
     this.getTemplateParents();
   }
 
@@ -71,19 +63,19 @@ export class TemplateListComponent implements OnInit {
     });
 
     return {
-      data: cont.title,
+      data: cont,
       children: countiesTreeNodes
     };
   }
 
   private countryToTreeNode(country: TemplateVersion): TreeNode {
     return {
-      data: 'Version ' + country.version.toString(),
+      data: country,
     }
   }
 
-  viewTemplateVersions(id: number) {
-    this.router.navigate(['/templates', id + 1])
+  viewTemplateVersions(template: any) {
+    this.router.navigate(['/templates', template.id])
   }
 
   editTemplateVersions(id: number) {
