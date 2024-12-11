@@ -1,356 +1,365 @@
-<div class="d-flex justify-content-between">
-  <p-splitter styleClass="mb-8">
-    <ng-template pTemplate>
-      <div class="flex items-center justify-center h-full">
-        <div class="flex flex-wrap gap-2 mb-6">
-          <p-button icon="pi pi-plus" (click)="addPanelProperty()" label="Add"/>
-          <!-- <p-button icon="pi pi-plus" [style]="{ 'margin-left': '.15em' }"  label="Expand all" />
+<div>
+  <h1>CAM - Templates - Version</h1>
+
+  <div class="d-flex justify-content-between">
+    <p-splitter styleClass="mb-8">
+      <ng-template pTemplate>
+        <div class="flex items-center justify-center h-full">
+          <div class="flex flex-wrap gap-2 mb-6">
+            <p-button icon="pi pi-plus" (click)="addPanelProperty()" label="Add" />
+            <!-- <p-button icon="pi pi-plus" [style]="{ 'margin-left': '.15em' }"  label="Expand all" />
           <p-button icon="pi pi-minus" [style]="{ 'margin-left': '.15em' }"  label="Collapse all" /> -->
-        </div>
+          </div>
 
-        <p-tree [value]="files" >
-          <ng-template let-node pTemplate="default">
-            <div >
-              <label [style]="{ 'text-align': 'center' }">{{ node.label }}</label> 
-              <p-button icon="pi pi-pencil" [style]="{ 'margin-left': '.15em' }"  (click)="editProperty(node.data)" />
-              <p-button icon="pi pi-trash" [style]="{ 'margin-left': '.15em' }"  (click)="deletePanelProperty(node)" />
-              <p-button icon="pi pi-plus" [style]="{ 'margin-left': '.15em' }" (click)="addChild(node.data)" />
-        </div>
-
-          </ng-template>
-        </p-tree>
-      </div>
-    </ng-template>
-
-    <ng-template pTemplate>
-      <div class="flex items-center justify-center h-full">
-        <div class="flex flex-wrap gap-2 mb-6">
-          <!-- <p-button (click)="togglePreviewSidenav()">Preview
-          </p-button> -->
-        </div>
-
-        <div *ngIf="isTemplatePanel" id="selectedPanelDiv">
-          <form [formGroup]="templatePanelForm">
-            <h3>Panel Details</h3>
-            <div >
-              <p-button icon="pi pi-save" [style]="{ 'margin-left': '.15em' }"  (click)="savePanelProperty()" label="Save"/>
-              <p-button icon="pi pi-undo" [style]="{ 'margin-left': '.15em' }"  (click)="cancelProperty()" label="Cancel"/>
-            </div>
-            <p-panel>
-              <label>Panel Name</label>
-              <input placeholder="Enter Panel Name" formControlName="name" required />
-            </p-panel>
-
-            <p-panel>
-              <label>Hint</label>
-              <textarea placeholder="Enter Hint" formControlName="hintName"></textarea>
-            </p-panel>
-
-            <p-panel>
-              <label>Row</label>
-              <input #input type="number" placeholder="Enter Row" formControlName="row" required />
-            </p-panel>
-
-            <p-panel>
-              <label>Order</label>
-              <input #input type="number" placeholder="Enter Order" formControlName="order" required />
-            </p-panel>
-          </form>
-        </div>
-
-        <div class="example-container" *ngIf="isTemplateSection">
-          <form [formGroup]="templateSectionForm">
-            <h3>Section Details</h3>
-            <div class="example-right-container">
-              <p-button icon="pi pi-save" [style]="{ 'margin-left': '.15em' }"  (click)="saveSectionProperty()" label="Save"/>
-              <p-button icon="pi pi-undo" [style]="{ 'margin-left': '.15em' }"  (click)="cancelProperty()" label="Cancel"/>
-            </div>
-            <p-panel>
-              <label>Section Name</label>
-              <input #input maxlength="10" placeholder="Enter Section Name" formControlName="sectionName"
-                required />
-            </p-panel>
-
-            <p-panel>
-              <label>Array Name</label>
-              <input #input placeholder="Enter Array Name" formControlName="arrayName" />
-            </p-panel>
-
-            <p-panel>
-              <label>Row</label>
-              <input #input placeholder="Enter Row" formControlName="row" />
-            </p-panel>
-
-            <p-panel>
-              <label>Order</label>
-              <input #input placeholder="Enter Order" formControlName="order" />
-            </p-panel>
-
-            <p-panel>
-              <input type="checkbox" formControlName="config" />
-              <label>Config</label>
-            </p-panel>
-
-            <p-panel>
-              <input type="checkbox" formControlName="showButton" />
-              <label>Show Button</label>
-            </p-panel>
-
-            <p-panel>
-              <input type="checkbox" formControlName="showHeader" />
-              <label>Show Header</label>
-            </p-panel>
-
-            <p-panel>
-              <label>Header</label>
-              <input #input placeholder="Enter Header" formControlName="sectionHeader" />
-            </p-panel>
-
-            <p-panel>
-              <label>Hint</label>
-              <textarea placeholder="Enter Hint" formControlName="hintName"></textarea>
-            </p-panel>
-
-            <p-panel>
-              <input type="checkbox" formControlName="hideHint" />
-              <label>Hide Hint</label>
-            </p-panel>
-
-            <p-panel>
-              <label>Button Label</label>
-              <input #input placeholder="Enter Button label" formControlName="buttonLabel" />
-            </p-panel>
-
-            <p-panel>
-              <label>CT Header</label>
-              <input #input placeholder="Enter Ct header" formControlName="ctHeader" />
-            </p-panel>
-          </form>
-        </div>
-
-        <div class="example-container" *ngIf="isTemplateField">
-          <form [formGroup]="templateFieldForm">
-            <h3>Field Details</h3>
-            <div class="example-right-container">
-              <p-button icon="pi pi-save" [style]="{ 'margin-left': '.15em' }"  (click)="saveFieldProperty()" label="Save"/>
-              <p-button icon="pi pi-undo" [style]="{ 'margin-left': '.15em' }"  (click)="cancelProperty()" label="Cancel"/>
-            </div>
-            <p-panel>
-              <label>Caption</label>
-              <input #input maxlength="10" placeholder="Enter Caption" formControlName="caption" />
-            </p-panel>
-
-            <p-panel>
-              <label>Code</label>
-              <input #input placeholder="Enter Code" formControlName="code" required pattern="/\s/" />
-            </p-panel>
-
-            <p-panel>
-              <label>Row</label>
-              <input #input placeholder="Enter Row" formControlName="row" />
-            </p-panel>
-
-            <p-panel>
-              <label>Order</label>
-              <input #input placeholder="Enter Order" formControlName="order" />
-            </p-panel>
-
-            <p-panel>
-              <label>Input Type</label>
-              <select #input formControlName="inputType" placeholder="Enter input type" required>
-                <option value="INPUT">INPUT</option>
-                <option value="APPCALENDAR">CALENDAR</option>
-                <option value="ARRAY">ARRAY</option>
-                <option value="CHECKBOX_GROUP">CHECKBOX GROUP</option>
-                <option value="HINTPANEL">HINT PANEL</option>
-                <option value="RADIO_GROUP">RADIO GROUP</option>
-                <option value="CHECKBOX">CHECKBOX</option>
-                <option value="APPAUTOCOMPLETE">AUTO COMPLETE</option>
-              </select>
-            </p-panel>
-
-            <p-panel>
-              <label>Label</label>
-              <input #input placeholder="Enter label" formControlName="label" />
-            </p-panel>
-
-            <p-panel>
-              <label>Validators</label>
-              <input #input placeholder="Enter Valiators" formControlName="validators" />
-            </p-panel>
-
-            <p-panel>
-              <label>Options</label>
-              <input #input placeholder="Enter Options" formControlName="options" />
-            </p-panel>
-
-            <p-panel>
-              <label>Placeholder</label>
-              <input #input placeholder="Enter Placeholder" formControlName="placeholder" />
-            </p-panel>
-
-            <p-panel>
-              <label>Error Messages</label>
-              <input #input placeholder="Enter Error Message" formControlName="errorMessages" />
-            </p-panel>
-
-            <p-panel>
-              <label>Suggestions</label>
-              <input #input placeholder="Enter suggestions" formControlName="suggestions" />
-            </p-panel>
-
-            <p-panel>
-              <label>Max Length</label>
-              <input #input placeholder="Enter Max Length" formControlName="maxLength" />
-            </p-panel>
-
-            <p-panel>
-              <label>Hidden</label>
-              <input #input placeholder="Enter Hidden" />
-            </p-panel>
-          </form>
-        </div>
-      </div>
-    </ng-template>
-
-    <ng-template pTemplate>
-      <div class="flex items-center justify-center h-full">
-        <h2>Template Preview </h2>
-        <div class="example-container">
-          <ng-container>
-            <div class="col-xs-12 mowp-form-panel mbx20" *ngFor="let panel of templatePanels; let i = index">
-              <div class="moduleName">
-                <h2>{{ panel.name }}</h2>
+          <p-tree [value]="files">
+            <ng-template let-node pTemplate="default">
+              <div>
+                <label [style]="{ 'text-align': 'center' }">{{ node.label }}</label>
+                <p-button icon="pi pi-pencil" [style]="{ 'margin-left': '.15em' }" (click)="editProperty(node.data)" />
+                <p-button icon="pi pi-trash" [style]="{ 'margin-left': '.15em' }" (click)="deletePanelProperty(node)" />
+                <p-button icon="pi pi-plus" [style]="{ 'margin-left': '.15em' }" (click)="addChild(node.data)" />
               </div>
-              <div class="underline"></div>
-              <div> {{ panel.hintName }} </div>
-              <div *ngFor="let section of panel.templateSections; let j = index" class="mainSec col-xs-12 no-padding">
-                <div *ngIf="section.showHeader" class="col-xs-12 no-padding">
-                  <h2><span [innerHTML]="section.sectionHeader"></span></h2>
-                  <!-- <span class="previewtxt"> Preview Section </span> -->
+
+            </ng-template>
+          </p-tree>
+        </div>
+      </ng-template>
+
+      <ng-template pTemplate>
+        <div class="flex items-center justify-center h-full">
+          <div class="flex flex-wrap gap-2 mb-6">
+            <!-- <p-button (click)="togglePreviewSidenav()">Preview
+          </p-button> -->
+          </div>
+
+          <div *ngIf="isTemplatePanel" id="selectedPanelDiv">
+            <form [formGroup]="templatePanelForm">
+              <h3>Panel Details</h3>
+              <div>
+                <p-button icon="pi pi-save" [style]="{ 'margin-left': '.15em' }" (click)="savePanelProperty()"
+                  label="Save" />
+                <p-button icon="pi pi-undo" [style]="{ 'margin-left': '.15em' }" (click)="cancelProperty()"
+                  label="Cancel" />
+              </div>
+              <p-panel>
+                <label>Panel Name</label>
+                <input placeholder="Enter Panel Name" formControlName="name" required />
+              </p-panel>
+
+              <p-panel>
+                <label>Hint</label>
+                <textarea placeholder="Enter Hint" formControlName="hintName"></textarea>
+              </p-panel>
+
+              <p-panel>
+                <label>Row</label>
+                <input #input type="number" placeholder="Enter Row" formControlName="row" required />
+              </p-panel>
+
+              <p-panel>
+                <label>Order</label>
+                <input #input type="number" placeholder="Enter Order" formControlName="order" required />
+              </p-panel>
+            </form>
+          </div>
+
+          <div class="example-container" *ngIf="isTemplateSection">
+            <form [formGroup]="templateSectionForm">
+              <h3>Section Details</h3>
+              <div class="example-right-container">
+                <p-button icon="pi pi-save" [style]="{ 'margin-left': '.15em' }" (click)="saveSectionProperty()"
+                  label="Save" />
+                <p-button icon="pi pi-undo" [style]="{ 'margin-left': '.15em' }" (click)="cancelProperty()"
+                  label="Cancel" />
+              </div>
+              <p-panel>
+                <label>Section Name</label>
+                <input #input maxlength="10" placeholder="Enter Section Name" formControlName="sectionName" required />
+              </p-panel>
+
+              <p-panel>
+                <label>Array Name</label>
+                <input #input placeholder="Enter Array Name" formControlName="arrayName" />
+              </p-panel>
+
+              <p-panel>
+                <label>Row</label>
+                <input #input placeholder="Enter Row" formControlName="row" />
+              </p-panel>
+
+              <p-panel>
+                <label>Order</label>
+                <input #input placeholder="Enter Order" formControlName="order" />
+              </p-panel>
+
+              <p-panel>
+                <input type="checkbox" formControlName="config" />
+                <label>Config</label>
+              </p-panel>
+
+              <p-panel>
+                <input type="checkbox" formControlName="showButton" />
+                <label>Show Button</label>
+              </p-panel>
+
+              <p-panel>
+                <input type="checkbox" formControlName="showHeader" />
+                <label>Show Header</label>
+              </p-panel>
+
+              <p-panel>
+                <label>Header</label>
+                <input #input placeholder="Enter Header" formControlName="sectionHeader" />
+              </p-panel>
+
+              <p-panel>
+                <label>Hint</label>
+                <textarea placeholder="Enter Hint" formControlName="hintName"></textarea>
+              </p-panel>
+
+              <p-panel>
+                <input type="checkbox" formControlName="hideHint" />
+                <label>Hide Hint</label>
+              </p-panel>
+
+              <p-panel>
+                <label>Button Label</label>
+                <input #input placeholder="Enter Button label" formControlName="buttonLabel" />
+              </p-panel>
+
+              <p-panel>
+                <label>CT Header</label>
+                <input #input placeholder="Enter Ct header" formControlName="ctHeader" />
+              </p-panel>
+            </form>
+          </div>
+
+          <div class="example-container" *ngIf="isTemplateField">
+            <form [formGroup]="templateFieldForm">
+              <h3>Field Details</h3>
+              <div class="example-right-container">
+                <p-button icon="pi pi-save" [style]="{ 'margin-left': '.15em' }" (click)="saveFieldProperty()"
+                  label="Save" />
+                <p-button icon="pi pi-undo" [style]="{ 'margin-left': '.15em' }" (click)="cancelProperty()"
+                  label="Cancel" />
+              </div>
+              <p-panel>
+                <label>Caption</label>
+                <input #input maxlength="10" placeholder="Enter Caption" formControlName="caption" />
+              </p-panel>
+
+              <p-panel>
+                <label>Code</label>
+                <input #input placeholder="Enter Code" formControlName="code" required pattern="/\s/" />
+              </p-panel>
+
+              <p-panel>
+                <label>Row</label>
+                <input #input placeholder="Enter Row" formControlName="row" />
+              </p-panel>
+
+              <p-panel>
+                <label>Order</label>
+                <input #input placeholder="Enter Order" formControlName="order" />
+              </p-panel>
+
+              <p-panel>
+                <label>Input Type</label>
+                <select #input formControlName="inputType" placeholder="Enter input type" required>
+                  <option value="INPUT">INPUT</option>
+                  <option value="APPCALENDAR">CALENDAR</option>
+                  <option value="ARRAY">ARRAY</option>
+                  <option value="CHECKBOX_GROUP">CHECKBOX GROUP</option>
+                  <option value="HINTPANEL">HINT PANEL</option>
+                  <option value="RADIO_GROUP">RADIO GROUP</option>
+                  <option value="CHECKBOX">CHECKBOX</option>
+                  <option value="APPAUTOCOMPLETE">AUTO COMPLETE</option>
+                </select>
+              </p-panel>
+
+              <p-panel>
+                <label>Label</label>
+                <input #input placeholder="Enter label" formControlName="label" />
+              </p-panel>
+
+              <p-panel>
+                <label>Validators</label>
+                <input #input placeholder="Enter Valiators" formControlName="validators" />
+              </p-panel>
+
+              <p-panel>
+                <label>Options</label>
+                <input #input placeholder="Enter Options" formControlName="options" />
+              </p-panel>
+
+              <p-panel>
+                <label>Placeholder</label>
+                <input #input placeholder="Enter Placeholder" formControlName="placeholder" />
+              </p-panel>
+
+              <p-panel>
+                <label>Error Messages</label>
+                <input #input placeholder="Enter Error Message" formControlName="errorMessages" />
+              </p-panel>
+
+              <p-panel>
+                <label>Suggestions</label>
+                <input #input placeholder="Enter suggestions" formControlName="suggestions" />
+              </p-panel>
+
+              <p-panel>
+                <label>Max Length</label>
+                <input #input placeholder="Enter Max Length" formControlName="maxLength" />
+              </p-panel>
+
+              <p-panel>
+                <label>Hidden</label>
+                <input #input placeholder="Enter Hidden" />
+              </p-panel>
+            </form>
+          </div>
+        </div>
+      </ng-template>
+
+      <ng-template pTemplate>
+        <div class="flex items-center justify-center h-full">
+          <h2>Template Preview </h2>
+          <div class="example-container">
+            <ng-container>
+              <div class="col-xs-12 mowp-form-panel mbx20" *ngFor="let panel of templatePanels; let i = index">
+                <div class="moduleName">
+                  <h2>{{ panel.name }}</h2>
                 </div>
-                <p>{{ section.hintName }}</p>
+                <div class="underline"></div>
+                <div> {{ panel.hintName }} </div>
+                <div *ngFor="let section of panel.templateSections; let j = index" class="mainSec col-xs-12 no-padding">
+                  <div *ngIf="section.showHeader" class="col-xs-12 no-padding">
+                    <h2><span [innerHTML]="section.sectionHeader"></span></h2>
+                    <!-- <span class="previewtxt"> Preview Section </span> -->
+                  </div>
+                  <p>{{ section.hintName }}</p>
 
-                <div *ngFor="let templateField of section.templateFields; let j = index"
-                  class="mainSec col-xs-12 no-padding">
-                  <form class="flex flex-col gap-4">
-                    <div [ngSwitch]="templateField.inputType">
+                  <div *ngFor="let templateField of section.templateFields; let j = index"
+                    class="mainSec col-xs-12 no-padding">
+                    <form class="flex flex-col gap-4">
+                      <div [ngSwitch]="templateField.inputType">
 
 
-                      <div *ngSwitchCase="'RADIO_GROUP'">
-                        <label for="templateField.label">{{templateField.label}}</label>
-                        <br />
-                        <div *ngFor="let templateOption of templateField.optionItems">
-                          <input type="radio" [value]="templateOption.value" />
-                          <label class="ml-2">{{ templateOption.label }}</label>
+                        <div *ngSwitchCase="'RADIO_GROUP'">
+                          <label for="templateField.label">{{templateField.label}}</label>
+                          <br />
+                          <div *ngFor="let templateOption of templateField.optionItems">
+                            <input type="radio" [value]="templateOption.value" />
+                            <label class="ml-2">{{ templateOption.label }}</label>
+                          </div>
+                          <br />
                         </div>
-                        <br />
-                      </div>
 
-                      <div *ngSwitchCase="'INPUT'">
-                        <label for="templateField.label">{{templateField.label}}</label>
-                        <br />
-                        <input id={{templateField.code}} placeholder={{templateField.placeholder}} />
-                        <br />
-                      </div>
-
-                      <div *ngSwitchCase="'CHECKBOX'">
-                        <input type="checkbox" id={{templateField.code}} placeholder={{templateField.placeholder}} />
-                        <br />
-                        <label for="templateField.label">{{templateField.label}}</label>
-                        <br />
-                      </div>
-
-                      <div *ngSwitchCase="'CHECKBOX_GROUP'">
-                        <label for="templateField.label">{{templateField.label}}</label>
-                        <br />
-                        <div *ngFor="let templateOption of templateField.childTemplateFields">
-                          <input type="checkbox" [value]="templateOption.code" />
-                          <label class="ml-2">{{ templateOption.label }}</label>
+                        <div *ngSwitchCase="'INPUT'">
+                          <label for="templateField.label">{{templateField.label}}</label>
+                          <br />
+                          <input id={{templateField.code}} placeholder={{templateField.placeholder}} />
+                          <br />
                         </div>
-                        <br />
-                      </div>
 
-                      <div *ngSwitchCase="'APPAUTOCOMPLETE'">
-                        <label for="templateField.label">{{templateField.label}}</label>
-                        <br />
-                        <select id={{templateField.code}}>
-                          <option *ngFor="let inputTypeOption of templateField.suggestionOptions?.items">
-                            {{ inputTypeOption }}
-                          </option>
-                        </select>
-                        <br />
-                      </div>
+                        <div *ngSwitchCase="'CHECKBOX'">
+                          <input type="checkbox" id={{templateField.code}} placeholder={{templateField.placeholder}} />
+                          <br />
+                          <label for="templateField.label">{{templateField.label}}</label>
+                          <br />
+                        </div>
 
-                      <div *ngSwitchCase="'APPCALENDAR'">
-                        <label for="templateField.label">{{templateField.label}}</label>
-                        <br />
-                        <input type="date" [value]="templateField.code" />
-                        <br />
-                      </div>
+                        <div *ngSwitchCase="'CHECKBOX_GROUP'">
+                          <label for="templateField.label">{{templateField.label}}</label>
+                          <br />
+                          <div *ngFor="let templateOption of templateField.childTemplateFields">
+                            <input type="checkbox" [value]="templateOption.code" />
+                            <label class="ml-2">{{ templateOption.label }}</label>
+                          </div>
+                          <br />
+                        </div>
 
-                      <div *ngSwitchCase="'ARRAY'">
-                        <div *ngFor="let gFields of templateField.groupTemplateFields; let k = index"
-                          class="mainSec col-xs-12 no-padding">
-                          <div class="vertical-container" *ngIf="gFields.fields != null && gFields.fields.length > 0">
+                        <div *ngSwitchCase="'APPAUTOCOMPLETE'">
+                          <label for="templateField.label">{{templateField.label}}</label>
+                          <br />
+                          <select id={{templateField.code}}>
+                            <option *ngFor="let inputTypeOption of templateField.suggestionOptions?.items">
+                              {{ inputTypeOption }}
+                            </option>
+                          </select>
+                          <br />
+                        </div>
 
-                            <div *ngFor="let gField of gFields.fields; let l = index"
-                              class="mainSec col-xs-12 no-padding">
-                              <div class="horizontal-container" [ngSwitch]="gField.inputType" *ngIf="!gField.hidden">
+                        <div *ngSwitchCase="'APPCALENDAR'">
+                          <label for="templateField.label">{{templateField.label}}</label>
+                          <br />
+                          <input type="date" [value]="templateField.code" />
+                          <br />
+                        </div>
 
-                                <div class="horizontal-control-container" *ngSwitchCase="'INPUT'">
-                                  <label for="gField.label">{{gField.label}}</label>
-                                  <br />
-                                  <input id={{gField.code}} placeholder={{gField.placeholder}} />
-                                  <br />
-                                </div>
+                        <div *ngSwitchCase="'ARRAY'">
+                          <div *ngFor="let gFields of templateField.groupTemplateFields; let k = index"
+                            class="mainSec col-xs-12 no-padding">
+                            <div class="vertical-container" *ngIf="gFields.fields != null && gFields.fields.length > 0">
 
-                                <div class="horizontal-control-container" *ngSwitchCase="'APPAUTOCOMPLETE'">
-                                  <label for="gField.label">{{gField.label}}</label>
-                                  <br />
-                                  <select id={{gField.code}}>
-                                    <option *ngFor="let inputTypeOption of gField.suggestionOptions?.items">
-                                      {{ inputTypeOption }}
-                                    </option>
-                                  </select>
-                                  <br />
-                                </div>
+                              <div *ngFor="let gField of gFields.fields; let l = index"
+                                class="mainSec col-xs-12 no-padding">
+                                <div class="horizontal-container" [ngSwitch]="gField.inputType" *ngIf="!gField.hidden">
 
-                                <div class="horizontal-control-container" *ngSwitchCase="'CHECKBOX_GROUP'">
-                                  <label for="templateField.label">{{gField.label}}</label>
-                                  <br />
-                                  <div *ngFor="let templateOption of gField.childTemplateFields">
-                                    <input type="checkbox" [value]="templateOption.code" />
-                                    <label class="ml-2">{{ templateOption.label }}</label>
+                                  <div class="horizontal-control-container" *ngSwitchCase="'INPUT'">
+                                    <label for="gField.label">{{gField.label}}</label>
+                                    <br />
+                                    <input id={{gField.code}} placeholder={{gField.placeholder}} />
+                                    <br />
                                   </div>
-                                  <br />
 
+                                  <div class="horizontal-control-container" *ngSwitchCase="'APPAUTOCOMPLETE'">
+                                    <label for="gField.label">{{gField.label}}</label>
+                                    <br />
+                                    <select id={{gField.code}}>
+                                      <option *ngFor="let inputTypeOption of gField.suggestionOptions?.items">
+                                        {{ inputTypeOption }}
+                                      </option>
+                                    </select>
+                                    <br />
+                                  </div>
+
+                                  <div class="horizontal-control-container" *ngSwitchCase="'CHECKBOX_GROUP'">
+                                    <label for="templateField.label">{{gField.label}}</label>
+                                    <br />
+                                    <div *ngFor="let templateOption of gField.childTemplateFields">
+                                      <input type="checkbox" [value]="templateOption.code" />
+                                      <label class="ml-2">{{ templateOption.label }}</label>
+                                    </div>
+                                    <br />
+
+                                  </div>
                                 </div>
                               </div>
+
+                              <p-button icon="pi pi-trash" (click)="deleteCustomFieldProperty(templateField, gFields)">
+                              </p-button>
                             </div>
-
-                            <p-button icon="pi pi-trash" (click)="deleteCustomFieldProperty(templateField, gFields)">
-                            </p-button>
                           </div>
+
+                          <p-button icon="pi pi-plus" (click)="addCustomFieldProperty(templateField)">
+                          </p-button>
+                          {{section.buttonLabel}}
+
                         </div>
-
-                        <p-button icon="pi pi-plus" (click)="addCustomFieldProperty(templateField)">
-                        </p-button>
-                        {{section.buttonLabel}}
-
                       </div>
-                    </div>
-                  </form>
+                    </form>
+                  </div>
+
+
+
                 </div>
-
-
-
               </div>
-            </div>
-          </ng-container>
+            </ng-container>
+          </div>
         </div>
-      </div>
-    </ng-template>
-  </p-splitter>
+      </ng-template>
+    </p-splitter>
 
+  </div>
 </div>
