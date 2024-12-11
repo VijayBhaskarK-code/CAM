@@ -20,16 +20,15 @@
                       <p-treeTableToggler [rowNode]="rowNode" *ngIf="i === 0" />
                       {{ rowData }}
                       <ng-container *ngIf="last">
-                          <p-button icon="pi pi-view" rounded="true" [style]="{ 'margin-right': '.5em' }" (click)="viewTemplateVersions(i)"/>
-                          <p-button icon="pi pi-edit" rounded="true" [style]="{ 'margin-right': '.5em' }" />
-                          <p-button icon="pi pi-delete" rounded="true" severity="success" />
+                          <p-button icon="pi pi-pencil" [style]="{ 'margin-left': '.15em' }" (click)="viewTemplateVersions(i)"/>
+                          <p-button icon="pi pi-trash" [style]="{ 'margin-left': '.15em' }" />
                       </ng-container>
                   </td>
               </tr>
           </ng-template>
           <ng-template pTemplate="summary">
             <div style="text-align:left">
-                <p-button icon="pi pi-refresh" label="Add" severity="warning" />
+                <p-button icon="pi pi-plus" label="Add" severity="warning" />
             </div>
         </ng-template>
   </p-treeTable>
