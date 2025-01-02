@@ -24,7 +24,10 @@ public partial class TemplateVersion
 
     public DateTime? ModifiedUTCDate { get; set; }
 
-    public virtual TemplateParent Template { get; set; } = null!;
+    public virtual TemplateParent? Template { get; set; } = null!;
 
     public virtual ICollection<TemplatePanel> TemplatePanels { get; set; } = new List<TemplatePanel>();
+
+    public virtual ICollection<TemplateSurvey>? TemplateSurveys { get; set; } = new List<TemplateSurvey>();
+
 }

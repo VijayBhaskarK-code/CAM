@@ -5,6 +5,7 @@ import { TemplateVersion } from '../models/template.version.model';
 import { TemplatePanel } from '../models/template.panel.model';
 import { TemplateSection } from '../models/template.section.model';
 import { TemplateField } from '../models/template.field.model';
+import { TemplateSurvey } from '../models/template.survey.model';
 
 @Injectable({
   providedIn: 'root'
@@ -34,6 +35,10 @@ export class ApiService {
     return this.http.get<TemplateVersion>(`${this.baseUrl}/templateversion/${id}`)
   }
 
+  getSurveyById(id: number) {
+    return this.http.get<TemplateSurvey>(`${this.baseUrl}/templatesurvey/${id}`)
+  }
+
   GetInputTypes() {
     return this.http.get<string[]>(`${this.baseUrl}/templatefield/inputTypes`)
   }
@@ -57,6 +62,10 @@ export class ApiService {
       return this.http.post<TemplateField>(`${this.baseUrl}/templatefield`, templateField)
 
     return this.http.put<TemplateField>(`${this.baseUrl}/templatefield`, templateField)
+  }
+
+  updateTemplateSurvey(templateSurvey: TemplateSurvey) {
+    return this.http.put<TemplateSurvey>(`${this.baseUrl}/templateSurvey`, templateSurvey)
   }
 
   deleteTemplatePanel(templatePanel: TemplatePanel) {

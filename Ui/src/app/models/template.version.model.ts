@@ -1,5 +1,6 @@
 import { TemplateParent } from "./template.parent.model";
 import { TemplatePanel } from "./template.panel.model";
+import { TemplateSurvey } from "./template.survey.model";
 
 export interface TemplateVersion {
     id: number;
@@ -15,4 +16,5 @@ export interface TemplateVersion {
     updatedUtcDate: string | null;
     parentTemplate: TemplateParent;
     templatePanels: TemplatePanel[];
+    templateSurveys: TemplateSurvey[] | null;
 }

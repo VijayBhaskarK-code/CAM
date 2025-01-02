@@ -170,12 +170,60 @@ CREATE TABLE [dbo].[S_TemplateField] (
 	PRIMARY KEY ([Id])
 );
 
+--Create TempalteParent table
+CREATE TABLE [dbo].[S_TemplateSurvey] (
+	[Id] int IDENTITY(1,1) NOT NULL UNIQUE,
+	[TemplateVersionId] int NOT NULL,
+	[UserId] int NOT NULL,
+	[Status] varchar(max) NULL,
+	[CreatedBy] nvarchar(max) NULL,
+	[ModifiedBy] nvarchar(max) NULL,
+	[CreatedUTCDate] datetime NULL,
+	[ModifiedUTCDate] datetime NULL,
+	PRIMARY KEY ([Id])
+);
+
+
+--Create TempalteParent table
+CREATE TABLE [dbo].[S_TemplateSurveyResponse] (
+	[Id] int IDENTITY(1,1) NOT NULL UNIQUE,
+	[TemplateSurveyId] int NOT NULL,
+	[TemplateFieldId] int NOT NULL,
+	[Response] varchar(max) NULL,
+	[CreatedBy] nvarchar(max) NULL,
+	[ModifiedBy] nvarchar(max) NULL,
+	[CreatedUTCDate] datetime NULL,
+	[ModifiedUTCDate] datetime NULL,
+	PRIMARY KEY ([Id])
+);
+
+--Create TempalteParent table
+CREATE TABLE [dbo].[S_TemplateSurveyChildResponse] (
+	[Id] int IDENTITY(1,1) NOT NULL UNIQUE,
+	[TemplateSurveyResponseId] int NOT NULL,
+	[TemplateFieldId] int NOT NULL,
+	[Response] varchar(max) NULL,
+	[CreatedBy] nvarchar(max) NULL,
+	[ModifiedBy] nvarchar(max) NULL,
+	[CreatedUTCDate] datetime NULL,
+	[ModifiedUTCDate] datetime NULL,
+	PRIMARY KEY ([Id])
+);
+
+
+
+
 
 ALTER TABLE [dbo].[S_TemplateParent] ADD CONSTRAINT [FK_S_TemplateParent_TemplateType_Id] FOREIGN KEY ([TemplateTypeId]) REFERENCES [dbo].[S_TemplateType]([Id]);
 ALTER TABLE [dbo].[S_TemplateVersion] ADD CONSTRAINT [FK_S_TemplateVersion_TemplateParent_Id] FOREIGN KEY ([TemplateId]) REFERENCES [dbo].[S_TemplateParent]([Id]);
 ALTER TABLE [dbo].[S_TemplateField] ADD CONSTRAINT [FK_S_TemplateField_TemplateSection_Id] FOREIGN KEY ([TemplateSectionId]) REFERENCES [dbo].[S_TemplateSection]([Id]);
 ALTER TABLE [dbo].[S_TemplateSection] ADD CONSTRAINT [FK_S_TemplateSection_TemplatePanel_Id] FOREIGN KEY ([TemplatePanelId]) REFERENCES [dbo].[S_TemplatePanel]([Id]);
 ALTER TABLE [dbo].[S_TemplatePanel] ADD CONSTRAINT [FK_S_TemplatePanel_TemplateVersion_Id] FOREIGN KEY ([TemplateVersionId]) REFERENCES [dbo].[S_TemplateVersion]([Id]);
+ALTER TABLE [dbo].[S_TemplateSurvey] ADD CONSTRAINT [FK_S_TemplateSurvey_TemplateVersion_Id] FOREIGN KEY ([TemplateVersionId]) REFERENCES [dbo].[S_TemplateVersion]([Id]);
+ALTER TABLE [dbo].[S_TemplateSurveyResponse] ADD CONSTRAINT [FK_S_TemplateSurveyResponse_S_TemplateSurvey_Id] FOREIGN KEY ([TemplateSurveyId]) REFERENCES [dbo].[S_TemplateSurvey]([Id]);
+ALTER TABLE [dbo].[S_TemplateSurveyResponse] ADD CONSTRAINT [FK_S_TemplateSurveyResponse_S_TemplateField_Id] FOREIGN KEY ([TemplateFieldId]) REFERENCES [dbo].[S_TemplateField]([Id]);
+ALTER TABLE [dbo].[S_TemplateSurveyChildResponse] ADD CONSTRAINT [FK_S_TemplateSurveyChildResponse_S_TemplateSurveyResponse_Id] FOREIGN KEY ([TemplateSurveyResponseId]) REFERENCES [dbo].[S_TemplateSurveyResponse]([Id]);
+ALTER TABLE [dbo].[S_TemplateSurveyChildResponse] ADD CONSTRAINT [FK_S_S_TemplateSurveyChildResponse_S_TemplateField_Id] FOREIGN KEY ([TemplateFieldId]) REFERENCES [dbo].[S_TemplateField]([Id]);
 
 
 --Insert TemplateType table

@@ -25,12 +25,77 @@ public partial class CamDbContext : DbContext
 
     public virtual DbSet<TemplateVersion> TemplateVersions { get; set; }
 
+    public virtual DbSet<TemplateSurvey> TemplateSurveys { get; set; }
+    
+    public virtual DbSet<TemplateSurveyResponse> TemplateSurveyResponses { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseSqlServer("Server=Vijay\\SQLExpress;Database=CAM;Trusted_Connection=True;Encrypt=False");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<TemplateSurveyChildResponse>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Template__3214EC071D8C0816");
+
+            entity.ToTable("S_TemplateSurveyChildResponse");
+
+            entity.HasIndex(e => e.Id, "UQ__Template__3214EC0681E4AF7A").IsUnique();
+
+            entity.Property(e => e.CreatedUTCDate).HasColumnType("datetime");
+            entity.Property(e => e.ModifiedUTCDate).HasColumnType("datetime");
+
+            entity.HasOne(d => d.TemplateSurveyResponse).WithMany(p => p.TemplateSurveyChildResponses)
+                .HasForeignKey(d => d.TemplateSurveyResponseId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_S_TemplateSurveyChildResponse_S_TemplateSurveyResponse_Id");
+
+                entity.HasOne(d => d.TemplateField).WithMany(p => p.TemplateSurveyChildResponses)
+                .HasForeignKey(d => d.TemplateFieldId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_S_S_TemplateSurveyChildResponse_S_TemplateField_Id");
+        });
+
+        modelBuilder.Entity<TemplateSurveyResponse>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Template__3214EC071D8C0815");
+
+            entity.ToTable("S_TemplateSurveyResponse");
+
+            entity.HasIndex(e => e.Id, "UQ__Template__3214EC0681E4AF6A").IsUnique();
+
+            entity.Property(e => e.CreatedUTCDate).HasColumnType("datetime");
+            entity.Property(e => e.ModifiedUTCDate).HasColumnType("datetime");
+
+            entity.HasOne(d => d.TemplateSurvey).WithMany(p => p.TemplateSurveyResponses)
+                .HasForeignKey(d => d.TemplateSurveyId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_S_TemplateSurveyResponse_S_TemplateSurvey_Id");
+
+                entity.HasOne(d => d.TemplateField).WithMany(p => p.TemplateSurveyResponses)
+                .HasForeignKey(d => d.TemplateFieldId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_S_TemplateSurveyResponse_S_TemplateField_Id");
+        });
+
+        modelBuilder.Entity<TemplateSurvey>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Template__3214EC071D8C0815");
+
+            entity.ToTable("S_TemplateSurvey");
+
+            entity.HasIndex(e => e.Id, "UQ__Template__3214EC0681E4AF5A").IsUnique();
+
+            entity.Property(e => e.CreatedUTCDate).HasColumnType("datetime");
+            entity.Property(e => e.ModifiedUTCDate).HasColumnType("datetime");
+
+            entity.HasOne(d => d.TemplateVersion).WithMany(p => p.TemplateSurveys)
+                .HasForeignKey(d => d.TemplateVersionId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_S_TemplateSurvey_TemplateVersion_Id");
+        });
+
         modelBuilder.Entity<TemplateField>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__Template__3214EC071D8C0814");

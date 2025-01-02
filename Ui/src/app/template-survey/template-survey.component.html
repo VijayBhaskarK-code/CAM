@@ -1,0 +1,151 @@
+<div>
+  <h1>CAM - Survey</h1>
+
+  <div class="d-flex justify-content-between">
+    <div class="flex items-center justify-center h-full">
+      <h2>Template Survey Name </h2>
+      <div class="example-container">
+        <ng-container>
+          <div class="col-xs-12 mowp-form-panel mbx20" *ngFor="let panel of templatePanels; let i = index">
+            <div class="moduleName">
+              <h2>{{ panel.name }}</h2>
+            </div>
+            <div class="underline"></div>
+            <div> {{ panel.hintName }} </div>
+            <div *ngFor="let section of panel.templateSections; let j = index" class="mainSec col-xs-12 no-padding">
+              <div *ngIf="section.showHeader" class="col-xs-12 no-padding">
+                <h2><span [innerHTML]="section.sectionHeader"></span></h2>
+                <!-- <span class="previewtxt"> Preview Section </span> -->
+              </div>
+              <p>{{ section.hintName }}</p>
+
+              <div *ngFor="let templateField of section.templateFields; let j = index"
+                class="mainSec col-xs-12 no-padding">
+                <form class="flex flex-col gap-4" [formGroup]="fieldGroups[templateField.id]">
+                  <div [ngSwitch]="templateField.inputType">
+
+
+                    <div *ngSwitchCase="'RADIO_GROUP'">
+                      <label for="templateField.label">{{templateField.label}}</label>
+                      <br />
+                      <div *ngFor="let templateOption of templateField.optionItems">
+                        <input type="radio" formControlName="response" />
+                        <label class="ml-2">{{ templateOption.label }}</label>
+                      </div>
+                      <br />
+                    </div>
+
+                    <div *ngSwitchCase="'INPUT'">
+                      <label for="templateField.label">{{templateField.label}}</label>
+                      <br />
+                      <input id={{templateField.code}} formControlName="response"
+                        placeholder={{templateField.placeholder}} />
+                      <br />
+                    </div>
+
+                    <div *ngSwitchCase="'CHECKBOX'">
+                      <input type="checkbox" id={{templateField.code}} formControlName="response"
+                        placeholder={{templateField.placeholder}} />
+                      <br />
+                      <label for="templateField.label">{{templateField.label}}</label>
+                      <br />
+                    </div>
+
+                    <div *ngSwitchCase="'CHECKBOX_GROUP'">
+                      <label for="templateField.label">{{templateField.label}}</label>
+                      <br />
+                      <div *ngFor="let templateOption of templateField.childTemplateFields">
+                        <input type="checkbox" value={{templateField.response}} />
+                        <label class="ml-2">{{ templateOption.label }}</label>
+                      </div>
+                      <br />
+                    </div>
+
+                    <div *ngSwitchCase="'APPAUTOCOMPLETE'">
+                      <label for="templateField.label">{{templateField.label}}</label>
+                      <br />
+                      <select id={{templateField.code}} formControlName="response">
+                        <option *ngFor="let inputTypeOption of templateField.suggestionOptions?.items">
+                          {{ inputTypeOption }}
+                        </option>
+                      </select>
+                      <br />
+                    </div>
+
+                    <div *ngSwitchCase="'APPCALENDAR'">
+                      <label for="templateField.label">{{templateField.label}}</label>
+                      <br />
+                      <input type="date" formControlName="response" />
+                      <br />
+                    </div>
+
+                    <div *ngSwitchCase="'ARRAY'">
+                      <div *ngFor="let gFields of templateField.groupTemplateFields; let k = index"
+                        class="mainSec col-xs-12 no-padding">
+                        <div class="vertical-container" *ngIf="gFields.fields != null && gFields.fields.length > 0">
+
+                          <div *ngFor="let gField of gFields.fields; let l = index"
+                            class="mainSec col-xs-12 no-padding">
+                            <form class="flex flex-col gap-4" [formGroup]="fieldGroups[gField.id]">
+                              <div class="horizontal-container" [ngSwitch]="gField.inputType" *ngIf="!gField.hidden">
+
+                                <div class="horizontal-control-container" *ngSwitchCase="'INPUT'">
+                                  <label for="gField.label">{{gField.label}}</label>
+                                  <br />
+                                  <input id={{gField.code}} placeholder={{gField.placeholder}} formControlName="response" />
+                                  <br />
+                                </div>
+
+                                <div class="horizontal-control-container" *ngSwitchCase="'APPAUTOCOMPLETE'">
+                                  <label for="gField.label">{{gField.label}}</label>
+                                  <br />
+                                  <select id={{gField.code}} formControlName="response">
+                                    <option *ngFor="let inputTypeOption of gField.suggestionOptions?.items">
+                                      {{ inputTypeOption }}
+                                    </option>
+                                  </select>
+                                  <br />
+                                </div>
+
+                                <div class="horizontal-control-container" *ngSwitchCase="'CHECKBOX_GROUP'">
+                                  <label for="templateField.label">{{gField.label}}</label>
+                                  <br />
+                                  <div *ngFor="let templateOption of gField.childTemplateFields">
+                                    <input type="checkbox" formControlName="response" />
+                                    <label class="ml-2">{{ templateOption.label }}</label>
+                                  </div>
+                                  <br />
+
+                                </div>
+                              </div>
+                            </form>
+                          </div>
+
+                          <p-button icon="pi pi-trash" (click)="deleteCustomFieldProperty(templateField, gFields)">
+                          </p-button>
+                        </div>
+                      </div>
+
+                      <p-button icon="pi pi-plus" (click)="addCustomFieldProperty(templateField)">
+                      </p-button>
+                      {{section.buttonLabel}}
+
+                    </div>
+                  </div>
+                </form>
+              </div>
+
+
+
+            </div>
+          </div>
+        </ng-container>
+      </div>
+      <div class="example-right-container">
+        <p-button icon="pi pi-save" [style]="{ 'margin-left': '.15em' }" (click)="saveSurvey()" label="Save" />
+        <p-button icon="pi pi-save" [style]="{ 'margin-left': '.15em' }" (click)="submitSurvey()" label="Submit" />
+        <p-button icon="pi pi-undo" [style]="{ 'margin-left': '.15em' }" (click)="cancelSurvey()" label="Cancel" />
+      </div>
+    </div>
+  </div>
+</div>

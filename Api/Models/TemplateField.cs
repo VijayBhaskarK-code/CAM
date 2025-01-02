@@ -68,4 +68,6 @@ public partial class TemplateField
 
     public virtual TemplateSection? TemplateSection { get; set; } = null!;
  
+    public virtual ICollection<TemplateSurveyResponse>? TemplateSurveyResponses { get; set; } = new List<TemplateSurveyResponse>();
+    public virtual ICollection<TemplateSurveyChildResponse>? TemplateSurveyChildResponses { get; set; } = new List<TemplateSurveyChildResponse>();
 }
