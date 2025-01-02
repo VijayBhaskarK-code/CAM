@@ -1,5 +1,4 @@
 import { TemplateSurvey } from "./template.survey.model";
-import { TemplateSurveyChildResponse } from "./template.survey.child.response.model";
 import { TemplateField } from "./template.field.model";
 
 export interface TemplateSurveyResponse {
@@ -12,6 +11,5 @@ export interface TemplateSurveyResponse {
     createdUtcDate: string | null;
     updatedUtcDate: string | null;
     templateSurvey: TemplateSurvey | null;
-    templateSurveyChildResponses: TemplateSurveyChildResponse[] | null;
     templateField: TemplateField | null;
 }

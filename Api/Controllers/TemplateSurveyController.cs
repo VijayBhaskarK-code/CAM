@@ -28,7 +28,7 @@ namespace Api.Controllers
         public async Task<ActionResult<TemplateSurvey>> GetTemplateSurvey(int id)
         {
             var templateField = await _context.TemplateSurveys
-        .Include(a => a.TemplateSurveyResponses).ThenInclude(a => a.TemplateSurveyChildResponses)
+        .Include(a => a.TemplateSurveyResponses)
             .Include(a => a.TemplateVersion)
                 .ThenInclude(a => a.TemplatePanels)
                 .ThenInclude(a => a.TemplateSections)
@@ -58,14 +58,6 @@ namespace Api.Controllers
                     _context.Entry(surveyResponse).State = EntityState.Added;
                 else
                     _context.Entry(surveyResponse).State = EntityState.Modified;
-
-                foreach (var surveyCResponse in surveyResponse.TemplateSurveyChildResponses)
-                {
-                    if (surveyCResponse.Id == 0)
-                        _context.Entry(surveyCResponse).State = EntityState.Added;
-                    else
-                        _context.Entry(surveyCResponse).State = EntityState.Modified;
-                }
             }
 
             _context.Entry(templateSurvey).State = EntityState.Modified;

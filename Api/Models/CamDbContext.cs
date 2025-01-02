@@ -35,28 +35,6 @@ public partial class CamDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<TemplateSurveyChildResponse>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK__Template__3214EC071D8C0816");
-
-            entity.ToTable("S_TemplateSurveyChildResponse");
-
-            entity.HasIndex(e => e.Id, "UQ__Template__3214EC0681E4AF7A").IsUnique();
-
-            entity.Property(e => e.CreatedUTCDate).HasColumnType("datetime");
-            entity.Property(e => e.ModifiedUTCDate).HasColumnType("datetime");
-
-            entity.HasOne(d => d.TemplateSurveyResponse).WithMany(p => p.TemplateSurveyChildResponses)
-                .HasForeignKey(d => d.TemplateSurveyResponseId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_S_TemplateSurveyChildResponse_S_TemplateSurveyResponse_Id");
-
-                entity.HasOne(d => d.TemplateField).WithMany(p => p.TemplateSurveyChildResponses)
-                .HasForeignKey(d => d.TemplateFieldId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_S_S_TemplateSurveyChildResponse_S_TemplateField_Id");
-        });
-
         modelBuilder.Entity<TemplateSurveyResponse>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__Template__3214EC071D8C0815");

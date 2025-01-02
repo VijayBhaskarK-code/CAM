@@ -10,10 +10,12 @@ import { TemplateSection } from '../models/template.section.model';
 import { TemplateVersion } from '../models/template.version.model';
 import { TemplateSurvey } from '../models/template.survey.model';
 import { TemplateSurveyResponse } from '../models/template.survey.response.model';
-import { TemplateSurveyChildResponse } from '../models/template.survey.child.response.model';
+import { SurveyChildResponse, GroupSurveyChildResponse } from '../models/template.survey.child.response.model';
 import { TemplateField, GroupTemplateField, SuggestionOptions } from '../models/template.field.model';
 
 import { FormBuilder, FormGroup, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+import { v4 as uuid } from 'uuid';
 
 import { ApiService } from '../service/api.service';
 
@@ -170,39 +172,54 @@ export class TemplateSurveyComponent implements OnInit, OnDestroy {
 
           var surveyResponseId = 0;
           if (tField.templateSurveyResponses != undefined && tField.templateSurveyResponses.length > 0) {
-            tField.response = tField.templateSurveyResponses[0]?.response;
             surveyResponseId = tField.templateSurveyResponses[0]?.id;
 
-            //console.log(tField);
+            if (tField.inputType == 'ARRAY') {
+              if (tField.templateSurveyResponses[0].response != null) {
+                console.log('ARRAY', tField);
 
-            if (tField.childTemplateFields != undefined && tField.childTemplateFields.length > 0) {
+                var groupSurveyChildResponses = JSON.parse(tField.templateSurveyResponses[0].response) as GroupSurveyChildResponse[];
+                groupSurveyChildResponses.forEach(gscr => {
+                  var groupTemplateField = {} as GroupTemplateField;
+                  groupTemplateField.id = gscr.id;
+                  groupTemplateField.fields = [] as TemplateField[];
 
-              const res = tField.templateSurveyResponses[0].templateSurveyChildResponses as TemplateSurveyChildResponse[];
-              from(res).pipe(
-                groupBy(p => p.templateSurveyResponseId),
-                mergeMap(group => group.pipe(toArray()))
-              ).subscribe(templateResponse => {
+                  gscr.surveyChildResponses.forEach(scr => {
+                    var templateField = tField?.childTemplateFields?.find(ctf => ctf.id == scr.templateFieldId);
+                    if (templateField != null) {
+                      templateField.response = scr.response;
+                      groupTemplateField?.fields?.push(templateField);
 
-                templateResponse.forEach(tr => {
-                  this.fieldGroups[tr.templateFieldId] = this.fb.group({
-                    fieldId: [tr.id],
-                    surveyResponseId: [tr.id],
-                    code: [tr.templateField?.code],
-                    response: [tr.response],
+                      var fieldGroup = this.fb.group({
+                        fieldId: [templateField.id],
+                        parentFieldId: [tField.id],
+                        surveyResponseId: [surveyResponseId],
+                        code: [templateField.code],
+                        response: [templateField.response],
+                      });
+
+                      this.fieldGroups[gscr.id + '_' + templateField.id] = fieldGroup;
+                    }
                   });
+
+                  if (tField.groupTemplateFields == null)
+                    tField.groupTemplateFields = [] as GroupTemplateField[];
+
+                  tField.groupTemplateFields.push(groupTemplateField);
                 });
+              }
+            }
+            else {
+              // Assign the saved response to the field.
+              tField.response = tField.templateSurveyResponses[0]?.response;
 
-                if (tField.groupTemplateFields == null)
-                  tField.groupTemplateFields = [];
-
-                var gg: GroupTemplateField = { id: templateResponse[0].templateSurveyResponseId.toString(), fields: tField.childTemplateFields };
-
-                tField.groupTemplateFields.push(gg);
-                console.log(tField);
-
+              this.fieldGroups[tField.id] = this.fb.group({
+                fieldId: [tField.id],
+                surveyResponseId: [surveyResponseId],
+                code: [tField.code],
+                response: [tField.response],
               });
             }
-           
           }
 
           this.fieldGroups[tField.id] = this.fb.group({
@@ -217,7 +234,6 @@ export class TemplateSurveyComponent implements OnInit, OnDestroy {
       });
     });
 
-    //console.log(this.templateSurvey);
     this.templatePanels = this.templateVersion.templatePanels;
     this.changeRef.detectChanges();
   }
@@ -245,36 +261,53 @@ export class TemplateSurveyComponent implements OnInit, OnDestroy {
         surveyResponse = this.templateSurvey.templateSurveyResponses[surveyResponseIndex];
       }
 
-      surveyResponse.response = this.fieldGroups[tf.id].value.response;
+      if (tf.inputType == 'ARRAY' && surveyResponse != null && tf.groupTemplateFields != null && tf.groupTemplateFields.length > 0) {
 
-      if (surveyResponse != null && tf.groupTemplateFields != null && tf.groupTemplateFields.length > 0) {
-
+        var groupSurveyChildResponses = [] as GroupSurveyChildResponse[];
         tf.groupTemplateFields.forEach(gtf => {
-          var childFields = gtf.fields;
+          var groupSurveyChildResponse = {} as GroupSurveyChildResponse;
+          groupSurveyChildResponse.id = gtf.id ?? '';
 
-          childFields?.forEach(ctf => {
-            if (surveyResponse.templateSurveyChildResponses == null)
-              surveyResponse.templateSurveyChildResponses = [] as TemplateSurveyChildResponse[];
+          gtf.fields?.forEach(ctf => {
+            var surveyChildResponse = {} as SurveyChildResponse;
 
-            var surveyCResponseIndex = surveyResponse.templateSurveyChildResponses?.findIndex(sr => sr.templateFieldId == ctf.id);
+            surveyChildResponse.response = this.fieldGroups[gtf.id + '_' + ctf.id].value.response;
+            surveyChildResponse.templateFieldId = ctf.id;
+            surveyChildResponse.id = ctf.id.toString();
 
-            var surveyCResponse = {} as TemplateSurveyChildResponse;
-            if (surveyCResponseIndex == -1) {
-              surveyCResponse.templateSurveyResponseId = surveyResponse.id;
-              surveyCResponse.templateFieldId = ctf.id;
-              surveyCResponse.id = 0;
+            if (groupSurveyChildResponse.surveyChildResponses == null)
+              groupSurveyChildResponse.surveyChildResponses = [] as SurveyChildResponse[];
 
-              surveyResponse.templateSurveyChildResponses?.push(surveyCResponse);
-            } else {
-              surveyCResponse = surveyResponse.templateSurveyChildResponses[surveyCResponseIndex];
-            }
+            groupSurveyChildResponse.surveyChildResponses.push(surveyChildResponse);
 
-            surveyCResponse.response = this.fieldGroups[ctf.id].value.response;
+            // if (surveyResponse.templateSurveyChildResponses == null)
+            //   surveyResponse.templateSurveyChildResponses = [] as TemplateSurveyChildResponse[];
+
+            // var surveyCResponseIndex = surveyResponse.templateSurveyChildResponses?.findIndex(sr => sr.templateFieldId == ctf.id);
+
+            // var surveyCResponse = {} as TemplateSurveyChildResponse;
+            // if (surveyCResponseIndex == -1) {
+            //   surveyCResponse.templateSurveyResponseId = surveyResponse.id;
+            //   surveyCResponse.templateFieldId = ctf.id;
+            //   surveyCResponse.id = 0;
+
+            //   surveyResponse.templateSurveyChildResponses?.push(surveyCResponse);
+            // } else {
+            //   surveyCResponse = surveyResponse.templateSurveyChildResponses[surveyCResponseIndex];
+            // }
+
+            // surveyCResponse.response = this.fieldGroups[ctf.id].value.response;
 
 
           });
 
+          groupSurveyChildResponses.push(groupSurveyChildResponse);
         });
+
+        surveyResponse.response = JSON.stringify(groupSurveyChildResponses);
+      }
+      else {
+        surveyResponse.response = this.fieldGroups[tf.id].value.response;
       }
 
     });
@@ -330,26 +363,25 @@ export class TemplateSurveyComponent implements OnInit, OnDestroy {
     if (templateField.groupTemplateFields == null)
       templateField.groupTemplateFields = [];
 
-    var gg: GroupTemplateField = { id: templateField.id.toString(), fields: templateField.childTemplateFields };
+    var customGroupId = uuid();
+
+    var gg: GroupTemplateField = { id: customGroupId, fields: templateField.childTemplateFields };
 
     templateField.childTemplateFields.forEach(ctField => {
+
       var fieldGroup = this.fb.group({
         fieldId: [ctField.id],
         parentFieldId: [templateField.id],
         surveyResponseId: [0],
         code: [ctField.code],
-        response: [ctField.response],
+        response: [''],
       });
-      //this.fieldGroups[templateField.id].addControl(ctField.id.toString(), fieldGroup);
-      this.fieldGroups[ctField.id] = fieldGroup;/////////
-      if (this.childTemplateFields[templateField.id] == undefined)
-        this.childTemplateFields[templateField.id] = [];
-      this.childTemplateFields[templateField.id].push(ctField);
+
+      this.fieldGroups[customGroupId + '_' + ctField.id] = fieldGroup;
     });
 
     templateField.groupTemplateFields.push(gg);
 
-    console.log(this.childTemplateFields, this.templateFields, this.fieldGroups);
     this.changeRef.detectChanges();
   }
 

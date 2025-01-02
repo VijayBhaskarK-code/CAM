@@ -197,20 +197,6 @@ CREATE TABLE [dbo].[S_TemplateSurveyResponse] (
 	PRIMARY KEY ([Id])
 );
 
---Create TempalteParent table
-CREATE TABLE [dbo].[S_TemplateSurveyChildResponse] (
-	[Id] int IDENTITY(1,1) NOT NULL UNIQUE,
-	[TemplateSurveyResponseId] int NOT NULL,
-	[TemplateFieldId] int NOT NULL,
-	[Response] varchar(max) NULL,
-	[CreatedBy] nvarchar(max) NULL,
-	[ModifiedBy] nvarchar(max) NULL,
-	[CreatedUTCDate] datetime NULL,
-	[ModifiedUTCDate] datetime NULL,
-	PRIMARY KEY ([Id])
-);
-
-
 
 
 
@@ -222,8 +208,6 @@ ALTER TABLE [dbo].[S_TemplatePanel] ADD CONSTRAINT [FK_S_TemplatePanel_TemplateV
 ALTER TABLE [dbo].[S_TemplateSurvey] ADD CONSTRAINT [FK_S_TemplateSurvey_TemplateVersion_Id] FOREIGN KEY ([TemplateVersionId]) REFERENCES [dbo].[S_TemplateVersion]([Id]);
 ALTER TABLE [dbo].[S_TemplateSurveyResponse] ADD CONSTRAINT [FK_S_TemplateSurveyResponse_S_TemplateSurvey_Id] FOREIGN KEY ([TemplateSurveyId]) REFERENCES [dbo].[S_TemplateSurvey]([Id]);
 ALTER TABLE [dbo].[S_TemplateSurveyResponse] ADD CONSTRAINT [FK_S_TemplateSurveyResponse_S_TemplateField_Id] FOREIGN KEY ([TemplateFieldId]) REFERENCES [dbo].[S_TemplateField]([Id]);
-ALTER TABLE [dbo].[S_TemplateSurveyChildResponse] ADD CONSTRAINT [FK_S_TemplateSurveyChildResponse_S_TemplateSurveyResponse_Id] FOREIGN KEY ([TemplateSurveyResponseId]) REFERENCES [dbo].[S_TemplateSurveyResponse]([Id]);
-ALTER TABLE [dbo].[S_TemplateSurveyChildResponse] ADD CONSTRAINT [FK_S_S_TemplateSurveyChildResponse_S_TemplateField_Id] FOREIGN KEY ([TemplateFieldId]) REFERENCES [dbo].[S_TemplateField]([Id]);
 
 
 --Insert TemplateType table

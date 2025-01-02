@@ -1,6 +1,5 @@
 import { TemplateSection } from "./template.section.model";
 import { TemplateSurveyResponse } from "./template.survey.response.model";
-import { TemplateSurveyChildResponse } from "./template.survey.child.response.model";
 
 export interface TemplateField {
     id: number;
@@ -43,7 +42,6 @@ export interface TemplateField {
     type: string | 'Field';
     response: string | null;
     templateSurveyResponses: TemplateSurveyResponse[] | null;
-    templateSurveyChildResponses: TemplateSurveyChildResponse[] | null;
 }
 
 export interface TemplateFieldOption {

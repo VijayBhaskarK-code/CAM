@@ -21,6 +21,4 @@ public partial class TemplateSurveyResponse
     public virtual TemplateSurvey? TemplateSurvey { get; set; } = null!;
 
     public virtual TemplateField? TemplateField { get; set; } = null!;
-
-    public virtual ICollection<TemplateSurveyChildResponse> TemplateSurveyChildResponses { get; set; } = new List<TemplateSurveyChildResponse>();
 }

@@ -86,7 +86,7 @@
 
                           <div *ngFor="let gField of gFields.fields; let l = index"
                             class="mainSec col-xs-12 no-padding">
-                            <form class="flex flex-col gap-4" [formGroup]="fieldGroups[gField.id]">
+                            <form class="flex flex-col gap-4" [formGroup]="fieldGroups[gFields.id + '_' + gField.id]">
                               <div class="horizontal-container" [ngSwitch]="gField.inputType" *ngIf="!gField.hidden">
 
                                 <div class="horizontal-control-container" *ngSwitchCase="'INPUT'">
