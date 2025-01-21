@@ -13,7 +13,7 @@ import { TemplateSurveyResponse } from '../models/template.survey.response.model
 import { SurveyChildResponse, GroupSurveyChildResponse } from '../models/template.survey.child.response.model';
 import { TemplateField, GroupTemplateField, SuggestionOptions } from '../models/template.field.model';
 
-import { FormBuilder, FormGroup, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl, FormsModule, ReactiveFormsModule, Validators, ValidationErrors } from '@angular/forms';
 
 import { v4 as uuid } from 'uuid';
 
@@ -79,6 +79,8 @@ export class TemplateSurveyComponent implements OnInit, OnDestroy {
   templatePanels!: TemplatePanel[];
   templateFields: TemplateField[] = [];
   childTemplateFields: ResponseDictionary = {};
+
+  submitted = false;
 
   constructor(private fb: FormBuilder, private apiService: ApiService, private router: Router, private activatedRoute: ActivatedRoute,
     private changeRef: ChangeDetectorRef) {
@@ -149,6 +151,11 @@ export class TemplateSurveyComponent implements OnInit, OnDestroy {
 
           if (tField.options != undefined) {
             tField.optionItems = JSON.parse(tField.options);
+          }
+
+          if (tField.errorMessages != undefined) {
+            tField.validatorErrors = JSON.parse(tField.errorMessages);
+            console.log(tField.validatorErrors);
           }
 
           if (tField.parentFieldId != undefined) {
@@ -222,11 +229,20 @@ export class TemplateSurveyComponent implements OnInit, OnDestroy {
             }
           }
 
+          var fieldValidators = [] as any[];
+          if (tField.required) {
+            fieldValidators.push(Validators.required);
+          }
+
+          if (tField.maxLength != null && tField.maxLength > 0) {
+            fieldValidators.push(Validators.maxLength(tField.maxLength));
+          }
+
           this.fieldGroups[tField.id] = this.fb.group({
             fieldId: [tField.id],
             surveyResponseId: [surveyResponseId],
             code: [tField.code],
-            response: [tField.response],
+            response: [tField.response, fieldValidators],
           });
 
           this.templateFields.push(tField);
@@ -327,6 +343,28 @@ export class TemplateSurveyComponent implements OnInit, OnDestroy {
   }
 
   submitSurvey() {
+    this.submitted = true;
+
+    this.templateFields.forEach(tf => {
+
+      if (this.fieldGroups[tf.id].invalid) {
+
+        const errors = Object.entries(
+          this.fieldGroups[tf.id].controls['response'].errors || {}
+        );
+      
+        const [key, value] = errors[0];
+        if (tf.validatorErrors!=null) {
+          tf.validatorError = tf.validatorErrors[key];
+        }
+        console.log(this.fieldGroups[tf.id].controls['response'].errors, tf, tf.validatorError);
+        return;
+      }
+  
+      //console.log(JSON.stringify(this.fieldGroups[tf.id].value, null, 2));
+    });
+
+    
     // this.selectTemplateField.code = this.templateFieldForm.value.code;
     // this.selectTemplateField.caption = this.templateFieldForm.value.caption;
     // this.selectTemplateField.order = this.templateFieldForm.value.order;

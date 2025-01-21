@@ -39,7 +39,10 @@
                       <label for="templateField.label">{{templateField.label}}</label>
                       <br />
                       <input id={{templateField.code}} formControlName="response"
-                        placeholder={{templateField.placeholder}} />
+                        placeholder={{templateField.placeholder}} [ngClass]="{ 'is-invalid': submitted && fieldGroups[templateField.id].controls['response'].errors }"/>
+                        <div *ngIf="submitted && fieldGroups[templateField.id].controls['response'].errors" style="color:red">
+                          <div >{{templateField.validatorError}}</div>
+                        </div>
                       <br />
                     </div>
 
@@ -64,18 +67,24 @@
                     <div *ngSwitchCase="'APPAUTOCOMPLETE'">
                       <label for="templateField.label">{{templateField.label}}</label>
                       <br />
-                      <select id={{templateField.code}} formControlName="response">
+                      <select id={{templateField.code}} formControlName="response" [ngClass]="{ 'is-invalid': submitted && fieldGroups[templateField.id].controls['response'].errors }">
                         <option *ngFor="let inputTypeOption of templateField.suggestionOptions?.items">
                           {{ inputTypeOption }}
                         </option>
                       </select>
+                      <div *ngIf="submitted && fieldGroups[templateField.id].controls['response'].errors" style="color:red">
+                        <div >{{templateField.validatorError}}</div>
+                      </div>
                       <br />
                     </div>
 
                     <div *ngSwitchCase="'APPCALENDAR'">
                       <label for="templateField.label">{{templateField.label}}</label>
                       <br />
-                      <input type="date" formControlName="response" />
+                      <input type="date" formControlName="response" [ngClass]="{ 'is-invalid': submitted && fieldGroups[templateField.id].controls['response'].errors }"/>
+                      <div *ngIf="submitted && fieldGroups[templateField.id].controls['response'].errors" style="color:red">
+                        <div >{{templateField.validatorError}}</div>
+                      </div>
                       <br />
                     </div>
 
@@ -92,18 +101,24 @@
                                 <div class="horizontal-control-container" *ngSwitchCase="'INPUT'">
                                   <label for="gField.label">{{gField.label}}</label>
                                   <br />
-                                  <input id={{gField.code}} placeholder={{gField.placeholder}} formControlName="response" />
+                                  <input id={{gField.code}} placeholder={{gField.placeholder}} formControlName="response" [ngClass]="{ 'is-invalid': submitted && fieldGroups[gFields.id + '_' + gField.id].controls['response'].errors }"/>
+                                  <div *ngIf="submitted && fieldGroups[gFields.id + '_' + gField.id].controls['response'].errors" style="color:red">
+                                    <div >{{gField.validatorError}}</div>
+                                  </div>
                                   <br />
                                 </div>
 
                                 <div class="horizontal-control-container" *ngSwitchCase="'APPAUTOCOMPLETE'">
                                   <label for="gField.label">{{gField.label}}</label>
                                   <br />
-                                  <select id={{gField.code}} formControlName="response">
+                                  <select id={{gField.code}} formControlName="response" [ngClass]="{ 'is-invalid': submitted && fieldGroups[gFields.id + '_' + gField.id].controls['response'].errors }">
                                     <option *ngFor="let inputTypeOption of gField.suggestionOptions?.items">
                                       {{ inputTypeOption }}
                                     </option>
                                   </select>
+                                  <div *ngIf="submitted && fieldGroups[gFields.id + '_' + gField.id].controls['response'].errors" style="color:red">
+                                    <div >{{gField.validatorError}}</div>
+                                  </div>
                                   <br />
                                 </div>
 

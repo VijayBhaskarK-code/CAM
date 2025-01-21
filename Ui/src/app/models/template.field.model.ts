@@ -1,5 +1,6 @@
 import { TemplateSection } from "./template.section.model";
 import { TemplateSurveyResponse } from "./template.survey.response.model";
+import { ValidationErrors } from '@angular/forms';
 
 export interface TemplateField {
     id: number;
@@ -13,6 +14,8 @@ export interface TemplateField {
     options: string | null;
     optionItems: TemplateFieldOption[] | null;
     errorMessages: string | null;
+    validatorErrors: ValidationErrors | null;
+    validatorError: string | null;
     asyncValidators: string | null;
     required: boolean | null;
     requiredOnSave: boolean | null;
